@@ -13,3 +13,5 @@ __pycache__/
 .adobe-token-cache.json
 scripts/frozen_east_text_detection.pb
 .DS_Store
+data/
+output/

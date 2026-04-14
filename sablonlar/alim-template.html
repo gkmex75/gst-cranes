@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1200px;
+    height: 630px;
+    font-family: 'Oswald', 'Arial Black', sans-serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body.dark {
+    --bg: #0A0A0A;
+    --bg2: #1A1A1A;
+    --accent: #C41E1E;
+    --text: #FFFFFF;
+    --text2: #9CA3AF;
+    --border: #2A2A2A;
+    --logo-gst: #FFFFFF;
+  }
+
+  body.light {
+    --bg: #FFFFFF;
+    --bg2: #F3F4F6;
+    --accent: #C41E1E;
+    --text: #0A0A0A;
+    --text2: #6B7280;
+    --border: #E5E7EB;
+    --logo-gst: #0A0A0A;
+  }
+
+  body { background: var(--bg); color: var(--text); }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    background: var(--bg2);
+    border-bottom: 3px solid var(--accent);
+    height: 60px;
+    flex-shrink: 0;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+  }
+
+  .header-brand {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  .header-brand .gst { color: var(--logo-gst); }
+  .header-brand .cranes { color: var(--accent); }
+
+  .badge-buy {
+    background: var(--accent);
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .headline {
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    line-height: 1.1;
+  }
+
+  .headline .we { color: var(--text); }
+  .headline .buy { color: var(--accent); }
+  .headline .cranes { color: var(--text); }
+
+  .subtext {
+    font-size: 22px;
+    color: var(--text2);
+    letter-spacing: 1px;
+    max-width: 800px;
+  }
+
+  .brands-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 4px;
+  }
+
+  .brand-tag {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+
+  .features {
+    display: flex;
+    gap: 30px;
+    margin-top: 8px;
+  }
+
+  .feature {
+    font-size: 18px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .feature::before {
+    content: "\2713 ";
+    color: var(--accent);
+  }
+
+  .contact-box {
+    background: var(--bg2);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 12px 30px;
+    margin-top: 4px;
+  }
+
+  .contact-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .contact-sub {
+    font-size: 14px;
+    color: var(--text2);
+    margin-top: 2px;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 8px 24px;
+    background: var(--bg2);
+    border-top: 2px solid var(--accent);
+    height: 44px;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-item { color: var(--text2); }
+  .footer-item.website { color: var(--accent); font-weight: 700; }
+</style>
+</head>
+<body class="{theme_class}">
+
+  <div class="header">
+    <div class="header-left">
+      <img src="{logo_b64}" class="header-logo" alt="GST">
+      <div class="header-brand">
+        <span class="gst">GST</span> <span class="cranes">CRANES</span>
+      </div>
+    </div>
+    <div class="badge-buy">{badge_text}</div>
+  </div>
+
+  <div class="main">
+    <div class="headline">{headline_html}</div>
+
+    <div class="subtext">{subtext}</div>
+
+    <div class="brands-row">{brands_html}</div>
+
+    <div class="features">
+      <span class="feature">Fast Evaluation</span>
+      <span class="feature">Fair Prices</span>
+      <span class="feature">Worldwide Pickup</span>
+    </div>
+
+    <div class="contact-box">
+      <div class="contact-text">Contact us today — sell your crane!</div>
+      <div class="contact-sub">WhatsApp: +32 483 56 64 65 | info@gstcranes.com</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-item website">www.gstcranes.com</span>
+    <span class="footer-item">WhatsApp: +32 483 56 64 65</span>
+    <span class="footer-item">@gstcranes</span>
+    <span class="footer-item">info@gstcranes.com</span>
+  </div>
+
+</body>
+</html>
