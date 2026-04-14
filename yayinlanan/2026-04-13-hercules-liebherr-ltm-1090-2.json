@@ -1,0 +1,22 @@
+{
+  "platform": "hercules",
+  "title": "2008 Liebherr LTM 1090-2 - 90t Mobile Crane",
+  "url": "https://hercules.app/dashboard/app/01KN7PHC5CDE8W8RBWAD8MVT83?threadId=01KP3GED69S817ACRJ8GDP5T42",
+  "status": "published",
+  "published_at": "2026-04-13T17:08:41.092113",
+  "screenshots": [
+    "/Users/gokmentanacar/gst-cranes/logs/screenshots/20260413_170834_generated.png",
+    "/Users/gokmentanacar/gst-cranes/logs/screenshots/20260413_170840_published.png"
+  ],
+  "crane_info": {
+    "brand": "Liebherr",
+    "model": "LTM 1090-2",
+    "year": "2008",
+    "capacity_tons": "90",
+    "boom_length_m": "50",
+    "operating_hours": "12500",
+    "price_eur": "285000",
+    "origin_country": "Germany",
+    "notes": "Recently serviced, new tires, CE certified"
+  }
+}

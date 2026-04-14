@@ -1,0 +1,15 @@
+.venv/
+.env
+logs/
+yeni-vinc/**/*.jpg
+yeni-vinc/**/*.jpeg
+yeni-vinc/**/*.png
+processed/
+__pycache__/
+*.pyc
+.chrome-profile/
+.chrome-profile-ml/
+.chrome-profile-social/
+.adobe-token-cache.json
+scripts/frozen_east_text_detection.pb
+.DS_Store

@@ -1,0 +1,10 @@
+crane_type = mobile
+brand = Liebherr
+model = LTM 1090-2
+year = 2008
+capacity_tons = 90
+boom_length_m = 50
+operating_hours = 12500
+price_eur = 285000
+origin_country = Germany
+notes = Recently serviced, new tires, CE certified

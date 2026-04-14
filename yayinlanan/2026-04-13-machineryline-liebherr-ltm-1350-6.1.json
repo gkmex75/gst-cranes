@@ -1,0 +1,25 @@
+{
+  "platform": "machineryline",
+  "title": "2016 Liebherr LTM 1350-6.1 - 350t Mobile Crane",
+  "url": "https://machineryline.info/my/salesActivateDone/?code=26041319233367391600",
+  "status": "published",
+  "published_at": "2026-04-13T19:24:21.620381",
+  "screenshots": [
+    "/Users/gokmentanacar/gst-cranes/logs/screenshots/20260413_192346_ml_form-filled.png",
+    "/Users/gokmentanacar/gst-cranes/logs/screenshots/20260413_192357_ml_preview.png",
+    "/Users/gokmentanacar/gst-cranes/logs/screenshots/20260413_192401_ml_preview.png",
+    "/Users/gokmentanacar/gst-cranes/logs/screenshots/20260413_192421_ml_final.png"
+  ],
+  "crane_info": {
+    "crane_type": "mobile",
+    "brand": "Liebherr",
+    "model": "LTM 1350-6.1",
+    "year": "2016",
+    "capacity_tons": "350",
+    "boom_length_m": "70",
+    "operating_hours": "9789",
+    "price_eur": "1250000",
+    "origin_country": "Europe",
+    "notes": "Upper hours: 9,789 | Lower hours: 1,449 | 8,770 km. Main boom: 70m. Flyjib: 42m (0/20/40/60 offset angle). Luffing Jib: 78m (full option Y-Guy). 2 winches. 16.00 tyres. 140 ton counterweight. Telma Eddy Current brake. Outrigger support pressure indicator. Working lights. Emergency Operation. Working Area Limitation. Excenter with 3.5m extension. Camera System with colour monitor. Bunk Berth of carrier cabin. 3 sheave hook."
+  }
+}

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1200px;
+    height: 630px;
+    font-family: 'Oswald', 'Arial Black', sans-serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Dark Theme ── */
+  body.dark {
+    --bg: #0A0A0A;
+    --bg2: #1A1A1A;
+    --accent: #C41E1E;
+    --text: #FFFFFF;
+    --text2: #9CA3AF;
+    --border: #2A2A2A;
+    --logo-gst: #FFFFFF;
+  }
+
+  /* ── Light Theme ── */
+  body.light {
+    --bg: #FFFFFF;
+    --bg2: #F3F4F6;
+    --accent: #C41E1E;
+    --text: #0A0A0A;
+    --text2: #6B7280;
+    --border: #E5E7EB;
+    --logo-gst: #0A0A0A;
+  }
+
+  body { background: var(--bg); color: var(--text); }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    background: var(--bg2);
+    border-bottom: 3px solid var(--accent);
+    height: 60px;
+    flex-shrink: 0;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+  }
+
+  .header-brand {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  .header-brand .gst { color: var(--logo-gst); }
+  .header-brand .cranes { color: var(--accent); }
+
+  .badge-for-sale {
+    background: var(--accent);
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* ── Main Content ── */
+  .content {
+    display: flex;
+    flex: 1;
+    padding: 12px 24px;
+    gap: 20px;
+    min-height: 0;
+  }
+
+  /* Left: photo */
+  .photo-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .photo-section img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+  }
+
+  /* Right: info */
+  .info-section {
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .crane-brand {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .crane-model {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .crane-type {
+    font-size: 14px;
+    color: var(--text2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Spec boxes */
+  .specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .spec-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .spec-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .spec-label {
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* Price */
+  .price-box {
+    background: var(--bg2);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .price-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .price-sub {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 2px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 8px 24px;
+    background: var(--bg2);
+    border-top: 2px solid var(--accent);
+    height: 44px;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-item { color: var(--text2); }
+  .footer-item.website { color: var(--accent); font-weight: 700; }
+</style>
+</head>
+<body class="{theme_class}">
+
+  <div class="header">
+    <div class="header-left">
+      <img src="{logo_b64}" class="header-logo" alt="GST">
+      <div class="header-brand">
+        <span class="gst">GST</span> <span class="cranes">CRANES</span>
+      </div>
+    </div>
+    <div class="badge-for-sale">FOR SALE</div>
+  </div>
+
+  <div class="content">
+    <div class="photo-section">
+      <img src="{photo_b64}" alt="Crane">
+    </div>
+    <div class="info-section">
+      <div class="crane-brand">{brand}</div>
+      <div class="crane-model">{model}</div>
+      <div class="crane-type">{crane_type_label}</div>
+
+      <div class="specs">
+        <div class="spec-box">
+          <div class="spec-value">{year}</div>
+          <div class="spec-label">Year</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-value">{capacity}t</div>
+          <div class="spec-label">Capacity</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-value">{boom}m</div>
+          <div class="spec-label">Main Boom</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-value">{hours}</div>
+          <div class="spec-label">Hours</div>
+        </div>
+      </div>
+
+      {extra_specs_html}
+
+      <div class="price-box">
+        <div class="price-value">EUR {price}</div>
+        <div class="price-sub">Available for immediate delivery</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-item website">www.gstcranes.com</span>
+    <span class="footer-item">WhatsApp: +32 483 56 64 65</span>
+    <span class="footer-item">@gstcranes</span>
+    <span class="footer-item">info@gstcranes.com</span>
+  </div>
+
+</body>
+</html>
