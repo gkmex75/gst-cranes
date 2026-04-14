@@ -68,9 +68,10 @@ def find_best_photo(info: dict, folder: Path) -> Path | None:
     prefix = f"{brand}-{model}-"
 
     # Prefer processed web images
-    if PROCESSED_DIR.exists():
+    crane_dir = PROCESSED_DIR / f"{brand}-{model}"
+    if crane_dir.exists():
         web_images = sorted(
-            f for f in PROCESSED_DIR.iterdir()
+            f for f in crane_dir.iterdir()
             if f.name.startswith(prefix) and f.name.endswith("-web.jpg")
         )
         if web_images:
@@ -164,11 +165,11 @@ def fill_template(template_path: Path, info: dict, photo_b64: str, logo_b64: str
 
 def render_screenshots(info: dict, photo_path: Path) -> list[Path]:
     """Render all 4 images (post dark/light, story dark/light). Returns output paths."""
-    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
-
     brand = info.get("brand", "x").lower().replace(" ", "-")
     model = info.get("model", "x").lower().replace(" ", "-")
     prefix = f"{brand}-{model}"
+    crane_dir = PROCESSED_DIR / prefix
+    crane_dir.mkdir(parents=True, exist_ok=True)
 
     photo_b64 = image_to_b64(photo_path)
     logo_b64 = image_to_b64(LOGO_PATH) if LOGO_PATH.exists() else ""
@@ -192,7 +193,7 @@ def render_screenshots(info: dict, photo_path: Path) -> list[Path]:
                 page = browser.new_page(viewport={"width": width, "height": height})
                 page.set_content(html, wait_until="networkidle")
 
-                output_path = PROCESSED_DIR / f"{prefix}-{template_type}-{theme}.jpg"
+                output_path = crane_dir / f"{prefix}-{template_type}-{theme}.jpg"
                 page.screenshot(path=str(output_path), type="jpeg", quality=95)
                 page.close()
 

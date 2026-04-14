@@ -345,7 +345,8 @@ def main(auto: bool, dry_run: bool, skip_images: bool, only_steps: str | None, c
         brand = bilgiler.get("brand", "").lower().replace(" ", "-")
         model = bilgiler.get("model", "").lower().replace(" ", "-")
         prefix = f"{brand}-{model}-"
-        existing = [f for f in PROCESSED_DIR.iterdir() if f.name.startswith(prefix)] if PROCESSED_DIR.exists() else []
+        crane_dir = PROCESSED_DIR / prefix.rstrip("-")
+        existing = [f for f in crane_dir.iterdir() if f.name.startswith(prefix)] if crane_dir.exists() else []
         if not existing:
             steps_to_run.insert(0, "images")
             console.print("[dim]No processed images, adding image step[/dim]")

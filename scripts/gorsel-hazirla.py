@@ -410,6 +410,8 @@ def process_crane_folder(
     images = get_crane_images(folder)
     prefix = build_output_prefix(bilgiler)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    crane_dir = OUTPUT_DIR / prefix
+    crane_dir.mkdir(parents=True, exist_ok=True)
     results = []
 
     with Progress(
@@ -459,8 +461,8 @@ def process_crane_folder(
                 result["details"].append("color enhanced")
 
                 # Step 3: Export
-                web_path = OUTPUT_DIR / f"{prefix}-{num}-web.jpg"
-                social_path = OUTPUT_DIR / f"{prefix}-{num}-social.jpg"
+                web_path = crane_dir / f"{prefix}-{num}-web.jpg"
+                social_path = crane_dir / f"{prefix}-{num}-social.jpg"
 
                 export_web(pil_img, web_path)
                 export_social(pil_img, social_path)

@@ -50,7 +50,7 @@ INPUT_DIR = PROJECT_ROOT / "yeni-vinc"
 PROCESSED_DIR = PROJECT_ROOT / "processed"
 PUBLISHED_DIR = PROJECT_ROOT / "yayinlanan"
 LOG_DIR = PROJECT_ROOT / "logs"
-CHROME_PROFILE_SOCIAL = PROJECT_ROOT / ".chrome-profile-social"
+CHROME_PROFILE_SOCIAL = Path.home() / ".gst-chrome-profiles" / "social"
 SCREENSHOTS_DIR = PROJECT_ROOT / "logs" / "screenshots"
 ENV_FILE = PROJECT_ROOT / ".env"
 
@@ -154,11 +154,12 @@ def find_social_images(info: dict) -> list[Path]:
     model = info.get("model", "unknown").lower().replace(" ", "-")
     prefix = f"{brand}-{model}-"
 
-    if not PROCESSED_DIR.exists():
+    crane_dir = PROCESSED_DIR / prefix.rstrip("-")
+    if not crane_dir.exists():
         return []
 
     return sorted(
-        f for f in PROCESSED_DIR.iterdir()
+        f for f in crane_dir.iterdir()
         if f.name.startswith(prefix) and f.name.endswith("-social.jpg")
     )
 
@@ -169,11 +170,12 @@ def find_web_images(info: dict) -> list[Path]:
     model = info.get("model", "unknown").lower().replace(" ", "-")
     prefix = f"{brand}-{model}-"
 
-    if not PROCESSED_DIR.exists():
+    crane_dir = PROCESSED_DIR / prefix.rstrip("-")
+    if not crane_dir.exists():
         return []
 
     return sorted(
-        f for f in PROCESSED_DIR.iterdir()
+        f for f in crane_dir.iterdir()
         if f.name.startswith(prefix) and f.name.endswith("-web.jpg")
     )
 

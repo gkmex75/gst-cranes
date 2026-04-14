@@ -31,7 +31,7 @@ INPUT_DIR = PROJECT_ROOT / "yeni-vinc"
 PROCESSED_DIR = PROJECT_ROOT / "processed"
 PUBLISHED_DIR = PROJECT_ROOT / "yayinlanan"
 LOG_DIR = PROJECT_ROOT / "logs"
-CHROME_PROFILE = PROJECT_ROOT / ".chrome-profile"
+CHROME_PROFILE = Path.home() / ".gst-chrome-profiles" / "hercules"
 SCREENSHOTS_DIR = PROJECT_ROOT / "logs" / "screenshots"
 ENV_FILE = PROJECT_ROOT / ".env"
 
@@ -135,9 +135,10 @@ def find_images(info: dict, folder: Path) -> list[Path]:
     model = info.get("model", "unknown").lower().replace(" ", "-")
     prefix = f"{brand}-{model}-"
 
-    if PROCESSED_DIR.exists():
+    crane_dir = PROCESSED_DIR / prefix.rstrip("-")
+    if crane_dir.exists():
         processed = sorted(
-            f for f in PROCESSED_DIR.iterdir()
+            f for f in crane_dir.iterdir()
             if f.name.startswith(prefix) and f.name.endswith("-web.jpg")
         )
         if processed:
