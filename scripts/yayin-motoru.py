@@ -466,3 +466,24 @@ def main(platform: str, image_path: str, text: str, story: bool, dry_run: bool, 
 
 if __name__ == "__main__":
     main()
+
+
+# --- SP4 wrapper (added by promote-api integration) ---
+# Expected signature for runners/social.py.
+def post_to_all(captions: dict, image_path: str) -> dict:
+    """Posts the same listing image with platform-specific captions to FB, IG,
+    and LinkedIn organic. Returns:
+        { "fb_post_id": "...", "ig_post_id": "...", "linkedin_post_urn": "..." }
+    Raises on any platform failure — caller must handle partial states.
+
+    captions = {
+        "fb": "<facebook narrative>",
+        "ig": "<instagram caption + hashtags>",
+        "linkedin": "<linkedin B2B copy>",
+    }
+    image_path = "/tmp/...jpg" (already downloaded)
+    """
+    raise NotImplementedError(
+        "post_to_all not yet implemented — SP4 Task 14 wrapper. "
+        "Wire up to existing FB/IG/LinkedIn helpers in this module."
+    )
