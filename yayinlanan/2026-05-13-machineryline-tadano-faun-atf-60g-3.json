@@ -1,0 +1,24 @@
+{
+  "platform": "machineryline",
+  "title": "2021 Tadano Faun ATF 60G-3 - 60t Mobile Crane",
+  "url": "https://machineryline.info/my/salesActivateDone/?code=26051319324159444800",
+  "status": "published",
+  "published_at": "2026-05-13T19:33:29.248956",
+  "screenshots": [
+    "/Users/gokmentanacar/gst-cranes/logs/screenshots/20260513_193253_ml_form-filled.png",
+    "/Users/gokmentanacar/gst-cranes/logs/screenshots/20260513_193304_ml_preview.png",
+    "/Users/gokmentanacar/gst-cranes/logs/screenshots/20260513_193308_ml_preview.png",
+    "/Users/gokmentanacar/gst-cranes/logs/screenshots/20260513_193328_ml_final.png"
+  ],
+  "crane_info": {
+    "brand": "Tadano Faun",
+    "model": "ATF 60G-3",
+    "year": "2021",
+    "capacity_tons": "60",
+    "boom_length_m": "48",
+    "operating_hours": "4500",
+    "price_eur": "375000",
+    "origin_country": "",
+    "notes": "35,000 km mileage"
+  }
+}

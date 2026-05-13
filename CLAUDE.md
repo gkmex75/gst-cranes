@@ -144,9 +144,66 @@ notes =
 ## 10. API Credentials (.env)
 
 - **Meta Graph API** — Facebook + Instagram (permanent page token, never expires)
-- **LinkedIn API** — Personal profile posting (token expires ~60 days, renew by 2026-06-13)
+- **LinkedIn API** — Personal profile posting (token expires ~60 days, renew by 2026-07-12 via `scripts/get_linkedin_share_token.py`)
 - Chrome profiles at `~/.gst-chrome-profiles/` (hercules, machineryline)
 
-## 11. Self-Update Policy
+## 11. Dispatch / Uzaktan Erişim (claude.ai/code)
+
+Bu proje Claude Code Dispatch ile telefondan veya herhangi bir cihazdan yönetilebilir. Kullanıcı doğal dilde Türkçe komut verir, Claude doğru scripti doğru parametrelerle çalıştırır.
+
+### Kullanıcı ne derse ne yaparsın
+
+| Kullanıcı der | Sen yaparsın |
+|---------------|-------------|
+| "Sabah postunu at" | `site-taraci.py` → `icerik-uretici.py --type sale` → önizleme göster → onay bekle → `yayin-motoru.py --platform all` |
+| "We buy postu at" | `icerik-uretici.py --type buy` → önizleme → onay → paylaş |
+| "LTM 1090 satıldı" veya "LTM 1090 satıldı Almanya'ya" | `icerik-uretici.py --type sold --crane "Liebherr LTM 1090" --country Germany` → önizleme → onay → paylaş |
+| "LTM 1230-5 arıyoruz" | `icerik-uretici.py --type wanted --crane "Liebherr LTM 1230-5"` → önizleme → onay → paylaş |
+| "Story at" | Story görseli üret → `yayin-motoru.py --platform facebook,instagram --story` |
+| "At" / "Paylaş" / "Ok" / "Yolla" | Son hazırlanan içeriği yayınla (onay budur) |
+| "Sadece machineryline'a at" | `machineryline-upload.py` — sadece ML |
+| "Sadece LinkedIn" | `yayin-motoru.py --platform linkedin` |
+| "Sadece Facebook'a at" | `yayin-motoru.py --platform facebook` |
+| "Her yere koy" | Hercules + ML + FB + IG + LinkedIn — hepsini sırayla çalıştır |
+| "Bu resmi direkt koy" / "Firefly'a yollama" | `gorsel-hazirla.py --skip-firefly` — Firefly'ı atla |
+| "Firefly ile temizle" | `gorsel-hazirla.py` — normal çalıştır |
+| "Envanteri güncelle" | `site-taraci.py` |
+| "Son paylaşımları göster" | `data/paylasilan.json` oku, son 10 paylaşımı listele |
+| "Şu vincin postunu hazırla" | `icerik-uretici.py --type sale --crane "..."` → görselleri ve metni göster |
+
+### Yeni Vinç Ekleme (Uzaktan)
+
+Kullanıcı resim yükleyip bilgileri yazınca:
+1. `yeni-vinc/` altında klasör oluştur (brand-model formatında, küçük harf, tire ile)
+2. `bilgiler.txt` dosyasını yaz (kullanıcının verdiği bilgilerle)
+3. Resimleri klasöre kaydet
+4. Kullanıcıya sor: "Firefly ile temizleyeyim mi, direkt mi kullanalım?"
+5. Onaya göre `gorsel-hazirla.py` çalıştır veya atla
+6. "Her yere koy" denirse `vinc-yayinla.py` çalıştır
+7. Belirli platform istenirse sadece o scripti çalıştır
+
+### Akıllı Davranış Kuralları
+
+- **Marka kısaltmalarını tanı:** LTM = Liebherr, GMK = Grove, ATF = Tadano, AC/CC = Demag
+- **Belirsiz komutlarda sor:** "Hangi vinci?" / "Hangi platformlara?"
+- **Kısa onayları tanı:** "ok", "at", "yolla", "paylaş", "tamam", "yaw", "devam" = onay
+- **Hata olunca:** Açıkla, log göster, çözüm öner — aynı hatayı 3 kez deneme, farklı yol öner
+- **Her zaman venv aktif et:** `cd ~/gst-cranes && source .venv/bin/activate` sonra script çalıştır
+- **Sonuçları göster:** Hangi platforma atıldı, URL varsa paylaş, hata varsa bildir
+
+### Platform Detayları
+
+| Platform | Script | Yöntem | Notlar |
+|----------|--------|--------|--------|
+| Facebook post + story | `yayin-motoru.py` | Meta Graph API | Kalıcı token, sorun çıkmaz |
+| Instagram post + story | `yayin-motoru.py` | Meta Graph API | Kalıcı token, sorun çıkmaz |
+| LinkedIn post | `yayin-motoru.py` | LinkedIn API | Token 2026-06-13'e kadar geçerli |
+| Hercules | `hercules-upload.py` | Playwright (Chrome profil) | Sadece local bilgisayarda çalışır |
+| Machinery Line | `machineryline-upload.py` | Playwright (Chrome profil) | Sadece local bilgisayarda çalışır |
+| gstcranes.com | Hercules üzerinden otomatik | — | Hercules yayınlayınca siteye düşer |
+
+**NOT:** Hercules ve Machinery Line sadece local bilgisayarda çalışır (Chrome profili gerekli). Cloud/Dispatch'ten bu ikisi çalışmaz, kullanıcıya bildir.
+
+## 12. Self-Update Policy
 
 When new rules or templates are provided during a session ("from now on use X"), this CLAUDE.md file will be updated immediately and the change will be summarized to the user.
