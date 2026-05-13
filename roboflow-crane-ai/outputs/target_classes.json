@@ -1,0 +1,367 @@
+[
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1500-8.1",
+    "raw_count": 973
+  },
+  {
+    "brand": "Tadano",
+    "model": "ATF 220G-5",
+    "raw_count": 465
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1130-5.1",
+    "raw_count": 454
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1300-6.2",
+    "raw_count": 335
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1100-5.2",
+    "raw_count": 330
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1200-5.1",
+    "raw_count": 267
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1100-4.2",
+    "raw_count": 254
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1750-9.1",
+    "raw_count": 246
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1060-3.1",
+    "raw_count": 205
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1450-8.1",
+    "raw_count": 183
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LG 1750",
+    "raw_count": 162
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1250-5.1",
+    "raw_count": 155
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1650-8.1",
+    "raw_count": 143
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1090-4.2",
+    "raw_count": 137
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1070-4.2",
+    "raw_count": 118
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1160-5.2",
+    "raw_count": 117
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1230-5.1",
+    "raw_count": 116
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1500",
+    "raw_count": 115
+  },
+  {
+    "brand": "Terex-Demag",
+    "model": "AC 130-5",
+    "raw_count": 110
+  },
+  {
+    "brand": "Terex-Demag",
+    "model": "AC 220-5",
+    "raw_count": 107
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LR 1600/2",
+    "raw_count": 103
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1400-7.1",
+    "raw_count": 102
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 11200-9.1",
+    "raw_count": 93
+  },
+  {
+    "brand": "Terex-Demag",
+    "model": "AC 500-2",
+    "raw_count": 91
+  },
+  {
+    "brand": "Tadano",
+    "model": "ATF 100G-4",
+    "raw_count": 90
+  },
+  {
+    "brand": "Tadano",
+    "model": "AC 500-2",
+    "raw_count": 89
+  },
+  {
+    "brand": "Tadano",
+    "model": "ATF 130G-5",
+    "raw_count": 89
+  },
+  {
+    "brand": "Terex-Demag",
+    "model": "AC 160-5",
+    "raw_count": 87
+  },
+  {
+    "brand": "Grove",
+    "model": "GMK 5130-2",
+    "raw_count": 86
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1220-5.2",
+    "raw_count": 85
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1120",
+    "raw_count": 84
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1350-6.1",
+    "raw_count": 83
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LR 1300",
+    "raw_count": 81
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1095-5.1",
+    "raw_count": 80
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LR 13000",
+    "raw_count": 75
+  },
+  {
+    "brand": "Tadano",
+    "model": "ATF 60G-4",
+    "raw_count": 75
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1055-3.2",
+    "raw_count": 74
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1120-4.1",
+    "raw_count": 71
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1090-4.1",
+    "raw_count": 70
+  },
+  {
+    "brand": "Grove",
+    "model": "GMK 5250L",
+    "raw_count": 69
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LR 11000",
+    "raw_count": 68
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LR 1750",
+    "raw_count": 66
+  },
+  {
+    "brand": "Grove",
+    "model": "GMK 5150L",
+    "raw_count": 66
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTR 1100",
+    "raw_count": 65
+  },
+  {
+    "brand": "Grove",
+    "model": "GMK 6300L",
+    "raw_count": 65
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTC 1045-3.1",
+    "raw_count": 64
+  },
+  {
+    "brand": "Terex-Demag",
+    "model": "AC 100-4L",
+    "raw_count": 59
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1150-5.3",
+    "raw_count": 58
+  },
+  {
+    "brand": "Tadano",
+    "model": "ATF 400G-6",
+    "raw_count": 57
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1050-3.1",
+    "raw_count": 55
+  },
+  {
+    "brand": "Grove",
+    "model": "GMK 5220",
+    "raw_count": 53
+  },
+  {
+    "brand": "Liebherr",
+    "model": "AC 500-2",
+    "raw_count": 53
+  },
+  {
+    "brand": "Terex-Demag",
+    "model": "AC 500-8",
+    "raw_count": 44
+  },
+  {
+    "brand": "Grove",
+    "model": "GMK 6400",
+    "raw_count": 42
+  },
+  {
+    "brand": "Tadano",
+    "model": "ATF 110G-5",
+    "raw_count": 41
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 11200",
+    "raw_count": 41
+  },
+  {
+    "brand": "Tadano",
+    "model": "ATF 160G-5",
+    "raw_count": 40
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1250-6.1",
+    "raw_count": 39
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1250/1",
+    "raw_count": 39
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LR 1750/2",
+    "raw_count": 38
+  },
+  {
+    "brand": "Grove",
+    "model": "GMK 4100",
+    "raw_count": 37
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1300-6.3",
+    "raw_count": 36
+  },
+  {
+    "brand": "Terex-Demag",
+    "model": "AC 300-6",
+    "raw_count": 35
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTF 1045-4.1",
+    "raw_count": 35
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1030-2.1",
+    "raw_count": 34
+  },
+  {
+    "brand": "Terex-Demag",
+    "model": "AC 100-4",
+    "raw_count": 34
+  },
+  {
+    "brand": "Grove",
+    "model": "GMK 6300L-1",
+    "raw_count": 34
+  },
+  {
+    "brand": "Terex-Demag",
+    "model": "AC 100/4L",
+    "raw_count": 33
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1250",
+    "raw_count": 32
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1040-2.1",
+    "raw_count": 31
+  },
+  {
+    "brand": "Terex-Demag",
+    "model": "AC 700-9",
+    "raw_count": 31
+  },
+  {
+    "brand": "Grove",
+    "model": "GMK 6300",
+    "raw_count": 31
+  },
+  {
+    "brand": "Liebherr",
+    "model": "LTM 1110-5.2",
+    "raw_count": 30
+  }
+]

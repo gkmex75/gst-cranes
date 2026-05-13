@@ -1,0 +1,7 @@
+state/
+outputs/spec_pdfs/
+outputs/cleaned_labels.csv
+outputs/raw_labels.csv
+outputs/needs_review.csv
+worker/node_modules/
+*.log

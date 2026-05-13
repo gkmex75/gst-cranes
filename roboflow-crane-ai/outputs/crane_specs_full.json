@@ -1,0 +1,453 @@
+{
+  "liebherr_ltm_1130_5_1": {
+    "brand": "liebherr",
+    "model": "LTM 1130-5.1",
+    "capacity_t": 130,
+    "axles": 5,
+    "sample_count": 258,
+    "max_lifting_height_m": 91.0,
+    "max_working_radius_m": 72.0,
+    "boom_main_m": 60,
+    "boom_extension_m": 14.0,
+    "fly_jib_m": 19.0,
+    "weight_t": 60.0,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/87705877364604650bc636ef7.pdf"
+  },
+  "liebherr_ltm_1500_8_1": {
+    "brand": "liebherr",
+    "model": "LTM 1500-8.1",
+    "capacity_t": 500,
+    "axles": 8,
+    "sample_count": 195,
+    "boom_main_m": 84,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/91f4901ded7338f2f44f695b3.pdf"
+  },
+  "liebherr_ltm_1300_6_2": {
+    "brand": "liebherr",
+    "model": "LTM 1300-6.2",
+    "capacity_t": 300,
+    "axles": 6,
+    "sample_count": 192,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/ce182d70b0fbfa19d6cacde32.pdf",
+    "boom_main_m": 80
+  },
+  "liebherr_ltm_1450_8_1": {
+    "brand": "liebherr",
+    "model": "LTM 1450-8.1",
+    "capacity_t": 450,
+    "axles": 8,
+    "sample_count": 177,
+    "error": "no_pdfs",
+    "boom_main_m": 85
+  },
+  "liebherr_ltm_1200_5_1": {
+    "brand": "liebherr",
+    "model": "LTM 1200-5.1",
+    "capacity_t": 200,
+    "axles": 5,
+    "sample_count": 165,
+    "max_lifting_height_m": 101.0,
+    "max_working_radius_m": 80.0,
+    "boom_main_m": 72,
+    "boom_extension_m": 7.0,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/300a83f12caf847d44df01816.pdf"
+  },
+  "liebherr_lg_1750": {
+    "brand": "liebherr",
+    "model": "LG 1750",
+    "capacity_t": 750,
+    "sample_count": 165,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/djzfqdgtrsvpj0etliebherr_lg_1750_mobile_crane_network.pdf",
+    "boom_main_m": 132
+  },
+  "liebherr_ltm_1060_3_1": {
+    "brand": "liebherr",
+    "model": "LTM 1060-3.1",
+    "capacity_t": 60,
+    "axles": 3,
+    "sample_count": 164,
+    "max_lifting_height_m": 63.0,
+    "max_working_radius_m": 48.0,
+    "boom_main_m": 48,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/67e12ce220fc2daf51a60b155.pdf"
+  },
+  "liebherr_ltm_1650_8_1": {
+    "brand": "liebherr",
+    "model": "LTM 1650-8.1",
+    "capacity_t": 650,
+    "axles": 8,
+    "sample_count": 133,
+    "error": "no_pdfs",
+    "boom_main_m": 80
+  },
+  "liebherr_ltm_1750_9_1": {
+    "brand": "liebherr",
+    "model": "LTM 1750-9.1",
+    "capacity_t": 750,
+    "axles": 9,
+    "sample_count": 125,
+    "boom_main_m": 52,
+    "boom_extension_m": 5.0,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/765dcf7444b382d8a45cdd63d.pdf"
+  },
+  "liebherr_ltm_1250_5_1": {
+    "brand": "liebherr",
+    "model": "LTM 1250-5.1",
+    "capacity_t": 250,
+    "axles": 5,
+    "sample_count": 115,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/a0f261680cba99efedb456dd0.pdf",
+    "boom_main_m": 78
+  },
+  "tadano_atf_220g_5": {
+    "brand": "tadano",
+    "model": "ATF 220G-5",
+    "capacity_t": 220,
+    "axles": 5,
+    "sample_count": 115,
+    "fly_jib_m": 7.0,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/5acc06f3ec3e8825ddc8f128f.pdf",
+    "boom_main_m": 68
+  },
+  "liebherr_ltm_1500": {
+    "brand": "liebherr",
+    "model": "LTM 1500",
+    "capacity_t": 500,
+    "sample_count": 115,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/erfphk4htcxk5gmuliebherr_ltm_1500_500-ton_all_terrain_crane_network.pdf",
+    "boom_main_m": 84
+  },
+  "terex_demag_ac_130_5": {
+    "brand": "terex_demag",
+    "model": "AC 130-5",
+    "capacity_t": 130,
+    "axles": 5,
+    "sample_count": 112,
+    "error": "no_pdfs",
+    "boom_main_m": 60
+  },
+  "liebherr_ltm_1160_5_2": {
+    "brand": "liebherr",
+    "model": "LTM 1160-5.2",
+    "capacity_t": 160,
+    "axles": 5,
+    "sample_count": 111,
+    "error": "no_pdfs",
+    "boom_main_m": 62
+  },
+  "liebherr_ltm_1230_5_1": {
+    "brand": "liebherr",
+    "model": "LTM 1230-5.1",
+    "capacity_t": 230,
+    "axles": 5,
+    "sample_count": 110,
+    "error": "no_pdfs",
+    "boom_main_m": 75
+  },
+  "terex_demag_ac_220_5": {
+    "brand": "terex_demag",
+    "model": "AC 220-5",
+    "capacity_t": 220,
+    "axles": 5,
+    "sample_count": 108,
+    "error": "no_pdfs",
+    "boom_main_m": 68
+  },
+  "liebherr_ltm_1070_4_2": {
+    "brand": "liebherr",
+    "model": "LTM 1070-4.2",
+    "capacity_t": 70,
+    "axles": 4,
+    "sample_count": 93,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/b0636cf14331d72bd6f01db93.pdf",
+    "boom_main_m": 50
+  },
+  "liebherr_ltm_1090_4_2": {
+    "brand": "liebherr",
+    "model": "LTM 1090-4.2",
+    "capacity_t": 90,
+    "axles": 4,
+    "sample_count": 90,
+    "error": "no_pdfs",
+    "boom_main_m": 52
+  },
+  "terex_demag_ac_160_5": {
+    "brand": "terex_demag",
+    "model": "AC 160-5",
+    "capacity_t": 160,
+    "axles": 5,
+    "sample_count": 86,
+    "error": "no_pdfs",
+    "boom_main_m": 62
+  },
+  "liebherr_ltm_11200_9_1": {
+    "brand": "liebherr",
+    "model": "LTM 11200-9.1",
+    "capacity_t": 1200,
+    "axles": 9,
+    "sample_count": 86,
+    "source_pdf": "https://cranenetwork.com/uploads/specs/10e16da082003e983a9208cf6.pdf",
+    "boom_main_m": 100
+  },
+  "liebherr_ltm_1120": {
+    "brand": "liebherr",
+    "model": "LTM 1120",
+    "capacity_t": 120,
+    "sample_count": 84,
+    "boom_main_m": 60
+  },
+  "liebherr_ltm_1400_7_1": {
+    "brand": "liebherr",
+    "model": "LTM 1400-7.1",
+    "capacity_t": 400,
+    "axles": 7,
+    "sample_count": 79,
+    "boom_main_m": 60
+  },
+  "liebherr_ltm_1350_6_1": {
+    "brand": "liebherr",
+    "model": "LTM 1350-6.1",
+    "capacity_t": 350,
+    "axles": 6,
+    "sample_count": 78,
+    "boom_main_m": 70
+  },
+  "liebherr_ltm_1095_5_1": {
+    "brand": "liebherr",
+    "model": "LTM 1095-5.1",
+    "capacity_t": 95,
+    "axles": 5,
+    "sample_count": 76,
+    "boom_main_m": 58
+  },
+  "liebherr_ltm_1100_4_2": {
+    "brand": "liebherr",
+    "model": "LTM 1100-4.2",
+    "capacity_t": 100,
+    "axles": 4,
+    "sample_count": 71,
+    "boom_main_m": 52
+  },
+  "liebherr_ltm_1120_4_1": {
+    "brand": "liebherr",
+    "model": "LTM 1120-4.1",
+    "capacity_t": 120,
+    "axles": 4,
+    "sample_count": 70,
+    "boom_main_m": 50
+  },
+  "liebherr_ltm_1090_4_1": {
+    "brand": "liebherr",
+    "model": "LTM 1090-4.1",
+    "capacity_t": 90,
+    "axles": 4,
+    "sample_count": 64,
+    "boom_main_m": 50
+  },
+  "liebherr_ltm_1220_5_2": {
+    "brand": "liebherr",
+    "model": "LTM 1220-5.2",
+    "capacity_t": 220,
+    "axles": 5,
+    "sample_count": 60,
+    "boom_main_m": 60
+  },
+  "liebherr_ltm_1150_5_3": {
+    "brand": "liebherr",
+    "model": "LTM 1150-5.3",
+    "capacity_t": 150,
+    "axles": 5,
+    "sample_count": 59,
+    "boom_main_m": 66
+  },
+  "tadano_atf_130g_5": {
+    "brand": "tadano",
+    "model": "ATF 130G-5",
+    "capacity_t": 130,
+    "axles": 5,
+    "sample_count": 55,
+    "boom_main_m": 60
+  },
+  "liebherr_ltm_1100_5_2": {
+    "brand": "liebherr",
+    "model": "LTM 1100-5.2",
+    "capacity_t": 100,
+    "axles": 5,
+    "sample_count": 55,
+    "boom_main_m": 62
+  },
+  "liebherr_lr_11000": {
+    "brand": "liebherr",
+    "model": "LR 11000",
+    "capacity_t": 10000,
+    "sample_count": 52,
+    "boom_main_m": 144
+  },
+  "liebherr_lr_1600_2": {
+    "brand": "liebherr",
+    "model": "LR 1600/2",
+    "capacity_t": 600,
+    "sample_count": 51,
+    "boom_main_m": 96
+  },
+  "liebherr_ltm_1055_3_2": {
+    "brand": "liebherr",
+    "model": "LTM 1055-3.2",
+    "capacity_t": 55,
+    "axles": 3,
+    "sample_count": 50,
+    "boom_main_m": 40
+  },
+  "tadano_atf_100g_4": {
+    "brand": "tadano",
+    "model": "ATF 100G-4",
+    "capacity_t": 100,
+    "axles": 4,
+    "sample_count": 49,
+    "boom_main_m": 51.2
+  },
+  "grove_gmk_5250l": {
+    "brand": "grove",
+    "model": "GMK 5250L",
+    "axles": 5,
+    "capacity_t": 250,
+    "sample_count": 48,
+    "boom_main_m": 70
+  },
+  "liebherr_ltm_11200": {
+    "brand": "liebherr",
+    "model": "LTM 11200",
+    "capacity_t": 1200,
+    "sample_count": 47
+  },
+  "liebherr_ltr_1100": {
+    "brand": "liebherr",
+    "model": "LTR 1100",
+    "sample_count": 46,
+    "boom_main_m": 50
+  },
+  "terex_demag_ac_500_8": {
+    "brand": "terex_demag",
+    "model": "AC 500-8",
+    "capacity_t": 500,
+    "axles": 8,
+    "sample_count": 43,
+    "boom_main_m": 56
+  },
+  "terex_demag_ac_100_4l": {
+    "brand": "terex_demag",
+    "model": "AC 100-4L",
+    "capacity_t": 100,
+    "axles": 4,
+    "sample_count": 41,
+    "boom_main_m": 50
+  },
+  "liebherr_lr_1750_2": {
+    "brand": "liebherr",
+    "model": "LR 1750/2",
+    "capacity_t": 750,
+    "sample_count": 39,
+    "boom_main_m": 60
+  },
+  "liebherr_ltm_1250_1": {
+    "brand": "liebherr",
+    "model": "LTM 1250/1",
+    "sample_count": 39,
+    "capacity_t": 250
+  },
+  "grove_gmk_6300l": {
+    "brand": "grove",
+    "model": "GMK 6300L",
+    "axles": 6,
+    "capacity_t": 300,
+    "sample_count": 36,
+    "boom_main_m": 80
+  },
+  "liebherr_ltm_1300_6_3": {
+    "brand": "liebherr",
+    "model": "LTM 1300-6.3",
+    "capacity_t": 300,
+    "axles": 6,
+    "sample_count": 36,
+    "boom_main_m": 90
+  },
+  "terex_demag_ac_300_6": {
+    "brand": "terex_demag",
+    "model": "AC 300-6",
+    "capacity_t": 300,
+    "axles": 6,
+    "sample_count": 34,
+    "boom_main_m": 80
+  },
+  "liebherr_ltf_1045_4_1": {
+    "brand": "liebherr",
+    "model": "LTF 1045-4.1",
+    "capacity_t": 45,
+    "axles": 4,
+    "sample_count": 34,
+    "boom_main_m": 41
+  },
+  "liebherr_ltm_1250": {
+    "brand": "liebherr",
+    "model": "LTM 1250",
+    "capacity_t": 250,
+    "sample_count": 33,
+    "boom_main_m": 70
+  },
+  "liebherr_ltm_1030_2_1": {
+    "brand": "liebherr",
+    "model": "LTM 1030-2.1",
+    "capacity_t": 30,
+    "axles": 2,
+    "sample_count": 32,
+    "boom_main_m": 30
+  },
+  "grove_gmk_4100": {
+    "brand": "grove",
+    "model": "GMK 4100",
+    "axles": 4,
+    "capacity_t": 100,
+    "sample_count": 31,
+    "boom_main_m": 51.2
+  },
+  "liebherr_ltm_1040_2_1": {
+    "brand": "liebherr",
+    "model": "LTM 1040-2.1",
+    "capacity_t": 40,
+    "axles": 2,
+    "sample_count": 31,
+    "boom_main_m": 35
+  },
+  "grove_gmk5220": {
+    "brand": "grove",
+    "model": "GMK5220",
+    "axles": 5,
+    "capacity_t": 220,
+    "sample_count": 30,
+    "boom_main_m": 68
+  },
+  "liebherr_ltm_1110_5_2": {
+    "brand": "liebherr",
+    "model": "LTM 1110-5.2",
+    "capacity_t": 110,
+    "axles": 5,
+    "sample_count": 30,
+    "boom_main_m": 60
+  },
+  "grove_gmk_6400": {
+    "brand": "grove",
+    "model": "GMK 6400",
+    "axles": 6,
+    "capacity_t": 400,
+    "sample_count": 30,
+    "boom_main_m": 60
+  },
+  "terex_demag_ac_700_9": {
+    "brand": "terex_demag",
+    "model": "AC 700-9",
+    "capacity_t": 700,
+    "axles": 9,
+    "sample_count": 30,
+    "boom_main_m": 70
+  }
+}

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crane Identifier — GST Cranes</title>
+  <style>
+    :root {
+      --bg: #f7f7f8;
+      --card: #ffffff;
+      --primary: #1a73e8;
+      --text: #1f2328;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --accent: #ffb800;
+      --error: #d32f2f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--text); margin: 0; padding: 24px;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    h1 {
+      font-size: 28px; font-weight: 700; margin: 0 0 8px;
+    }
+    .sub { color: var(--muted); margin: 0 0 32px; font-size: 15px; }
+    .drop {
+      border: 2px dashed var(--border); border-radius: 12px;
+      background: var(--card); padding: 48px 24px; text-align: center;
+      cursor: pointer; transition: border-color .15s, background .15s;
+    }
+    .drop:hover, .drop.over { border-color: var(--primary); background: #f1f7ff; }
+    .drop.has-image { padding: 12px; }
+    .drop input { display: none; }
+    .icon { font-size: 48px; color: var(--muted); margin-bottom: 8px; }
+    .drop-prompt { font-weight: 600; margin-bottom: 4px; }
+    .drop-hint { color: var(--muted); font-size: 14px; }
+    .preview { max-width: 100%; max-height: 320px; border-radius: 8px; }
+    .loading { display: none; margin-top: 24px; text-align: center; color: var(--muted); font-size: 14px; }
+    .loading.show { display: block; }
+    .spinner {
+      display: inline-block; width: 24px; height: 24px;
+      border: 3px solid var(--border); border-top-color: var(--primary);
+      border-radius: 50%; animation: spin 1s linear infinite;
+      margin-right: 8px; vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .results { display: none; margin-top: 24px; }
+    .results.show { display: block; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 16px;
+    }
+    .card.top { border-color: var(--primary); background: #f1f7ff; }
+    .conf-bar {
+      flex: 0 0 80px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden;
+    }
+    .conf-fill { height: 100%; background: var(--primary); }
+    .card.top .conf-fill { background: var(--accent); }
+    .pred-name { font-weight: 600; font-size: 15px; flex: 1; }
+    .pred-meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
+    .pred-conf { font-weight: 700; font-size: 14px; min-width: 50px; text-align: right; }
+    .badge {
+      display: inline-block; padding: 2px 8px; background: var(--accent); color: #000;
+      font-size: 11px; font-weight: 700; border-radius: 4px; margin-left: 6px; text-transform: uppercase;
+    }
+    .review-banner {
+      padding: 12px 16px; background: #fff3cd; border-radius: 8px;
+      color: #856404; font-size: 14px; margin-bottom: 16px;
+    }
+    .cta {
+      display: inline-block; margin-top: 16px; padding: 12px 24px;
+      background: var(--primary); color: white; text-decoration: none;
+      border-radius: 8px; font-weight: 600; font-size: 15px;
+    }
+    .cta:hover { opacity: 0.9; }
+    .error {
+      padding: 12px 16px; background: #ffebee; color: var(--error);
+      border-radius: 8px; font-size: 14px; margin-top: 16px;
+    }
+    .reset { display: block; margin: 16px auto 0; text-align: center; color: var(--primary); text-decoration: underline; cursor: pointer; font-size: 14px; background: none; border: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Crane Identifier</h1>
+    <p class="sub">Upload a crane photo and we'll identify the brand and model. Trained on 9,500+ verified samples across 59 models.</p>
+
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="image/*">
+      <div id="drop-content">
+        <div class="icon">📷</div>
+        <div class="drop-prompt">Drop a crane photo here</div>
+        <div class="drop-hint">or click to select • JPG, PNG up to 10 MB</div>
+      </div>
+    </label>
+
+    <div class="loading" id="loading">
+      <span class="spinner"></span> Identifying crane...
+    </div>
+
+    <div class="results" id="results"></div>
+  </div>
+
+  <script>
+    // Endpoint resolution: prefer same-origin (/api/identify-crane) so it works through Hercules proxy.
+    // Fallback to the public Worker URL for testing.
+    const ENDPOINT = window.CRANE_IDENTIFIER_ENDPOINT || "/api/identify-crane";
+
+    const drop = document.getElementById("drop");
+    const file = document.getElementById("file");
+    const content = document.getElementById("drop-content");
+    const loading = document.getElementById("loading");
+    const results = document.getElementById("results");
+
+    function reset() {
+      file.value = "";
+      drop.classList.remove("has-image");
+      content.innerHTML = '<div class="icon">📷</div><div class="drop-prompt">Drop a crane photo here</div><div class="drop-hint">or click to select • JPG, PNG up to 10 MB</div>';
+      results.classList.remove("show");
+      results.innerHTML = "";
+    }
+
+    drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+    drop.addEventListener("drop", (e) => {
+      e.preventDefault();
+      drop.classList.remove("over");
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        file.files = e.dataTransfer.files;
+        handle(e.dataTransfer.files[0]);
+      }
+    });
+    file.addEventListener("change", () => file.files[0] && handle(file.files[0]));
+
+    function previewURL(f) {
+      return new Promise((res) => {
+        const reader = new FileReader();
+        reader.onload = () => res(reader.result);
+        reader.readAsDataURL(f);
+      });
+    }
+
+    async function handle(f) {
+      if (f.size > 10 * 1024 * 1024) {
+        showError("Photo is too large. Please upload a file under 10 MB.");
+        return;
+      }
+      const url = await previewURL(f);
+      drop.classList.add("has-image");
+      content.innerHTML = `<img src="${url}" class="preview" alt="">`;
+
+      results.classList.remove("show");
+      results.innerHTML = "";
+      loading.classList.add("show");
+
+      try {
+        const form = new FormData();
+        form.append("image", f);
+        const r = await fetch(ENDPOINT, { method: "POST", body: form });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const data = await r.json();
+        renderResults(data);
+      } catch (e) {
+        showError("Could not identify the crane. Please try again or upload a clearer photo.");
+      } finally {
+        loading.classList.remove("show");
+      }
+    }
+
+    function showError(msg) {
+      results.classList.add("show");
+      results.innerHTML = `<div class="error">${msg}</div><button class="reset" onclick="reset()">Try another photo</button>`;
+    }
+
+    function renderResults(data) {
+      results.classList.add("show");
+      const banner = data.needs_review
+        ? `<div class="review-banner">We're not confident on this one — the photo may show the crane from an unclear angle, or our model needs more training on this type. Your closest matches below.</div>`
+        : "";
+
+      const cards = data.predictions.map((p, i) => {
+        const pct = (p.confidence * 100).toFixed(0);
+        const top = i === 0 ? " top" : "";
+        const topBadge = i === 0 && data.decision === "autofill" ? '<span class="badge">Match</span>' : "";
+        const spec = p.spec ? renderSpec(p.spec) : "";
+        const label = p.model ? `${p.brand} ${p.model}` : (p.brand || p.class);
+        return `<div class="card${top}">
+          <div style="flex:1">
+            <div class="pred-name">${label}${topBadge}</div>
+            ${spec ? `<div class="pred-meta">${spec}</div>` : ""}
+          </div>
+          <div class="conf-bar"><div class="conf-fill" style="width:${pct}%"></div></div>
+          <div class="pred-conf">${pct}%</div>
+        </div>`;
+      }).join("");
+
+      const cta = data.decision === "autofill" && data.predictions[0]
+        ? `<a class="cta" href="https://www.gstcranes.com/?search=${encodeURIComponent(data.predictions[0].model || data.predictions[0].brand || "")}">Find this crane on GST Cranes</a>`
+        : "";
+
+      results.innerHTML = banner + cards + cta + `<button class="reset" onclick="reset()">Try another photo</button>`;
+    }
+
+    function renderSpec(spec) {
+      const parts = [];
+      if (spec.capacity_t) parts.push(`${spec.capacity_t} t capacity`);
+      if (spec.axles) parts.push(`${spec.axles} axles`);
+      if (spec.boom_main_m) parts.push(`${spec.boom_main_m} m boom`);
+      return parts.join(" · ");
+    }
+  </script>
+</body>
+</html>
