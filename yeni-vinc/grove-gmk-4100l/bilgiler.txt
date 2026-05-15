@@ -1,0 +1,9 @@
+brand = Grove
+model = GMK 4100L
+year = 2015
+capacity_tons = 100
+boom_length_m = 60
+operating_hours = 9948
+price_eur = 345000
+origin_country = Europe
+notes = Jib: 17m Hydraulic | Mileage: 48,326 km | Available immediately
