@@ -1,0 +1,33 @@
+# .understandignore — gst-cranes (multi-platform crane listing automation)
+
+# Project-specific (from .gitignore)
+.venv/
+.env
+.env.local
+logs/
+yeni-vinc/
+processed/
+__pycache__/
+*.pyc
+.chrome-profile*/
+.adobe-token-cache.json
+scripts/frozen_east_text_detection.pb
+.DS_Store
+data/
+output/
+
+# Generated content
+yayinlanan/
+sablonlar/
+
+# Sub-project (separate concern — analyze with own /understand run)
+roboflow-crane-ai/
+
+# Binary / docs PDFs
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.mp4

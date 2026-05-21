@@ -1,0 +1,3113 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "gst-cranes",
+    "languages": [
+      "config",
+      "markdown",
+      "python"
+    ],
+    "frameworks": [
+      "Pillow (PIL)",
+      "Playwright",
+      "Requests",
+      "python-dotenv"
+    ],
+    "description": "GST Cranes'in (uluslararası ikinci el mobil vinç ticareti) çok-platformlu listeleme ve sosyal medya otomasyon platformu — Hercules AI ve Machinery Line için Playwright tabanlı upload, Facebook/Instagram/LinkedIn için API tabanlı yayın, OpenAI gpt-image-2 ile broşür/story üretimi ve PIL composer fallback'i. Python script-tabanlı bir orchestrator (vinc-yayinla.py) iki ana workflow yönetir: yeni vinç listeleme ve günlük marketing (sale/buy/sold/wanted postları).",
+    "analyzedAt": "2026-05-21T22:02:04.981973Z",
+    "gitCommitHash": "b472ccd18d3c810484dd37f61b05dcc1bc31145c"
+  },
+  "nodes": [
+    {
+      "id": "config:.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": ".env.example",
+      "summary": "GST Cranes otomasyon repo'sunun ortam değişkenleri şablonu — Meta Graph API, LinkedIn OAuth, OpenAI, Adobe Firefly ve Postmark credential'larını sırasıyla listeleyen örnek dosya.",
+      "tags": [
+        "configuration",
+        "environment",
+        "credentials",
+        "template"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:ADOBE_SETUP.md",
+      "type": "document",
+      "name": "ADOBE_SETUP.md",
+      "filePath": "ADOBE_SETUP.md",
+      "summary": "Adobe Firefly Services API kurulum kılavuzu — `gorsel-hazirla.py` script'inin kullandığı generative remove (watermark/yazı silme) özelliği için Adobe Developer Console'da credential üretme adımları.",
+      "tags": [
+        "documentation",
+        "setup",
+        "adobe-firefly",
+        "görsel üretim"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Repo'nun Claude Code rehberi — proje yapısı (Hercules + Machinery Line + sosyal medya akışı), tüm script'lerin amacı ve KURAL #10 GST brand color (#E8A430) gibi anayasal kısıtları tanımlar.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "claude-guide",
+        "proje-rehberi"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:COWORK_INTEGRATION.md",
+      "type": "document",
+      "name": "COWORK_INTEGRATION.md",
+      "filePath": "COWORK_INTEGRATION.md",
+      "summary": "Cowork (vinç yedek parça pazarı) entegrasyon dokümanı — sosyal medya otomasyonu ile Cowork ürün listeleme arasındaki köprü adımları.",
+      "tags": [
+        "documentation",
+        "integration",
+        "cowork",
+        "yedek-parça"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:SOCIAL_SETUP.md",
+      "type": "document",
+      "name": "SOCIAL_SETUP.md",
+      "filePath": "SOCIAL_SETUP.md",
+      "summary": "Sosyal medya OAuth kurulum kılavuzu — Meta (Facebook + Instagram Business) ve LinkedIn için Page/IG hesabı + token üretim adımları, `sosyal-medya-post.py` için ön gereksinim.",
+      "tags": [
+        "documentation",
+        "setup",
+        "oauth",
+        "sosyal medya"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-04-14-social-media-post-redesign.md",
+      "type": "document",
+      "name": "2026-04-14-social-media-post-redesign.md",
+      "filePath": "docs/superpowers/plans/2026-04-14-social-media-post-redesign.md",
+      "summary": "Sosyal medya görsel post redesign uygulama planı (986 satır) — `compose_openai_*` pipeline'ı ile 3-stil (A koyu / B amber / C beyaz) tasarımının teknik yol haritası ve checkpoint'leri.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "redesign",
+        "görsel üretim"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-04-14-social-media-post-redesign.md",
+      "type": "document",
+      "name": "2026-04-14-social-media-post-redesign.md",
+      "filePath": "docs/superpowers/specs/2026-04-14-social-media-post-redesign.md",
+      "summary": "Sosyal medya post redesign teknik şartnamesi — premium görsel taşarım hedefleri, layout kuralları ve KURAL #10 amber palet bağlayıcılığı.",
+      "tags": [
+        "documentation",
+        "spec",
+        "redesign",
+        "tasarım-kriteri"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-04-15-operations-dashboard-design.md",
+      "type": "document",
+      "name": "2026-04-15-operations-dashboard-design.md",
+      "filePath": "docs/superpowers/specs/2026-04-15-operations-dashboard-design.md",
+      "summary": "Operasyon dashboard tasarım şartnamesi — yayın takibi, sosyal medya etkileşim metrikleri ve content pipeline durum görünümlerinin spec dokümanı.",
+      "tags": [
+        "documentation",
+        "spec",
+        "dashboard",
+        "operasyon"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:linkedin-ads.py",
+      "type": "file",
+      "name": "linkedin-ads.py",
+      "filePath": "linkedin-ads.py",
+      "summary": "LinkedIn Ads API üzerinden hedeflenmiş kampanya oluşturma CLI script'i — `r3_advertising` scope token ile sponsored content kampanyası kurar.",
+      "tags": [
+        "script",
+        "linkedin-ads",
+        "kampanya",
+        "advertising"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:linkedin-ads.py:create_targeted_campaign",
+      "type": "function",
+      "name": "create_targeted_campaign",
+      "filePath": "linkedin-ads.py",
+      "lineRange": [
+        13,
+        68
+      ],
+      "summary": "LinkedIn Marketing API'sine campaign group + sponsored content campaign yaratır, target audience ve bütçeyi parametre olarak alır.",
+      "tags": [
+        "linkedin",
+        "campaign-create",
+        "advertising"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:mail-blast.py",
+      "type": "file",
+      "name": "mail-blast.py",
+      "filePath": "mail-blast.py",
+      "summary": "Postmark üzerinden toplu HTML/text email gönderim helper'ı — `info@gstcranes.com` outbound için ince bir wrapper.",
+      "tags": [
+        "script",
+        "email",
+        "postmark",
+        "blast"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:mail-blast.py:blast",
+      "type": "function",
+      "name": "blast",
+      "filePath": "mail-blast.py",
+      "lineRange": [
+        8,
+        34
+      ],
+      "summary": "Postmark `/email/batch` endpoint'ine subject + html + text + recipient listesini POST eder.",
+      "tags": [
+        "postmark",
+        "email-send",
+        "batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:requirements.txt",
+      "type": "config",
+      "name": "requirements.txt",
+      "filePath": "requirements.txt",
+      "summary": "Python bağımlılık manifesti — Playwright (browser otomasyon), Pillow (PIL görsel kompozisyon), requests, python-dotenv ve OpenAI SDK paketlerini sabitler.",
+      "tags": [
+        "configuration",
+        "dependencies",
+        "python",
+        "bağımlılık"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/compose_openai_gptimage2.py",
+      "type": "file",
+      "name": "compose_openai_gptimage2.py",
+      "filePath": "scripts/compose_openai_gptimage2.py",
+      "summary": "OpenAI `gpt-image-2` modelini kullanarak vinç fotoğrafından tek seferde premium 1080x1350 post görseli üreten composer — KURAL #12 image preserve prompt bloklarını taşır.",
+      "tags": [
+        "openai",
+        "gpt-image-2",
+        "görsel üretim",
+        "composer"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "5 ZORUNLU prompt bloğu (image preserve + brand + layout + typography + safety) prompt'a inject edilir; KURAL #12 Gemini-travması fallback'i de var."
+    },
+    {
+      "id": "function:scripts/compose_openai_gptimage2.py:build_prompt",
+      "type": "function",
+      "name": "build_prompt",
+      "filePath": "scripts/compose_openai_gptimage2.py",
+      "lineRange": [
+        48,
+        115
+      ],
+      "summary": "Vinç bilgiler.json içeriğinden gpt-image-2 için zorunlu 5 prompt bloğunu (image preserve, brand, layout, typography, safety) bir araya getirir.",
+      "tags": [
+        "prompt-engineering",
+        "gpt-image-2",
+        "openai"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/compose_openai_gptimage2.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/compose_openai_gptimage2.py",
+      "lineRange": [
+        123,
+        168
+      ],
+      "summary": "CLI entry — vinç klasörünü, boyutu, kaliteyi ve modeli alır; OpenAI `/v1/images/edits` çağırıp sonucu R2 path'ine yazar.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "openai"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/compose_openai_story_b.py",
+      "type": "file",
+      "name": "compose_openai_story_b.py",
+      "filePath": "scripts/compose_openai_story_b.py",
+      "summary": "OpenAI gpt-image-2 üzerinden 1080×1920 story formatında amber (Stil B) varyantı üreten composer — Instagram/Facebook Stories için optimize edilmiş.",
+      "tags": [
+        "openai",
+        "story",
+        "amber",
+        "görsel üretim"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/compose_openai_story_b.py:build_prompt",
+      "type": "function",
+      "name": "build_prompt",
+      "filePath": "scripts/compose_openai_story_b.py",
+      "lineRange": [
+        42,
+        101
+      ],
+      "summary": "Story B (amber) için image-preserve + 1080×1920 layout odaklı OpenAI prompt'unu inşa eder.",
+      "tags": [
+        "prompt-engineering",
+        "story",
+        "amber"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/compose_openai_story_b.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/compose_openai_story_b.py",
+      "lineRange": [
+        106,
+        143
+      ],
+      "summary": "Vinç klasörünü alır, story prompt'unu OpenAI'a gönderir ve story_b.png çıktısını kaydeder.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "story"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/compose_openai_variants.py",
+      "type": "file",
+      "name": "compose_openai_variants.py",
+      "filePath": "scripts/compose_openai_variants.py",
+      "summary": "OpenAI gpt-image-2 ile 3 stil varyantını (A koyu / B amber / C beyaz) tek dosyadan üretebilen composer — KURAL #10 amber palet B varyantında.",
+      "tags": [
+        "openai",
+        "görsel üretim",
+        "varyant",
+        "3-stil"
+      ],
+      "complexity": "complex",
+      "languageNotes": "`prompt_a`, `prompt_b`, `prompt_c` her stilin tipografi/arkaplan farkını ayrı tutar; ortak `shared_header` ve `specs_summary` ile DRY."
+    },
+    {
+      "id": "function:scripts/compose_openai_variants.py:specs_summary",
+      "type": "function",
+      "name": "specs_summary",
+      "filePath": "scripts/compose_openai_variants.py",
+      "lineRange": [
+        59,
+        81
+      ],
+      "summary": "bilgiler.json'dan kapasite + bom + yıl + counterweight gibi özetleri prompt için tek satırlık format'a derler.",
+      "tags": [
+        "formatter",
+        "specs",
+        "summary"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/compose_openai_variants.py:shared_header",
+      "type": "function",
+      "name": "shared_header",
+      "filePath": "scripts/compose_openai_variants.py",
+      "lineRange": [
+        84,
+        111
+      ],
+      "summary": "3 stil için ortak prompt header'ını (image preserve + brand + safety) üretir.",
+      "tags": [
+        "prompt-engineering",
+        "shared"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/compose_openai_variants.py:prompt_a",
+      "type": "function",
+      "name": "prompt_a",
+      "filePath": "scripts/compose_openai_variants.py",
+      "lineRange": [
+        114,
+        136
+      ],
+      "summary": "Stil A (koyu zemin) için tipografi ve layout prompt'unu oluşturur.",
+      "tags": [
+        "prompt-engineering",
+        "stil-a",
+        "koyu"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/compose_openai_variants.py:prompt_b",
+      "type": "function",
+      "name": "prompt_b",
+      "filePath": "scripts/compose_openai_variants.py",
+      "lineRange": [
+        139,
+        164
+      ],
+      "summary": "Stil B (amber, KURAL #10 marka rengi) için prompt — repoda tercih edilen varsayılan stil.",
+      "tags": [
+        "prompt-engineering",
+        "stil-b",
+        "amber"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/compose_openai_variants.py:prompt_c",
+      "type": "function",
+      "name": "prompt_c",
+      "filePath": "scripts/compose_openai_variants.py",
+      "lineRange": [
+        167,
+        186
+      ],
+      "summary": "Stil C (beyaz zemin, minimalist) için tipografi prompt'unu üretir.",
+      "tags": [
+        "prompt-engineering",
+        "stil-c",
+        "beyaz"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/compose_openai_variants.py:call_openai",
+      "type": "function",
+      "name": "call_openai",
+      "filePath": "scripts/compose_openai_variants.py",
+      "lineRange": [
+        192,
+        211
+      ],
+      "summary": "Photo + prompt ile OpenAI `/v1/images/edits` çağrısını yapar, base64 çıktıyı PNG bytes'a çevirir.",
+      "tags": [
+        "openai",
+        "api-call",
+        "image-edits"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/compose_openai_variants.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/compose_openai_variants.py",
+      "lineRange": [
+        220,
+        252
+      ],
+      "summary": "CLI entry — vinç ve stil parametresini alıp ilgili prompt fonksiyonunu OpenAI'a göndererek çıktıyı diske yazar.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "varyant"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/compose_pil_premium.py",
+      "type": "file",
+      "name": "compose_pil_premium.py",
+      "filePath": "scripts/compose_pil_premium.py",
+      "summary": "PIL/Pillow ile post + story görsellerini kompoze eden DEPRECATED composer — OpenAI gpt-image-2 pipeline'ı (2026-05-17) bunu yerinden etti, sadece offline fallback olarak kalıyor.",
+      "tags": [
+        "pil",
+        "görsel üretim",
+        "deprecated",
+        "fallback"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Premium tipografi + watermark + photo-fit logic tamamen PIL primitives üzerinde; performans veya stil kontrolü açısından OpenAI'a oranla daha esnek ama daha çok kod tutuyor."
+    },
+    {
+      "id": "function:scripts/compose_pil_premium.py:fit_photo_into",
+      "type": "function",
+      "name": "fit_photo_into",
+      "filePath": "scripts/compose_pil_premium.py",
+      "lineRange": [
+        65,
+        83
+      ],
+      "summary": "Vinç fotoğrafını hedef boyuta cover-fit (crop + resize) ile yerleştirir, en-boy oranını korur.",
+      "tags": [
+        "pil",
+        "image-fit",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/compose_pil_premium.py:build_ctx",
+      "type": "function",
+      "name": "build_ctx",
+      "filePath": "scripts/compose_pil_premium.py",
+      "lineRange": [
+        98,
+        117
+      ],
+      "summary": "bilgiler.json'dan render context'i (marka, model, kapasite, fiyat, yıl) sözlüğünü üretir.",
+      "tags": [
+        "context",
+        "formatter",
+        "pil"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/compose_pil_premium.py:render_post",
+      "type": "function",
+      "name": "render_post",
+      "filePath": "scripts/compose_pil_premium.py",
+      "lineRange": [
+        120,
+        221
+      ],
+      "summary": "1080x1350 post canvas'ına vinç fotoğrafı + alt-bilgi şeridi + marka watermark'ını PIL ile çizer.",
+      "tags": [
+        "pil",
+        "render",
+        "post"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/compose_pil_premium.py:render_story",
+      "type": "function",
+      "name": "render_story",
+      "filePath": "scripts/compose_pil_premium.py",
+      "lineRange": [
+        224,
+        295
+      ],
+      "summary": "1080x1920 story canvas'ı için fotoğraf + CTA + spec listesini PIL ile çizen renderer.",
+      "tags": [
+        "pil",
+        "render",
+        "story"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/compose_pil_premium.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/compose_pil_premium.py",
+      "lineRange": [
+        301,
+        323
+      ],
+      "summary": "CLI entry — vinç klasörünü alıp render_post / render_story fonksiyonlarını uygun parametre ile çağırır.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "pil"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/compose_style_a.py",
+      "type": "file",
+      "name": "compose_style_a.py",
+      "filePath": "scripts/compose_style_a.py",
+      "summary": "HTML template tabanlı Stil A (koyu) görsel üretimi — DEPRECATED PIL fallback'inin bir varyantı, OpenAI pipeline öncesinden kalan template+Playwright screenshot yaklaşımı.",
+      "tags": [
+        "html-template",
+        "playwright",
+        "deprecated",
+        "stil-a"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/compose_style_a.py:fill",
+      "type": "function",
+      "name": "fill",
+      "filePath": "scripts/compose_style_a.py",
+      "lineRange": [
+        47,
+        51
+      ],
+      "summary": "HTML template'indeki `{{placeholder}}` ifadelerini ctx sözlüğündeki değerlerle değiştirir.",
+      "tags": [
+        "template",
+        "placeholder",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/compose_style_a.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/compose_style_a.py",
+      "lineRange": [
+        57,
+        139
+      ],
+      "summary": "Crane + stil parametresi ile HTML template'i doldurur, Playwright headless tarayıcıyla screenshot alır.",
+      "tags": [
+        "entry-point",
+        "playwright",
+        "stil-a"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/get_linkedin_advertising_token.py",
+      "type": "file",
+      "name": "get_linkedin_advertising_token.py",
+      "filePath": "scripts/get_linkedin_advertising_token.py",
+      "summary": "LinkedIn `r_ads`/`rw_ads` scope'lu OAuth token alma akışı — yerel HTTP redirect server ile authorization code'u yakalayıp access+refresh token'a çevirir.",
+      "tags": [
+        "linkedin",
+        "oauth",
+        "token",
+        "advertising"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:scripts/get_linkedin_advertising_token.py:OAuthHandler",
+      "type": "class",
+      "name": "OAuthHandler",
+      "filePath": "scripts/get_linkedin_advertising_token.py",
+      "lineRange": [
+        54,
+        100
+      ],
+      "summary": "LinkedIn OAuth redirect'i yakalayan lokal HTTPServer handler'ı — `code` query param'ını sınıf değişkenine kaydeder.",
+      "tags": [
+        "oauth",
+        "http-handler",
+        "redirect"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/get_linkedin_share_token.py",
+      "type": "file",
+      "name": "get_linkedin_share_token.py",
+      "filePath": "scripts/get_linkedin_share_token.py",
+      "summary": "LinkedIn `w_member_social` + `r_liteprofile` scope'lu (paylaşım) OAuth token alma — `sosyal-medya-post.py` için kullanılan kişisel paylaşım token'ını üretir.",
+      "tags": [
+        "linkedin",
+        "oauth",
+        "token",
+        "share"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:scripts/get_linkedin_share_token.py:OAuthHandler",
+      "type": "class",
+      "name": "OAuthHandler",
+      "filePath": "scripts/get_linkedin_share_token.py",
+      "lineRange": [
+        37,
+        76
+      ],
+      "summary": "LinkedIn share-scope OAuth redirect'ini yakalayan lokal HTTP handler.",
+      "tags": [
+        "oauth",
+        "http-handler",
+        "share"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/gorsel-hazirla.py",
+      "type": "file",
+      "name": "gorsel-hazirla.py",
+      "filePath": "scripts/gorsel-hazirla.py",
+      "summary": "Fotoğraf ön-işleme pipeline'ı (630 satır) — Adobe Firefly generative remove ile watermark/yazı temizleme, EAST text detection mask üretimi, web + sosyal export'u.",
+      "tags": [
+        "photo-prep",
+        "adobe-firefly",
+        "east-ocr",
+        "görsel üretim"
+      ],
+      "complexity": "complex",
+      "languageNotes": "OpenCV EAST text detector + Adobe Firefly Services API + PIL enhance ardı ardına; auth token cache mekanizması var (`_load_cached_token`)."
+    },
+    {
+      "id": "class:scripts/gorsel-hazirla.py:AdobeFireflyClient",
+      "type": "class",
+      "name": "AdobeFireflyClient",
+      "filePath": "scripts/gorsel-hazirla.py",
+      "lineRange": [
+        105,
+        236
+      ],
+      "summary": "Adobe Firefly Services API client'ı — OAuth authenticate, token cache, image upload ve generative_remove operasyonlarını wrap eder.",
+      "tags": [
+        "adobe-firefly",
+        "api-client",
+        "oauth"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/gorsel-hazirla.py:detect_text_regions",
+      "type": "function",
+      "name": "detect_text_regions",
+      "filePath": "scripts/gorsel-hazirla.py",
+      "lineRange": [
+        256,
+        306
+      ],
+      "summary": "OpenCV EAST modeliyle görseldeki text bölgelerini (watermark, başkasının logosu) tespit eder, mask döndürür.",
+      "tags": [
+        "opencv",
+        "east",
+        "text-detection"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/gorsel-hazirla.py:_decode_east",
+      "type": "function",
+      "name": "_decode_east",
+      "filePath": "scripts/gorsel-hazirla.py",
+      "lineRange": [
+        309,
+        356
+      ],
+      "summary": "EAST modelinin scores + geometry tensor çıktısını NMS uygulanmış bounding box'lara dönüştürür.",
+      "tags": [
+        "opencv",
+        "east",
+        "decoder"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/gorsel-hazirla.py:process_crane_folder",
+      "type": "function",
+      "name": "process_crane_folder",
+      "filePath": "scripts/gorsel-hazirla.py",
+      "lineRange": [
+        403,
+        489
+      ],
+      "summary": "Bir vinç klasöründeki tüm fotoğrafları okur, EAST + Firefly ile temizler, web + sosyal export çıktıları üretir.",
+      "tags": [
+        "batch-process",
+        "photo-prep",
+        "pipeline"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/gorsel-hazirla.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/gorsel-hazirla.py",
+      "lineRange": [
+        557,
+        626
+      ],
+      "summary": "CLI entry — auto/manuel modda vinç klasörü seçer, Firefly client'ı bootstrap eder, process_crane_folder'ı çağırır.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "photo-prep"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/hercules-upload.py",
+      "type": "file",
+      "name": "hercules-upload.py",
+      "filePath": "scripts/hercules-upload.py",
+      "summary": "Hercules AI marketplace'e ilan yükleme Playwright otomasyonu (518 satır) — başlık + AI-üretilen açıklama + fotoğraflar ile upload, jeneration tamamlanmasını bekleyen polling loop.",
+      "tags": [
+        "playwright",
+        "hercules",
+        "ilan",
+        "upload"
+      ],
+      "complexity": "complex",
+      "languageNotes": "AI-driven açıklama üretimi `generate_hercules_prompt` ile yapılıyor; `_wait_for_generation` 5 dakikalık polling loop."
+    },
+    {
+      "id": "function:scripts/hercules-upload.py:generate_hercules_prompt",
+      "type": "function",
+      "name": "generate_hercules_prompt",
+      "filePath": "scripts/hercules-upload.py",
+      "lineRange": [
+        100,
+        128
+      ],
+      "summary": "Vinç bilgilerinden Hercules'in AI açıklama üreteci için zengin prompt inşa eder.",
+      "tags": [
+        "prompt-engineering",
+        "hercules",
+        "ilan"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/hercules-upload.py:run_hercules_upload",
+      "type": "function",
+      "name": "run_hercules_upload",
+      "filePath": "scripts/hercules-upload.py",
+      "lineRange": [
+        161,
+        325
+      ],
+      "summary": "Playwright ile Hercules formuna login + bilgi doldurma + fotoğraf upload + publish akışını yürüten ana fonksiyon.",
+      "tags": [
+        "playwright",
+        "browser-automation",
+        "hercules"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/hercules-upload.py:_wait_for_generation",
+      "type": "function",
+      "name": "_wait_for_generation",
+      "filePath": "scripts/hercules-upload.py",
+      "lineRange": [
+        328,
+        373
+      ],
+      "summary": "Hercules'in AI açıklama üretimini tamamlamasını polling ile bekler, timeout korumalı.",
+      "tags": [
+        "polling",
+        "wait",
+        "hercules"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/hercules-upload.py:select_crane_folder",
+      "type": "function",
+      "name": "select_crane_folder",
+      "filePath": "scripts/hercules-upload.py",
+      "lineRange": [
+        400,
+        434
+      ],
+      "summary": "Manuel veya CLI parametresiyle vinç klasörü seçer, bilgiler.json'unu yükler.",
+      "tags": [
+        "cli",
+        "selector",
+        "folder"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/hercules-upload.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/hercules-upload.py",
+      "lineRange": [
+        443,
+        514
+      ],
+      "summary": "CLI entry — argparse ile auto/explore/publish flag'lerini parse edip Hercules upload akışını başlatır.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "hercules"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/icerik-uretici.py",
+      "type": "file",
+      "name": "icerik-uretici.py",
+      "filePath": "scripts/icerik-uretici.py",
+      "summary": "İçerik (post text + görsel) üretici (439 satır) — eski template tabanlı pipeline, ülkeye göre caption ve görsel kombinasyonlarını üretir; OpenAI yedeği fallback_text'le sağlanır.",
+      "tags": [
+        "content-generator",
+        "template",
+        "caption",
+        "ilan"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/icerik-uretici.py:select_crane",
+      "type": "function",
+      "name": "select_crane",
+      "filePath": "scripts/icerik-uretici.py",
+      "lineRange": [
+        61,
+        94
+      ],
+      "summary": "envanter.json'dan isim eşleşmesiyle ya da interaktif liste ile vinç seçer.",
+      "tags": [
+        "cli",
+        "selector",
+        "inventory"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/icerik-uretici.py:render_template",
+      "type": "function",
+      "name": "render_template",
+      "filePath": "scripts/icerik-uretici.py",
+      "lineRange": [
+        131,
+        144
+      ],
+      "summary": "HTML template'i Playwright ile render edip PNG screenshot'a çevirir.",
+      "tags": [
+        "playwright",
+        "template",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/icerik-uretici.py:generate_images",
+      "type": "function",
+      "name": "generate_images",
+      "filePath": "scripts/icerik-uretici.py",
+      "lineRange": [
+        147,
+        245
+      ],
+      "summary": "Post tipine (sale/wanted) ve ülkeye göre uygun HTML template'leri seçer ve görselleri batch olarak üretir.",
+      "tags": [
+        "batch",
+        "template",
+        "görsel üretim"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/icerik-uretici.py:generate_post_text",
+      "type": "function",
+      "name": "generate_post_text",
+      "filePath": "scripts/icerik-uretici.py",
+      "lineRange": [
+        250,
+        343
+      ],
+      "summary": "OpenAI ile vinç + ülkeye özel sosyal medya caption üretir (TR/EN dil seçimli).",
+      "tags": [
+        "openai",
+        "caption",
+        "content-generator"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/icerik-uretici.py:generate_fallback_text",
+      "type": "function",
+      "name": "generate_fallback_text",
+      "filePath": "scripts/icerik-uretici.py",
+      "lineRange": [
+        346,
+        370
+      ],
+      "summary": "OpenAI olmadığı durumda template tabanlı static caption fallback'i.",
+      "tags": [
+        "fallback",
+        "template",
+        "caption"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/icerik-uretici.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/icerik-uretici.py",
+      "lineRange": [
+        379,
+        435
+      ],
+      "summary": "CLI entry — post tipi + vinç + ülke ile içerik üretim pipeline'ını orkestre eder.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "content"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/log-temizle.py",
+      "type": "file",
+      "name": "log-temizle.py",
+      "filePath": "scripts/log-temizle.py",
+      "summary": "Eski log dosyalarını yaşına göre tespit edip silen küçük bakım script'i.",
+      "tags": [
+        "utility",
+        "cleanup",
+        "log",
+        "maintenance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/log-temizle.py:find_old_files",
+      "type": "function",
+      "name": "find_old_files",
+      "filePath": "scripts/log-temizle.py",
+      "lineRange": [
+        23,
+        32
+      ],
+      "summary": "Belirtilen dizinde mtime'ı max_age_days'i aşan dosyaları listeler.",
+      "tags": [
+        "filesystem",
+        "scan",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/log-temizle.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/log-temizle.py",
+      "lineRange": [
+        38,
+        63
+      ],
+      "summary": "CLI entry — --delete ve --days flag'leriyle eski log temizleme.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "cleanup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/machineryline-upload.py",
+      "type": "file",
+      "name": "machineryline-upload.py",
+      "filePath": "scripts/machineryline-upload.py",
+      "summary": "Machinery Line marketplace'e Playwright ile ilan yükleyen büyük script (623 satır) — 2026-05-17 kalıcı fix ile `body_model`, `protivoves_kg` (counterweight), `kilometrag` (mileage), `udlinitel_strely_m` (jib), `main_boom_length` alanlarını otomatik doldurur.",
+      "tags": [
+        "playwright",
+        "machineryline",
+        "ilan",
+        "upload"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Form alan ID'leri kalıcı olarak script'e işlenmiş (`v--body_model` vb.), 2026-05-17 öncesi atlanan kritik alanlar artık otomatik doldurulur."
+    },
+    {
+      "id": "function:scripts/machineryline-upload.py:generate_description",
+      "type": "function",
+      "name": "generate_description",
+      "filePath": "scripts/machineryline-upload.py",
+      "lineRange": [
+        102,
+        133
+      ],
+      "summary": "Vinç bilgilerinden Machinery Line için yapılandırılmış ilan açıklaması üretir.",
+      "tags": [
+        "content-generator",
+        "machineryline",
+        "açıklama"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/machineryline-upload.py:run_ml_upload",
+      "type": "function",
+      "name": "run_ml_upload",
+      "filePath": "scripts/machineryline-upload.py",
+      "lineRange": [
+        165,
+        502
+      ],
+      "summary": "Machinery Line login + form doldurma + fotoğraf upload + publish akışını sürdüren 337 satırlık Playwright otomasyonu — repo'nun en uzun fonksiyonlarından biri.",
+      "tags": [
+        "playwright",
+        "browser-automation",
+        "machineryline"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/machineryline-upload.py:select_crane_folder",
+      "type": "function",
+      "name": "select_crane_folder",
+      "filePath": "scripts/machineryline-upload.py",
+      "lineRange": [
+        528,
+        551
+      ],
+      "summary": "Vinç klasörünü seçer ve bilgiler.json'u yükler.",
+      "tags": [
+        "cli",
+        "selector",
+        "folder"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/machineryline-upload.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/machineryline-upload.py",
+      "lineRange": [
+        560,
+        619
+      ],
+      "summary": "CLI entry — argparse ile auto/explore/publish flag'leriyle ML upload akışını başlatır.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "machineryline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/post-gorsel.py",
+      "type": "file",
+      "name": "post-gorsel.py",
+      "filePath": "scripts/post-gorsel.py",
+      "summary": "HTML template tabanlı post görseli üretici — Playwright screenshot ile post + story varyantlarını render eder, OpenAI pipeline öncesi kullanılan yaklaşım.",
+      "tags": [
+        "html-template",
+        "playwright",
+        "görsel üretim",
+        "post"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/post-gorsel.py:find_best_photo",
+      "type": "function",
+      "name": "find_best_photo",
+      "filePath": "scripts/post-gorsel.py",
+      "lineRange": [
+        64,
+        82
+      ],
+      "summary": "Vinç klasöründen sosyal post için en uygun fotoğrafı seçer (öncelik sıralı pattern matching).",
+      "tags": [
+        "selector",
+        "photo",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/post-gorsel.py:extract_extra_specs",
+      "type": "function",
+      "name": "extract_extra_specs",
+      "filePath": "scripts/post-gorsel.py",
+      "lineRange": [
+        85,
+        105
+      ],
+      "summary": "bilgiler.json'dan ek spec'leri (max load, jib uzunluğu vb.) extract eder.",
+      "tags": [
+        "extractor",
+        "specs",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/post-gorsel.py:build_extra_specs_html",
+      "type": "function",
+      "name": "build_extra_specs_html",
+      "filePath": "scripts/post-gorsel.py",
+      "lineRange": [
+        108,
+        125
+      ],
+      "summary": "Spec'leri HTML template'e inject edilebilir <li> listesine dönüştürür.",
+      "tags": [
+        "html",
+        "template",
+        "formatter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/post-gorsel.py:fill_template",
+      "type": "function",
+      "name": "fill_template",
+      "filePath": "scripts/post-gorsel.py",
+      "lineRange": [
+        128,
+        161
+      ],
+      "summary": "HTML template'i bilgi + fotoğraf + logo base64 + tema parametreleriyle doldurur.",
+      "tags": [
+        "template",
+        "fill",
+        "html"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/post-gorsel.py:render_screenshots",
+      "type": "function",
+      "name": "render_screenshots",
+      "filePath": "scripts/post-gorsel.py",
+      "lineRange": [
+        166,
+        205
+      ],
+      "summary": "Playwright headless tarayıcıyla post + story HTML'lerini PNG screenshot'a dönüştürür.",
+      "tags": [
+        "playwright",
+        "screenshot",
+        "render"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/post-gorsel.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/post-gorsel.py",
+      "lineRange": [
+        234,
+        255
+      ],
+      "summary": "CLI entry — vinç klasörünü seçer ve render_screenshots çağırır.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "post"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/refresh_linkedin_advertising_token.py",
+      "type": "file",
+      "name": "refresh_linkedin_advertising_token.py",
+      "filePath": "scripts/refresh_linkedin_advertising_token.py",
+      "summary": "LinkedIn advertising token'ı `refresh_token` ile yenileyen ve `.env` dosyasındaki değerleri güncelleyen script.",
+      "tags": [
+        "linkedin",
+        "oauth",
+        "refresh-token",
+        "advertising"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/refresh_linkedin_advertising_token.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/refresh_linkedin_advertising_token.py",
+      "lineRange": [
+        51,
+        153
+      ],
+      "summary": "Refresh token ile LinkedIn'den yeni access token alır, .env dosyasını update eder, fingerprint bilgisini loglar.",
+      "tags": [
+        "entry-point",
+        "refresh",
+        "oauth",
+        "env-update"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/site-taraci.py",
+      "type": "file",
+      "name": "site-taraci.py",
+      "filePath": "scripts/site-taraci.py",
+      "summary": "GST Cranes web sitesini Playwright ile tarayıp envanter.json'unu güncelleyen scraper — yeni eklenen / kaldırılan vinçleri diff olarak raporlar.",
+      "tags": [
+        "scraper",
+        "playwright",
+        "envanter",
+        "inventory"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/site-taraci.py:scrape_inventory",
+      "type": "function",
+      "name": "scrape_inventory",
+      "filePath": "scripts/site-taraci.py",
+      "lineRange": [
+        59,
+        110
+      ],
+      "summary": "gstcranes.com inventory sayfasını Playwright ile tarar, tüm vinç kartlarını extract eder.",
+      "tags": [
+        "scraper",
+        "playwright",
+        "inventory"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/site-taraci.py:extract_crane_cards",
+      "type": "function",
+      "name": "extract_crane_cards",
+      "filePath": "scripts/site-taraci.py",
+      "lineRange": [
+        113,
+        261
+      ],
+      "summary": "DOM'dan her vinç kartının başlık, fiyat, kapasite, fotoğraf, link bilgilerini çıkarır (148 satır extraction logic).",
+      "tags": [
+        "scraper",
+        "dom-extract",
+        "crane"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/site-taraci.py:parse_title",
+      "type": "function",
+      "name": "parse_title",
+      "filePath": "scripts/site-taraci.py",
+      "lineRange": [
+        264,
+        292
+      ],
+      "summary": "Liebherr/Demag/Tadano/Grove gibi marka başlığını brand + model + kapasite + yıla parser eder.",
+      "tags": [
+        "parser",
+        "title",
+        "brand"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/site-taraci.py:merge_envanter",
+      "type": "function",
+      "name": "merge_envanter",
+      "filePath": "scripts/site-taraci.py",
+      "lineRange": [
+        317,
+        351
+      ],
+      "summary": "Eski envanter ile yeni scrape arasındaki farkı bulur (added/removed), update edilen kayıtları korur.",
+      "tags": [
+        "merge",
+        "diff",
+        "envanter"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/site-taraci.py:print_inventory",
+      "type": "function",
+      "name": "print_inventory",
+      "filePath": "scripts/site-taraci.py",
+      "lineRange": [
+        356,
+        377
+      ],
+      "summary": "Envanteri terminale formatlı tablo halinde basar.",
+      "tags": [
+        "cli",
+        "print",
+        "tablo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/site-taraci.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/site-taraci.py",
+      "lineRange": [
+        400,
+        420
+      ],
+      "summary": "CLI entry — scrape + merge + envanter kaydet akışını orkestre eder.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "scraper"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/sosyal-medya-post.py",
+      "type": "file",
+      "name": "sosyal-medya-post.py",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "summary": "Repo'nun en kapsamlı dosyası (979 satır) — Facebook + Instagram (Graph API + browser fallback) + LinkedIn (Marketing API + browser fallback) çoklu platform yayın helper'ı; carousel/story/post hepsi destekli.",
+      "tags": [
+        "sosyal medya",
+        "facebook",
+        "instagram",
+        "linkedin",
+        "multi-platform"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Her platform için (Graph/Marketing API) + (Playwright browser fallback) ikili strateji; token verify, image upload, carousel batch, story upload akışları ayrı fonksiyonlar."
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:generate_social_caption",
+      "type": "function",
+      "name": "generate_social_caption",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        97,
+        117
+      ],
+      "summary": "Facebook + Instagram için kısa caption (vinç specs + WhatsApp CTA + hashtag) üretir.",
+      "tags": [
+        "caption",
+        "facebook",
+        "instagram"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:generate_linkedin_caption",
+      "type": "function",
+      "name": "generate_linkedin_caption",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        120,
+        147
+      ],
+      "summary": "LinkedIn için B2B tonunda uzun-form caption üretir (vinç + uygulama alanı + CTA).",
+      "tags": [
+        "caption",
+        "linkedin",
+        "b2b"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:check_all_credentials",
+      "type": "function",
+      "name": "check_all_credentials",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        214,
+        224
+      ],
+      "summary": "Meta + LinkedIn için tüm gerekli env credential'larının var olup olmadığını kontrol eder.",
+      "tags": [
+        "validation",
+        "credentials",
+        "check"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:facebook_post_photos",
+      "type": "function",
+      "name": "facebook_post_photos",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        250,
+        309
+      ],
+      "summary": "Meta Graph API ile Facebook Page'e multi-photo post yayınlar — published=false + attached_media batch pattern.",
+      "tags": [
+        "facebook",
+        "graph-api",
+        "multi-photo"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:instagram_post_carousel",
+      "type": "function",
+      "name": "instagram_post_carousel",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        312,
+        443
+      ],
+      "summary": "Instagram'a 2-10 görsel carousel yayınlar (131 satır) — public URL upload + container + CAROUSEL container + media publish.",
+      "tags": [
+        "instagram",
+        "graph-api",
+        "carousel"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:linkedin_upload_image",
+      "type": "function",
+      "name": "linkedin_upload_image",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        483,
+        542
+      ],
+      "summary": "LinkedIn `assets?action=registerUpload` + binary PUT ile görsel asset URN üretir.",
+      "tags": [
+        "linkedin",
+        "upload",
+        "asset"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:linkedin_post",
+      "type": "function",
+      "name": "linkedin_post",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        545,
+        607
+      ],
+      "summary": "LinkedIn `/ugcPosts` endpoint'ine multi-image kişisel paylaşım yapar.",
+      "tags": [
+        "linkedin",
+        "ugc-post",
+        "share"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:browser_post_facebook",
+      "type": "function",
+      "name": "browser_post_facebook",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        611,
+        650
+      ],
+      "summary": "Playwright ile Facebook'a tarayıcı tabanlı yayın fallback'i (API başarısız olduğunda).",
+      "tags": [
+        "playwright",
+        "facebook",
+        "fallback"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:browser_post_linkedin",
+      "type": "function",
+      "name": "browser_post_linkedin",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        667,
+        706
+      ],
+      "summary": "Playwright ile LinkedIn'e tarayıcı tabanlı yayın fallback'i.",
+      "tags": [
+        "playwright",
+        "linkedin",
+        "fallback"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:post_to_platform",
+      "type": "function",
+      "name": "post_to_platform",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        779,
+        865
+      ],
+      "summary": "Platform adına göre uygun API+fallback'i seçen dispatcher — Facebook/Instagram/LinkedIn arasında strategy router.",
+      "tags": [
+        "dispatcher",
+        "router",
+        "multi-platform"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/sosyal-medya-post.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [
+        875,
+        975
+      ],
+      "summary": "CLI entry — auto/platform/force_browser/check_auth flag'leriyle çoklu platform yayın orchestrasyonu.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "orchestrator"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/test_env.py",
+      "type": "file",
+      "name": "test_env.py",
+      "filePath": "scripts/test_env.py",
+      "summary": "`.env` dosyasının doğru yüklenip yüklenmediğini test eden küçük teşhis script'i.",
+      "tags": [
+        "test",
+        "env",
+        "diagnostic",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/vinc-yayinla.py",
+      "type": "file",
+      "name": "vinc-yayinla.py",
+      "filePath": "scripts/vinc-yayinla.py",
+      "summary": "Yeni vinç yayınlama orchestrator'ı — Hercules + Machinery Line + sosyal medya adımlarını sırayla çalıştırır, dry-run + skip-images + only-steps gibi opsiyonlarla esnek.",
+      "tags": [
+        "orchestrator",
+        "entry-point",
+        "ilan",
+        "yayın"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Workflow A'nın ana entry'si; alt-script'leri subprocess olarak çağırıyor, her adımdan publish_record toplayıp tek rapor üretiyor."
+    },
+    {
+      "id": "function:scripts/vinc-yayinla.py:select_crane_folder",
+      "type": "function",
+      "name": "select_crane_folder",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [
+        109,
+        157
+      ],
+      "summary": "Yeni vinç klasörlerini listeler, kullanıcıya interaktif seçim sunar veya auto modda son klasörü seçer.",
+      "tags": [
+        "cli",
+        "selector",
+        "folder"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/vinc-yayinla.py:run_step",
+      "type": "function",
+      "name": "run_step",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [
+        176,
+        232
+      ],
+      "summary": "Bir pipeline adımını (hercules, machineryline, sosyal-medya) subprocess olarak çalıştırır, dry-run desteklenir.",
+      "tags": [
+        "subprocess",
+        "step-runner",
+        "orchestrator"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/vinc-yayinla.py:archive_crane",
+      "type": "function",
+      "name": "archive_crane",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [
+        236,
+        250
+      ],
+      "summary": "Yayın tamamlanan vinç klasörünü `arsiv/` altına taşır.",
+      "tags": [
+        "archive",
+        "filesystem",
+        "cleanup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/vinc-yayinla.py:collect_publish_records",
+      "type": "function",
+      "name": "collect_publish_records",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [
+        254,
+        269
+      ],
+      "summary": "Her platformun bıraktığı publish_record dosyalarını toplayıp tek listede birleştirir.",
+      "tags": [
+        "collector",
+        "records",
+        "report"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/vinc-yayinla.py:generate_report",
+      "type": "function",
+      "name": "generate_report",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [
+        272,
+        311
+      ],
+      "summary": "Tüm adım sonuçlarını ve publish_record'ları markdown raporu olarak üretir.",
+      "tags": [
+        "report",
+        "markdown",
+        "summary"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/vinc-yayinla.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [
+        321,
+        396
+      ],
+      "summary": "CLI entry — orchestrator'ın ana akışını yürütür, tüm flag'leri parse eder ve her adımı sırasıyla çalıştırır.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "orchestrator"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:scripts/yayin-motoru.py",
+      "type": "file",
+      "name": "yayin-motoru.py",
+      "filePath": "scripts/yayin-motoru.py",
+      "summary": "Daily marketing yayın motoru (489 satır) — Facebook + Instagram + LinkedIn post + story yayını için low-level API helper'ları, dry-run desteği.",
+      "tags": [
+        "sosyal medya",
+        "publisher",
+        "daily-marketing",
+        "post"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/yayin-motoru.py:publish_facebook_post",
+      "type": "function",
+      "name": "publish_facebook_post",
+      "filePath": "scripts/yayin-motoru.py",
+      "lineRange": [
+        77,
+        103
+      ],
+      "summary": "Facebook Page'e tek görsel + caption ile post yayınlar (Graph API).",
+      "tags": [
+        "facebook",
+        "graph-api",
+        "post"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/yayin-motoru.py:publish_facebook_story",
+      "type": "function",
+      "name": "publish_facebook_story",
+      "filePath": "scripts/yayin-motoru.py",
+      "lineRange": [
+        106,
+        144
+      ],
+      "summary": "Facebook Page'e photo_stories endpoint'i ile story yayınlar.",
+      "tags": [
+        "facebook",
+        "graph-api",
+        "story"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/yayin-motoru.py:publish_instagram_post",
+      "type": "function",
+      "name": "publish_instagram_post",
+      "filePath": "scripts/yayin-motoru.py",
+      "lineRange": [
+        149,
+        223
+      ],
+      "summary": "Instagram'a tek görsel post yayınlar — container create + publish 2-step akışı.",
+      "tags": [
+        "instagram",
+        "graph-api",
+        "post"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/yayin-motoru.py:publish_instagram_story",
+      "type": "function",
+      "name": "publish_instagram_story",
+      "filePath": "scripts/yayin-motoru.py",
+      "lineRange": [
+        226,
+        281
+      ],
+      "summary": "Instagram'a story container + publish ile story yayınlar.",
+      "tags": [
+        "instagram",
+        "graph-api",
+        "story"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/yayin-motoru.py:publish_linkedin_post",
+      "type": "function",
+      "name": "publish_linkedin_post",
+      "filePath": "scripts/yayin-motoru.py",
+      "lineRange": [
+        286,
+        364
+      ],
+      "summary": "LinkedIn `/ugcPosts` ile kişisel paylaşım yapar (asset upload + ugc post 2-step).",
+      "tags": [
+        "linkedin",
+        "ugc-post",
+        "share"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/yayin-motoru.py:publish_to_platforms",
+      "type": "function",
+      "name": "publish_to_platforms",
+      "filePath": "scripts/yayin-motoru.py",
+      "lineRange": [
+        381,
+        411
+      ],
+      "summary": "Platform listesi alır, her biri için ilgili publish_* fonksiyonunu çağıran dispatcher.",
+      "tags": [
+        "dispatcher",
+        "multi-platform"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/yayin-motoru.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/yayin-motoru.py",
+      "lineRange": [
+        423,
+        464
+      ],
+      "summary": "CLI entry — daily marketing için platform + image + text + story/post seçimini yapar.",
+      "tags": [
+        "entry-point",
+        "cli",
+        "publisher"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/yayin-motoru.py:post_to_all",
+      "type": "function",
+      "name": "post_to_all",
+      "filePath": "scripts/yayin-motoru.py",
+      "lineRange": [
+        473,
+        489
+      ],
+      "summary": "Caption listesi ve görsel ile tüm platformlara tek seferde yayın yapan helper.",
+      "tags": [
+        "multi-platform",
+        "batch",
+        "publisher"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:linkedin-ads.py",
+      "target": "function:linkedin-ads.py:create_targeted_campaign",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:linkedin-ads.py",
+      "target": "function:linkedin-ads.py:create_targeted_campaign",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:mail-blast.py",
+      "target": "function:mail-blast.py:blast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:mail-blast.py",
+      "target": "function:mail-blast.py:blast",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:scripts/compose_openai_gptimage2.py",
+      "target": "function:scripts/compose_openai_gptimage2.py:build_prompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_gptimage2.py",
+      "target": "function:scripts/compose_openai_gptimage2.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_story_b.py",
+      "target": "function:scripts/compose_openai_story_b.py:build_prompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_story_b.py",
+      "target": "function:scripts/compose_openai_story_b.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_variants.py",
+      "target": "function:scripts/compose_openai_variants.py:specs_summary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_variants.py",
+      "target": "function:scripts/compose_openai_variants.py:shared_header",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_variants.py",
+      "target": "function:scripts/compose_openai_variants.py:prompt_a",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_variants.py",
+      "target": "function:scripts/compose_openai_variants.py:prompt_b",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_variants.py",
+      "target": "function:scripts/compose_openai_variants.py:prompt_c",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_variants.py",
+      "target": "function:scripts/compose_openai_variants.py:call_openai",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_variants.py",
+      "target": "function:scripts/compose_openai_variants.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_pil_premium.py",
+      "target": "function:scripts/compose_pil_premium.py:fit_photo_into",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_pil_premium.py",
+      "target": "function:scripts/compose_pil_premium.py:build_ctx",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_pil_premium.py",
+      "target": "function:scripts/compose_pil_premium.py:render_post",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_pil_premium.py",
+      "target": "function:scripts/compose_pil_premium.py:render_story",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_pil_premium.py",
+      "target": "function:scripts/compose_pil_premium.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_style_a.py",
+      "target": "function:scripts/compose_style_a.py:fill",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_style_a.py",
+      "target": "function:scripts/compose_style_a.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/get_linkedin_advertising_token.py",
+      "target": "class:scripts/get_linkedin_advertising_token.py:OAuthHandler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/get_linkedin_advertising_token.py",
+      "target": "class:scripts/get_linkedin_advertising_token.py:OAuthHandler",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:scripts/get_linkedin_share_token.py",
+      "target": "class:scripts/get_linkedin_share_token.py:OAuthHandler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/get_linkedin_share_token.py",
+      "target": "class:scripts/get_linkedin_share_token.py:OAuthHandler",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:scripts/gorsel-hazirla.py",
+      "target": "class:scripts/gorsel-hazirla.py:AdobeFireflyClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/gorsel-hazirla.py",
+      "target": "function:scripts/gorsel-hazirla.py:detect_text_regions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/gorsel-hazirla.py",
+      "target": "function:scripts/gorsel-hazirla.py:_decode_east",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/gorsel-hazirla.py",
+      "target": "function:scripts/gorsel-hazirla.py:process_crane_folder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/gorsel-hazirla.py",
+      "target": "function:scripts/gorsel-hazirla.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/hercules-upload.py",
+      "target": "function:scripts/hercules-upload.py:generate_hercules_prompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/hercules-upload.py",
+      "target": "function:scripts/hercules-upload.py:run_hercules_upload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/hercules-upload.py",
+      "target": "function:scripts/hercules-upload.py:_wait_for_generation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/hercules-upload.py",
+      "target": "function:scripts/hercules-upload.py:select_crane_folder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/hercules-upload.py",
+      "target": "function:scripts/hercules-upload.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/icerik-uretici.py",
+      "target": "function:scripts/icerik-uretici.py:select_crane",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/icerik-uretici.py",
+      "target": "function:scripts/icerik-uretici.py:render_template",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/icerik-uretici.py",
+      "target": "function:scripts/icerik-uretici.py:generate_images",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/icerik-uretici.py",
+      "target": "function:scripts/icerik-uretici.py:generate_post_text",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/icerik-uretici.py",
+      "target": "function:scripts/icerik-uretici.py:generate_fallback_text",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/icerik-uretici.py",
+      "target": "function:scripts/icerik-uretici.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/log-temizle.py",
+      "target": "function:scripts/log-temizle.py:find_old_files",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/log-temizle.py",
+      "target": "function:scripts/log-temizle.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/machineryline-upload.py",
+      "target": "function:scripts/machineryline-upload.py:generate_description",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/machineryline-upload.py",
+      "target": "function:scripts/machineryline-upload.py:run_ml_upload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/machineryline-upload.py",
+      "target": "function:scripts/machineryline-upload.py:select_crane_folder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/machineryline-upload.py",
+      "target": "function:scripts/machineryline-upload.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/post-gorsel.py",
+      "target": "function:scripts/post-gorsel.py:find_best_photo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/post-gorsel.py",
+      "target": "function:scripts/post-gorsel.py:extract_extra_specs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/post-gorsel.py",
+      "target": "function:scripts/post-gorsel.py:build_extra_specs_html",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/post-gorsel.py",
+      "target": "function:scripts/post-gorsel.py:fill_template",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/post-gorsel.py",
+      "target": "function:scripts/post-gorsel.py:render_screenshots",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/post-gorsel.py",
+      "target": "function:scripts/post-gorsel.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/refresh_linkedin_advertising_token.py",
+      "target": "function:scripts/refresh_linkedin_advertising_token.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/site-taraci.py",
+      "target": "function:scripts/site-taraci.py:scrape_inventory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/site-taraci.py",
+      "target": "function:scripts/site-taraci.py:extract_crane_cards",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/site-taraci.py",
+      "target": "function:scripts/site-taraci.py:parse_title",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/site-taraci.py",
+      "target": "function:scripts/site-taraci.py:merge_envanter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/site-taraci.py",
+      "target": "function:scripts/site-taraci.py:print_inventory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/site-taraci.py",
+      "target": "function:scripts/site-taraci.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:generate_social_caption",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:generate_linkedin_caption",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:check_all_credentials",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:facebook_post_photos",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:instagram_post_carousel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:linkedin_upload_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:linkedin_post",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:browser_post_facebook",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:browser_post_linkedin",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:post_to_platform",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "function:scripts/sosyal-medya-post.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "function:scripts/vinc-yayinla.py:select_crane_folder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "function:scripts/vinc-yayinla.py:run_step",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "function:scripts/vinc-yayinla.py:archive_crane",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "function:scripts/vinc-yayinla.py:collect_publish_records",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "function:scripts/vinc-yayinla.py:generate_report",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "function:scripts/vinc-yayinla.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/yayin-motoru.py",
+      "target": "function:scripts/yayin-motoru.py:publish_facebook_post",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/yayin-motoru.py",
+      "target": "function:scripts/yayin-motoru.py:publish_facebook_story",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/yayin-motoru.py",
+      "target": "function:scripts/yayin-motoru.py:publish_instagram_post",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/yayin-motoru.py",
+      "target": "function:scripts/yayin-motoru.py:publish_instagram_story",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/yayin-motoru.py",
+      "target": "function:scripts/yayin-motoru.py:publish_linkedin_post",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/yayin-motoru.py",
+      "target": "function:scripts/yayin-motoru.py:publish_to_platforms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/yayin-motoru.py",
+      "target": "function:scripts/yayin-motoru.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/yayin-motoru.py",
+      "target": "function:scripts/yayin-motoru.py:post_to_all",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compose_openai_gptimage2.py",
+      "target": "file:scripts/compose_openai_variants.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/compose_openai_gptimage2.py",
+      "target": "file:scripts/compose_openai_story_b.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/compose_openai_variants.py",
+      "target": "file:scripts/compose_openai_story_b.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/compose_openai_variants.py",
+      "target": "file:scripts/compose_pil_premium.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/compose_pil_premium.py",
+      "target": "file:scripts/compose_style_a.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/get_linkedin_advertising_token.py",
+      "target": "file:scripts/refresh_linkedin_advertising_token.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/get_linkedin_advertising_token.py",
+      "target": "file:scripts/get_linkedin_share_token.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/refresh_linkedin_advertising_token.py",
+      "target": "file:scripts/get_linkedin_share_token.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "file:scripts/hercules-upload.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "file:scripts/machineryline-upload.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "file:scripts/sosyal-medya-post.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "file:scripts/gorsel-hazirla.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/vinc-yayinla.py",
+      "target": "file:scripts/site-taraci.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/gorsel-hazirla.py",
+      "target": "file:scripts/compose_openai_variants.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/gorsel-hazirla.py",
+      "target": "file:scripts/compose_openai_gptimage2.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/gorsel-hazirla.py",
+      "target": "file:scripts/compose_openai_story_b.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/gorsel-hazirla.py",
+      "target": "file:scripts/post-gorsel.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "file:scripts/yayin-motoru.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/icerik-uretici.py",
+      "target": "file:scripts/yayin-motoru.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/icerik-uretici.py",
+      "target": "file:scripts/post-gorsel.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/sosyal-medya-post.py",
+      "target": "file:scripts/get_linkedin_share_token.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:linkedin-ads.py",
+      "target": "file:scripts/get_linkedin_advertising_token.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:linkedin-ads.py",
+      "target": "file:scripts/refresh_linkedin_advertising_token.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:scripts/sosyal-medya-post.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:scripts/yayin-motoru.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:scripts/gorsel-hazirla.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:scripts/hercules-upload.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:scripts/machineryline-upload.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:scripts/compose_openai_variants.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:scripts/compose_openai_gptimage2.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:scripts/compose_openai_story_b.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:linkedin-ads.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:mail-blast.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:scripts/test_env.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:requirements.txt",
+      "target": "file:scripts/gorsel-hazirla.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:requirements.txt",
+      "target": "file:scripts/hercules-upload.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:requirements.txt",
+      "target": "file:scripts/machineryline-upload.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:requirements.txt",
+      "target": "file:scripts/sosyal-medya-post.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:requirements.txt",
+      "target": "file:scripts/compose_openai_variants.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:requirements.txt",
+      "target": "file:scripts/compose_pil_premium.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:requirements.txt",
+      "target": "file:scripts/site-taraci.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:requirements.txt",
+      "target": "file:scripts/post-gorsel.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:scripts/vinc-yayinla.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:scripts/sosyal-medya-post.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:scripts/yayin-motoru.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:scripts/gorsel-hazirla.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:scripts/hercules-upload.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:scripts/machineryline-upload.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "config:.env.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "config:requirements.txt",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:SOCIAL_SETUP.md",
+      "target": "file:scripts/sosyal-medya-post.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:SOCIAL_SETUP.md",
+      "target": "file:scripts/yayin-motoru.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:SOCIAL_SETUP.md",
+      "target": "file:scripts/get_linkedin_share_token.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:SOCIAL_SETUP.md",
+      "target": "file:scripts/get_linkedin_advertising_token.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:ADOBE_SETUP.md",
+      "target": "file:scripts/gorsel-hazirla.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:COWORK_INTEGRATION.md",
+      "target": "file:scripts/sosyal-medya-post.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-04-14-social-media-post-redesign.md",
+      "target": "file:scripts/compose_openai_variants.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-04-14-social-media-post-redesign.md",
+      "target": "file:scripts/compose_openai_gptimage2.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-04-14-social-media-post-redesign.md",
+      "target": "file:scripts/compose_openai_story_b.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-04-14-social-media-post-redesign.md",
+      "target": "file:scripts/post-gorsel.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-04-14-social-media-post-redesign.md",
+      "target": "file:scripts/compose_openai_variants.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-04-14-social-media-post-redesign.md",
+      "target": "file:scripts/compose_openai_gptimage2.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-04-14-social-media-post-redesign.md",
+      "target": "file:scripts/compose_openai_story_b.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-04-15-operations-dashboard-design.md",
+      "target": "file:scripts/vinc-yayinla.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-04-15-operations-dashboard-design.md",
+      "target": "file:scripts/yayin-motoru.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:docs-and-setup",
+      "name": "Dokümantasyon ve Setup",
+      "description": "Repo'nun Claude Code rehberi (CLAUDE.md), Adobe Firefly + sosyal medya + Cowork entegrasyon kurulum kılavuzları ve `.env.example` credential şablonunu içeren proje rehber dokümanları.",
+      "nodeIds": [
+        "document:CLAUDE.md",
+        "document:ADOBE_SETUP.md",
+        "document:SOCIAL_SETUP.md",
+        "document:COWORK_INTEGRATION.md",
+        "config:.env.example"
+      ]
+    },
+    {
+      "id": "layer:strategy-and-redesign-notes",
+      "name": "Strateji ve Redesign Notları (superpowers)",
+      "description": "`docs/superpowers/` altındaki sosyal medya post redesign uygulama planı, redesign teknik şartnamesi ve operations dashboard tasarım spec'i — pipeline kararlarının kalıcı tasarım kaynağı.",
+      "nodeIds": [
+        "document:docs/superpowers/plans/2026-04-14-social-media-post-redesign.md",
+        "document:docs/superpowers/specs/2026-04-14-social-media-post-redesign.md",
+        "document:docs/superpowers/specs/2026-04-15-operations-dashboard-design.md"
+      ]
+    },
+    {
+      "id": "layer:publish-orchestrator",
+      "name": "Yayın Orchestrator",
+      "description": "`vinc-yayinla.py` uçtan-uca orkestratörü ve onu besleyen Python bağımlılık manifesti — Hercules + Machinery Line + sosyal medya adımlarını dry-run/skip-images/only-steps opsiyonlarıyla zincirler.",
+      "nodeIds": [
+        "file:scripts/vinc-yayinla.py",
+        "config:requirements.txt"
+      ]
+    },
+    {
+      "id": "layer:brochure-and-image-generation",
+      "name": "Broşür ve Görsel Üretim (OpenAI gpt-image-2 + PIL)",
+      "description": "Vinç görsellerinden premium 1080×1350 post + 1080×1920 story üreten OpenAI gpt-image-2 composer'ları (3 stil A/B/C), deprecated PIL/HTML fallback'leri, Adobe Firefly fotoğraf ön-işleme ve içerik üretici script'leri.",
+      "nodeIds": [
+        "file:scripts/compose_openai_gptimage2.py",
+        "file:scripts/compose_openai_story_b.py",
+        "file:scripts/compose_openai_variants.py",
+        "file:scripts/compose_pil_premium.py",
+        "file:scripts/compose_style_a.py",
+        "file:scripts/gorsel-hazirla.py",
+        "file:scripts/icerik-uretici.py"
+      ]
+    },
+    {
+      "id": "layer:marketplace-upload-adapters",
+      "name": "Marketplace Upload Adapter'ları (Hercules + Machinery Line)",
+      "description": "Hercules AI ve machineryline.info marketplace'lerine Playwright tabanlı tarayıcı otomasyonu ile ilan yükleyen adapter script'leri — Chrome profil ile local'de çalışan büyük (518/623 satır) entegrasyon katmanı.",
+      "nodeIds": [
+        "file:scripts/hercules-upload.py",
+        "file:scripts/machineryline-upload.py"
+      ]
+    },
+    {
+      "id": "layer:social-media-publishing",
+      "name": "Sosyal Medya Yayın",
+      "description": "Facebook + Instagram (Graph API) + LinkedIn (Marketing API + browser fallback) çoklu platform yayın motoru, post/story görsel üretici, LinkedIn Ads kampanya CLI'ı ve Postmark mail-blast helper'ı.",
+      "nodeIds": [
+        "file:scripts/sosyal-medya-post.py",
+        "file:scripts/yayin-motoru.py",
+        "file:scripts/post-gorsel.py",
+        "file:linkedin-ads.py",
+        "file:mail-blast.py"
+      ]
+    },
+    {
+      "id": "layer:linkedin-oauth-and-tokens",
+      "name": "LinkedIn OAuth ve Token Yönetimi",
+      "description": "LinkedIn `w_member_social` paylaşım scope'lu ve `r_ads`/`rw_ads` advertising scope'lu OAuth token alma akışları ile refresh-token döngüsünü `.env`'e geri yazan token bakım script'leri.",
+      "nodeIds": [
+        "file:scripts/get_linkedin_share_token.py",
+        "file:scripts/get_linkedin_advertising_token.py",
+        "file:scripts/refresh_linkedin_advertising_token.py"
+      ]
+    },
+    {
+      "id": "layer:utility-and-maintenance",
+      "name": "Yardımcı ve Bakım (Utility)",
+      "description": "gstcranes.com envanter scraper'ı (`site-taraci.py`), eski log dosyalarını yaşına göre silen bakım script'i ve `.env` yükleme teşhis testi — kesişen yardımcı operasyon araçları.",
+      "nodeIds": [
+        "file:scripts/site-taraci.py",
+        "file:scripts/log-temizle.py",
+        "file:scripts/test_env.py"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Genel Bakış ve CLAUDE.md Runbook",
+      "description": "Tur, repo'nun operasyonel anayasası olan CLAUDE.md ile başlıyor — projenin iki ana workflow'unu (A: yeni vinç listeleme `vinc-yayinla.py` ile Hercules + Machinery Line + sosyal medya; B: günlük marketing `site-taraci.py` → `icerik-uretici.py` → `yayin-motoru.py`) ve kritik kuralları (Türkiye worldwide delivery mesajında geçmez, tüm post text İngilizce, KURAL #10 brand color #E8A430 amber) tanımlar. `requirements.txt` ekosistemin Python bağımlılıklarını (Playwright, PIL/Pillow, OpenAI SDK, requests, python-dotenv) sabitlerken, `.env.example` Meta Graph API + LinkedIn OAuth + OpenAI + Adobe Firefly + Postmark credential şablonunu listeler. Bu üç dosyayı bir arada okumak, sonraki tüm script'lerin neden ve nasıl çalıştığını anlamak için temel oluşturur.",
+      "nodeIds": [
+        "document:CLAUDE.md",
+        "config:requirements.txt",
+        "config:.env.example"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Strateji ve Redesign Notları (superpowers)",
+      "description": "`docs/superpowers/` altındaki üç doküman, pipeline'ın tasarım kararlarının kalıcı kaynağıdır. 986 satırlık 2026-04-14 implementation plan, `compose_openai_*` pipeline'ının 3-stil (A koyu / B amber / C beyaz) yol haritasını çizer; aynı tarihli spec ise premium layout kurallarını ve KURAL #10 amber paletini bağlayıcı kılar. Operations dashboard spec'i ise yayın takibi ve içerik pipeline durumu için referans tasarımdır. Bu dokümanlar, ilerideki composer ve yayın script'lerinin neden bu şekilde yazıldığını açıklar.",
+      "nodeIds": [
+        "document:docs/superpowers/plans/2026-04-14-social-media-post-redesign.md",
+        "document:docs/superpowers/specs/2026-04-14-social-media-post-redesign.md",
+        "document:docs/superpowers/specs/2026-04-15-operations-dashboard-design.md"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Setup Kılavuzları — Adobe Firefly, Sosyal Medya, Cowork",
+      "description": "Pipeline'ı çalıştırmadan önce gereken üç kurulum kılavuzu burada toplanır. ADOBE_SETUP.md, `gorsel-hazirla.py` script'inin Adobe Firefly generative remove (watermark/yazı silme) özelliği için Developer Console'da credential üretme adımlarını anlatır. SOCIAL_SETUP.md, Meta (Facebook + Instagram Business) ve LinkedIn için Page/IG hesabı + token üretim adımlarını listeler — `sosyal-medya-post.py`'in ön gereksinimidir. COWORK_INTEGRATION.md ise vinç yedek parça pazarı Cowork ile sosyal medya akışı arasındaki köprüyü tanımlar. Bu üçü olmadan API çağrıları başarısız olur.",
+      "nodeIds": [
+        "document:ADOBE_SETUP.md",
+        "document:SOCIAL_SETUP.md",
+        "document:COWORK_INTEGRATION.md"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Yayın Orchestrator — vinc-yayinla.py",
+      "description": "Step 1'deki CLAUDE.md'nin Workflow A'sının kalbi: yeni bir vinç geldiğinde Hercules + Machinery Line + sosyal medya adımlarını sırayla çalıştıran orchestrator. `--dry-run`, `--skip-images`, `--only-steps` opsiyonlarıyla esnek; her adımı bağımsız çalıştırabilir veya tüm zinciri başlatabilir. Ardışık olarak alt-script'leri (gorsel-hazirla → hercules-upload → machineryline-upload → sosyal-medya-post) tetiklediği için, sonraki adımlarda göreceğimiz her özelleşmiş script'in bu orchestrator tarafından nasıl çağrıldığını anlamak için referans noktasıdır.",
+      "nodeIds": [
+        "file:scripts/vinc-yayinla.py"
+      ],
+      "languageLesson": "Python orchestrator pattern: `subprocess.run([sys.executable, 'script.py', ...args])` ile alt-script'ler çağrılır. `argparse` ile `--dry-run` ve `--only` gibi flag'ler, her adımın bağımsız test edilebilmesi için merkezi şekilde yönetilir. Bu pattern, pipeline'ın hem bütün hem de parça olarak çalıştırılabilmesini sağlar."
+    },
+    {
+      "order": 5,
+      "title": "Photo Prep — gorsel-hazirla.py",
+      "description": "630 satırlık fotoğraf ön-işleme pipeline'ı. Adobe Firefly generative remove API'sı ile vinç fotoğraflarındaki watermark ve yazıları temizler, EAST text detection ile mask üretir, sonra hem web (1920×1080) hem sosyal medya (1080×1080, 1080×1350) formatlarına export eder. Step 4'teki orchestrator'ın ilk adımı budur — sonraki composer'lar ve marketplace upload'ları temiz görsellere ihtiyaç duyduğu için pipeline'ın kalitesi büyük ölçüde buradan başlar. Fan-in skoru 5: pipeline'da çok kullanılan bir bağımlılık.",
+      "nodeIds": [
+        "file:scripts/gorsel-hazirla.py"
+      ],
+      "languageLesson": "PIL (Pillow): `Image.open() → convert('RGB') → resize((w,h), Image.LANCZOS)` pattern'i, vinç fotoğrafları için tipik dönüştürme yoludur. LANCZOS resampling, küçültme sırasında detay kaybını minimize eder. Adobe Firefly API gibi external image API'ler de input/output olarak hep PIL Image üzerinden çalışır, bu yüzden bu kütüphane projenin görsel omurgasıdır."
+    },
+    {
+      "order": 6,
+      "title": "OpenAI gpt-image-2 Broşür Pipeline (3 stil + story)",
+      "description": "2026-05-17 itibarıyla repo'nun en kritik pipeline'larından biri: OpenAI `gpt-image-2` modeli ile tek seferde premium 1080×1350 post ve 1080×1920 story görseli üretir. `compose_openai_variants.py` üç stili (A koyu / B amber / C beyaz) tek dosyadan; `compose_openai_gptimage2.py` tek varyantı; `compose_openai_story_b.py` ise story formatında amber B varyantını üretir. Step 2'deki redesign spec'inin direkt implementasyonudur. KURAL #10 amber palet B varyantında, KURAL #12 image input preserve ise üç dosyanın da prompt'unda \"CRITICAL PHOTO RULES\" bloğu olarak yaşar — vinç fotoğrafının başka bir vince dönüştürülmesi yasaktır.",
+      "nodeIds": [
+        "file:scripts/compose_openai_variants.py",
+        "file:scripts/compose_openai_gptimage2.py",
+        "file:scripts/compose_openai_story_b.py"
+      ],
+      "languageLesson": "OpenAI `gpt-image-2` `/v1/images/edits` endpoint'i, input image + prompt alır ve modifiye edilmiş bir görsel döner. Image preserve garantisi modelin doğal davranışı değildir — prompt mühendisliği ile (\"ABSOLUTE CONSTRAINT: Do NOT replace, redraw, or alter the crane\") zorlanır. Bu yüzden her composer'ın prompt'unda 5 zorunlu blok (CRITICAL PHOTO RULES, brand palette, layout grid, typography, contact info) vardır."
+    },
+    {
+      "order": 7,
+      "title": "Deprecated PIL/HTML Fallback Composer'ları",
+      "description": "OpenAI pipeline'ı (Step 6) yerine geçmeden önce kullanılan template tabanlı composer'lar burada toplanır — `compose_pil_premium.py` PIL ile post+story render eder, `compose_style_a.py` koyu stil HTML template'i Playwright screenshot ile görsele çevirir, `post-gorsel.py` ise post/story HTML template'lerini Playwright ile render eden ana eski yaklaşımdır. Hâlâ repo'da duruyorlar çünkü OpenAI quota tükenirse veya offline çalışmak gerekirse fallback olarak kullanılabilirler; aynı zamanda Step 6'daki yeni pipeline'ın neden gerekli olduğunu (template'in yetersiz kaldığı yerleri) gösteren tarihi referanslardır.",
+      "nodeIds": [
+        "file:scripts/compose_pil_premium.py",
+        "file:scripts/compose_style_a.py",
+        "file:scripts/post-gorsel.py"
+      ]
+    },
+    {
+      "order": 8,
+      "title": "İçerik Üretici — icerik-uretici.py",
+      "description": "439 satırlık post text + görsel üreticisi — CLAUDE.md'deki Workflow B'nin (daily marketing) merkezi. `--type sale|buy|sold|wanted` flag'iyle dört farklı içerik tipini üretir, ülkeye göre caption kombinasyonları kurar, OpenAI yedeği olarak `fallback_text` ile fail-safe sağlar. \"Sabah postunu at\" denildiğinde `site-taraci.py` ile envanteri tazeledikten sonra çağrılan ilk script budur; ürettiği görsel + metin önizleme olarak kullanıcıya gösterilip onay alındıktan sonra `yayin-motoru.py`'ye devredilir.",
+      "nodeIds": [
+        "file:scripts/icerik-uretici.py"
+      ]
+    },
+    {
+      "order": 9,
+      "title": "Marketplace Upload Adapter'ları — Hercules + Machinery Line",
+      "description": "Step 4 orchestrator'ının vinç ilanını canlıya alan iki büyük adapter'ı. `hercules-upload.py` (518 satır) Hercules AI marketplace'e Playwright ile başlık + AI-üretilen açıklama + fotoğrafları yükler ve generation tamamlanmasını polling loop ile bekler. `machineryline-upload.py` (623 satır) ise machineryline.info'ya yükleme yaparken 2026-05-17 kalıcı fix ile `body_model`, `protivoves_kg` (counterweight), `kilometrag` (mileage), `udlinitel_strely_m` (jib) ve `main_boom_length` alanlarını otomatik doldurur. İkisi de Chrome profil ile local'de çalışır — cloud'dan çalıştırmak mümkün değildir.",
+      "nodeIds": [
+        "file:scripts/hercules-upload.py",
+        "file:scripts/machineryline-upload.py"
+      ],
+      "languageLesson": "Playwright Python: `sync_playwright()` ile `browser_type.launch_persistent_context(user_data_dir=...)` pattern'i, login cookie'lerini ve Chrome profilini saklı tutar. Bu sayede her seferinde manuel giriş yapmak gerekmez. `page.wait_for_selector(...) → page.fill(...) → page.click(...)` üçlüsü form otomasyonunun temelidir; özellikle marketplace gibi DOM'u sık değişen sitelerde `wait_for_selector` ile timing race'lerinden korunulur."
+    },
+    {
+      "order": 10,
+      "title": "Sosyal Medya Yayın — Facebook + Instagram + LinkedIn",
+      "description": "Repo'nun en kapsamlı dosyası `sosyal-medya-post.py` (979 satır) Facebook + Instagram (Graph API + browser fallback) + LinkedIn (Marketing API + browser fallback) çoklu platform yayın helper'ıdır; carousel + story + post hepsini destekler. Daily marketing'in yayın motoru `yayin-motoru.py` (489 satır) ise FB/IG/LinkedIn için low-level API helper'larını + dry-run desteğini içerir. `linkedin-ads.py` `r3_advertising` scope token ile sponsored kampanya kurar, `mail-blast.py` ise Postmark üzerinden info@gstcranes.com outbound toplu email gönderir. Bu dörtlü, içerik üretildikten sonra dağıtım katmanını oluşturur.",
+      "nodeIds": [
+        "file:scripts/sosyal-medya-post.py",
+        "file:scripts/yayin-motoru.py",
+        "file:linkedin-ads.py",
+        "file:mail-blast.py"
+      ],
+      "languageLesson": "Meta Graph API token tipleri: short-lived user token (1 saat) → long-lived user token (60 gün) → permanent page token (sınırsız). GST Cranes Page Token kalıcıdır, bu yüzden FB/IG sorunsuz çalışır. LinkedIn ise OAuth 2.0 refresh token döngüsü gerektirir (~60 gün), bu yüzden Step 11'deki token yönetimi script'leri kritiktir."
+    },
+    {
+      "order": 11,
+      "title": "LinkedIn OAuth ve Token Yönetimi",
+      "description": "LinkedIn token'ları ~60 günde bir yenilenmek zorunda olduğu için pipeline'ın sürdürülebilirliği bu üç script'e bağlı. `get_linkedin_share_token.py` `w_member_social` + `r_liteprofile` scope'lu kişisel paylaşım token'ını üretir (Step 10'daki `sosyal-medya-post.py` bunu kullanır); `get_linkedin_advertising_token.py` `r_ads`/`rw_ads` scope'lu kampanya token'ı için yerel HTTP redirect server ile authorization code'u yakalar; `refresh_linkedin_advertising_token.py` ise `refresh_token` ile token'ı yenileyip `.env` dosyasındaki değerleri günceller. Bu üçü olmadan LinkedIn yayını ~60 gün sonra sessizce ölür.",
+      "nodeIds": [
+        "file:scripts/get_linkedin_share_token.py",
+        "file:scripts/get_linkedin_advertising_token.py",
+        "file:scripts/refresh_linkedin_advertising_token.py"
+      ],
+      "languageLesson": "OAuth 2.0 Authorization Code flow: (1) kullanıcı `authorize_url`'e yönlendirilir, (2) callback URL'e `code` parametresi ile geri döner, (3) `code` + `client_secret` ile `access_token` + `refresh_token` alınır. Yerel CLI'da bu callback'i yakalamak için kısa süreli `http.server` ile loopback URL (`http://localhost:8000/callback`) açmak yaygın bir pattern'dir."
+    },
+    {
+      "order": 12,
+      "title": "Envanter Scraper ve Bakım Script'leri",
+      "description": "Pipeline'ın etrafını tamamlayan üç yardımcı script. `site-taraci.py` gstcranes.com'u Playwright ile tarayıp `data/envanter.json`'unu günceller ve yeni eklenen / kaldırılan vinçleri diff olarak raporlar — CLAUDE.md'deki \"sabah rutini\" Step 8'deki içerik üreticisini çağırmadan önce bunu çalıştırır. `log-temizle.py` 30 günden eski log dosyalarını siler. `test_env.py` ise `.env` dosyasının doğru yüklenip yüklenmediğini test eder — yeni cihaza setup yapan biri ilk teşhis için bunu çalıştırır. Bu üçü pipeline'ın günlük sağlığını korur ve turu kapatan operasyonel katmandır.",
+      "nodeIds": [
+        "file:scripts/site-taraci.py",
+        "file:scripts/log-temizle.py",
+        "file:scripts/test_env.py"
+      ]
+    }
+  ]
+}

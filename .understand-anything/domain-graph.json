@@ -1,0 +1,1324 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "gst-cranes",
+    "languages": ["python", "config", "markdown"],
+    "frameworks": ["Playwright", "Pillow (PIL)", "Requests", "python-dotenv", "OpenAI gpt-image-2"],
+    "description": "GST Cranes ikinci el mobil vinç (Liebherr LTM / Tadano ATF / Grove GMK / Demag AC) listeleme ve sosyal medya otomasyon platformu. Python script-tabanlı orchestrator (vinc-yayinla.py) yeni vinç ilanlarını Hercules AI + Machinery Line marketplace'lerine yükler ve Facebook/Instagram/LinkedIn'de yayınlar; OpenAI gpt-image-2 ile 3 stil (A koyu / B amber / C beyaz) broşür + 1080×1920 story üretir.",
+    "analyzedAt": "2026-05-22T00:00:00.000Z",
+    "gitCommitHash": "b472ccd18d3c810484dd37f61b05dcc1bc31145c"
+  },
+  "nodes": [
+    {
+      "id": "domain:listing-orchestrator",
+      "type": "domain",
+      "name": "Vinç Listeleme Orchestrator (End-to-End)",
+      "summary": "Yeni vinç klasöründen (yeni-vinc/<crane>/bilgiler.txt + photos) başlayıp photo prep → broşür gen → Hercules upload → Machineryline upload → sosyal medya yayını → arşiv akışını uçtan uca yöneten ana orchestrator. vinc-yayinla.py içinde her adımı subprocess olarak çalıştırır, dry-run + only-steps + skip-images flag'lerini destekler ve markdown rapor üretir.",
+      "tags": ["orchestrator", "entry-point", "pipeline", "yeni-vinç"],
+      "complexity": "complex",
+      "domainMeta": {
+        "entities": ["yeni-vinc klasörü", "bilgiler.txt", "publish_record", "arşiv klasörü", "rapor.md"],
+        "businessRules": [
+          "Her vinç klasörü 'yeni-vinc/<slug>/' altında bilgiler.txt + photos/ içermelidir",
+          "Adımlar sıralı yürür: photo prep → broşür gen → owner pick → Hercules → Machineryline → sosyal medya",
+          "Yayın tamamlanan vinç 'arsiv/' altına taşınır",
+          "Her run için publish_record + markdown rapor saklanır"
+        ],
+        "crossDomainInteractions": [
+          "Broşür ve Görsel Üretim domain'ini photo prep + 3 stil + story için tetikler",
+          "Marketplace Upload Adapter'larını (Hercules + Machineryline) subprocess olarak çağırır",
+          "Sosyal Medya Yayın domain'ini son adım olarak çağırır"
+        ]
+      }
+    },
+    {
+      "id": "domain:image-generation",
+      "type": "domain",
+      "name": "Broşür ve Görsel Üretim (OpenAI gpt-image-2)",
+      "summary": "Vinç fotoğraflarından premium post broşürü (1080×1350) ve story (1080×1920) üreten görsel pipeline. OpenAI gpt-image-2 ile 3 stil varyantı (A koyu / B amber default / C beyaz), KURAL #10 amber #E8A430 marka rengi ve KURAL #12 CRITICAL PHOTO RULES image preserve prompt bloklarını uygular. gorsel-hazirla.py ile Adobe Firefly + EAST OCR photo prep, PIL composer offline fallback, vinç başına ~$0.95 maliyet.",
+      "tags": ["openai", "gpt-image-2", "broşür", "story", "kural-10", "kural-12"],
+      "complexity": "complex",
+      "domainMeta": {
+        "entities": ["3 stil varyantı (A/B/C)", "story 1080×1920", "post 1080×1350", "Adobe Firefly mask", "EAST text region", "amber palet #E8A430"],
+        "businessRules": [
+          "KURAL #10: amber #E8A430 marka rengi (Stil B default), kırmızı yasak",
+          "KURAL #12: image input preserve — composite fallback prompt block zorunlu",
+          "3 stil paralel üretilir, owner Style B'yi seçer (default)",
+          "Vinç başına maliyet ~$0.95 USD",
+          "Watermark/yazı EAST + Adobe Firefly generative_remove ile temizlenir"
+        ],
+        "crossDomainInteractions": [
+          "Orchestrator domain'i tarafından photo prep + 3 stil + story adımlarında tetiklenir",
+          "Sosyal Medya Yayın domain'i üretilen post + story görsellerini multi-platform yayınlar"
+        ]
+      }
+    },
+    {
+      "id": "domain:marketplace-upload",
+      "type": "domain",
+      "name": "Marketplace Upload Adapter'ları",
+      "summary": "Hercules AI ve Machinery Line (machineryline.info) marketplace'lerine Playwright tabanlı ilan yükleme adapter'ları. Hercules AI için CLAUDE for Chrome destekli prompt + form fill; Machinery Line için 2026-05-17 kalıcı fix ile body_model + protivoves_kg (counterweight) + kilometrag (mileage) + udlinitel_strely_m (jib) + main_boom_length alan eşlemesi.",
+      "tags": ["playwright", "marketplace", "hercules", "machineryline", "upload"],
+      "complexity": "complex",
+      "domainMeta": {
+        "entities": ["Hercules AI ilan formu", "Machinery Line ilan formu", "ilan açıklaması (AI-generated)", "photo upload", "spec field map"],
+        "businessRules": [
+          "Hercules: AI açıklama üretimi vinç bilgilerinden prompt ile",
+          "Machinery Line spec fields: body_model + protivoves_kg + kilometrag + udlinitel_strely_m + main_boom_length",
+          "Tüm post text İngilizce (Türkiye worldwide delivery'de geçmez)",
+          "Generation tamamlanmasını bekleyen polling loop (Hercules)"
+        ],
+        "crossDomainInteractions": [
+          "Orchestrator tarafından subprocess olarak çağrılır",
+          "Site Tarama domain'i ile envanter eşleşmesi (publish edilen vinçler envanterde takip edilir)"
+        ]
+      }
+    },
+    {
+      "id": "domain:social-media-publishing",
+      "type": "domain",
+      "name": "Sosyal Medya Yayın (FB/IG/LinkedIn)",
+      "summary": "Facebook Page (Graph API + browser fallback), Instagram Business (Graph API carousel), LinkedIn (UGC + Marketing API) multi-platform yayın katmanı. sosyal-medya-post.py (979 satır) yeni vinç post + story + carousel yayınlar; yayin-motoru.py (489 satır) günlük marketing low-level publish helper'ları sağlar. WhatsApp CTA + hashtag standartları post içeriğinde zorunlu.",
+      "tags": ["facebook", "instagram", "linkedin", "multi-platform", "graph-api", "ugc"],
+      "complexity": "complex",
+      "domainMeta": {
+        "entities": ["Facebook Page post", "Instagram carousel", "Instagram story", "LinkedIn UGC post", "WhatsApp CTA", "caption + hashtag bloğu"],
+        "businessRules": [
+          "Her post İngilizce caption + WhatsApp CTA + hashtag içerir",
+          "Instagram carousel 2-10 görsel arasında",
+          "Facebook multi-photo: published=false + attached_media batch pattern",
+          "Browser fallback API başarısız olursa devreye girer",
+          "LinkedIn paylaşım için kişisel share token, ads için ayrı advertising token"
+        ],
+        "crossDomainInteractions": [
+          "Broşür/Görsel Üretim domain'inden post + story görsellerini alır",
+          "İçerik Üretimi domain'inden caption + WhatsApp CTA + hashtag alır",
+          "LinkedIn OAuth domain'inden geçerli token alır"
+        ]
+      }
+    },
+    {
+      "id": "domain:content-generation",
+      "type": "domain",
+      "name": "İçerik Üretimi (Caption + Hashtag + CTA)",
+      "summary": "Vinç specs + ülke + dil bilgisinden Facebook/Instagram için kısa caption, LinkedIn için uzun B2B caption, hashtag listesi ve WhatsApp CTA üretimi. icerik-uretici.py (439 satır) OpenAI tabanlı template render + fallback text; sosyal-medya-post.py içinde generate_social_caption + generate_linkedin_caption helper'ları.",
+      "tags": ["caption", "openai", "hashtag", "whatsapp-cta", "content"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entities": ["caption (kısa/uzun)", "hashtag listesi", "WhatsApp CTA link", "envanter.json kaydı", "dil seçimi (TR/EN)"],
+        "businessRules": [
+          "Tüm post text İngilizce (worldwide audience)",
+          "WhatsApp CTA her caption sonunda zorunlu",
+          "OpenAI başarısız olursa generate_fallback_text devreye girer",
+          "Envanter eşleşmesi isim ya da interaktif liste ile"
+        ],
+        "crossDomainInteractions": [
+          "Site Tarama domain'inden envanter.json okur",
+          "Sosyal Medya Yayın domain'ine caption + hashtag teslim eder"
+        ]
+      }
+    },
+    {
+      "id": "domain:linkedin-oauth",
+      "type": "domain",
+      "name": "LinkedIn OAuth ve Token Yönetimi",
+      "summary": "LinkedIn için üç ayrı OAuth flow: r_ads/rw_ads scope'lu advertising token (linkedin-ads.py için), w_member_social + r_liteprofile scope'lu share token (sosyal-medya-post.py için), ve refresh_token ile ~60 gün TTL'li access token yenileme. Yerel HTTP redirect server ile authorization code yakalama + .env dosyasına persist.",
+      "tags": ["linkedin", "oauth", "token", "advertising", "share"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entities": ["advertising token", "share token", "refresh token", "OAuthHandler HTTP server", ".env cache"],
+        "businessRules": [
+          "Access token TTL ~60 gün, refresh token uzun ömürlü",
+          "Refresh token ile yenileme .env dosyasını günceller",
+          "Advertising ve share scope'ları ayrı token'lar ister",
+          "Authorization code redirect localhost HTTP server ile yakalanır"
+        ],
+        "crossDomainInteractions": [
+          "Sosyal Medya Yayın domain'i share token ile LinkedIn UGC post yapar",
+          "LinkedIn Ads kampanya yönetimi advertising token kullanır"
+        ]
+      }
+    },
+    {
+      "id": "domain:inventory-scraping",
+      "type": "domain",
+      "name": "Site Tarama ve Envanter (Inventory Scraping)",
+      "summary": "gstcranes.com inventory sayfasını Playwright ile tarayıp data/envanter.json'u güncelleyen scraper. Yeni eklenen / kaldırılan vinçleri diff olarak raporlar, mevcut kayıtları korur. Günlük marketing post seçimi ve içerik üretimi bu envantere dayanır.",
+      "tags": ["scraper", "playwright", "envanter", "inventory", "diff"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entities": ["envanter.json", "crane card", "added/removed diff", "site URL listesi"],
+        "businessRules": [
+          "envanter.json tek doğru kaynak (single source of truth)",
+          "Diff: eski envanter ↔ yeni scrape (added vs removed)",
+          "Mevcut kayıtların update edilmiş alanları korunur",
+          "Title parsing brand + model + capacity çıkarır"
+        ],
+        "crossDomainInteractions": [
+          "İçerik Üretimi domain'i envanter.json'dan vinç seçer",
+          "Marketplace Upload domain'i ile çakışan vinçler diff'te tespit edilir"
+        ]
+      }
+    },
+    {
+      "id": "domain:linkedin-ads",
+      "type": "domain",
+      "name": "LinkedIn Ads ve Email Outreach",
+      "summary": "LinkedIn Marketing API üzerinden hedeflenmiş sponsored content kampanyası yaratma (linkedin-ads.py) ve Postmark üzerinden info@gstcranes.com outbound toplu email blast (mail-blast.py). Marketing/B2B outreach amaçlı yan kanallar.",
+      "tags": ["linkedin-ads", "campaign", "email", "postmark", "outreach"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entities": ["LinkedIn campaign group", "sponsored content campaign", "target audience", "Postmark batch", "info@gstcranes.com"],
+        "businessRules": [
+          "LinkedIn kampanyaları için r3_advertising scope token zorunlu",
+          "Postmark batch /email/batch endpoint'i kullanır",
+          "info@gstcranes.com outbound sender",
+          "Bütçe + target audience parametre olarak alınır"
+        ],
+        "crossDomainInteractions": [
+          "LinkedIn OAuth domain'inden advertising token alır"
+        ]
+      }
+    },
+    {
+      "id": "domain:maintenance",
+      "type": "domain",
+      "name": "Bakım ve Yardımcı (Maintenance)",
+      "summary": "Log rotation (log-temizle.py: mtime > N gün dosyaları siler) ve env değişken doğrulama (test_env.py) yardımcı script'leri. Operasyonel sağlık ve env hijyeni için kullanılır.",
+      "tags": ["maintenance", "log-cleanup", "env-check", "utility"],
+      "complexity": "simple",
+      "domainMeta": {
+        "entities": ["log dosyaları", ".env değişkenleri", "max_age_days", "--delete flag"],
+        "businessRules": [
+          "Log dosyaları belirli yaştan eski ise silinir",
+          "--delete flag olmadan sadece dry-run liste",
+          ".env doğrulama tüm gerekli secret'ları kontrol eder"
+        ],
+        "crossDomainInteractions": []
+      }
+    },
+    {
+      "id": "flow:new-crane-end-to-end",
+      "type": "flow",
+      "name": "Yeni Vinç Uçtan Uca Yayını",
+      "summary": "yeni-vinc/<crane>/ klasörü hazırlandıktan sonra vinc-yayinla.py orchestrator'ı tetiklenir; photo prep → broşür 3 stil → owner pick → Hercules upload → Machineryline upload → sosyal medya yayını → arşiv adımları sırayla yürütülür ve markdown rapor üretilir.",
+      "tags": ["orchestrator", "end-to-end", "yeni-vinç"],
+      "complexity": "complex",
+      "domainMeta": {
+        "entryPoint": "python scripts/vinc-yayinla.py [--auto] [--dry-run] [--only-steps ...]",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:orchestrator-step-runner",
+      "type": "flow",
+      "name": "Pipeline Adımı Çalıştırma (Step Runner)",
+      "summary": "Orchestrator içinde her adımı (hercules, machineryline, sosyal-medya) subprocess olarak çalıştıran, dry-run + skip-images + only-steps flag'lerini uygulayan ve publish_record toplayan iç akış.",
+      "tags": ["subprocess", "step-runner", "internal"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "vinc-yayinla.py:run_step",
+        "entryType": "manual"
+      }
+    },
+    {
+      "id": "flow:brochure-3-styles",
+      "type": "flow",
+      "name": "Broşür Üretme (3 Stil A/B/C)",
+      "summary": "compose_openai_variants.py CLI ile vinç fotoğrafından 3 paralel gpt-image-2 çağrısı yapılır; A (koyu), B (amber default), C (beyaz) stil prompt'ları KURAL #10 ve KURAL #12 bloklarıyla inşa edilir, çıktı PNG'ler diske yazılır.",
+      "tags": ["openai", "broşür", "3-stil", "varyant"],
+      "complexity": "complex",
+      "domainMeta": {
+        "entryPoint": "python scripts/compose_openai_variants.py --crane <slug> --style A|B|C",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:story-amber-1080-1920",
+      "type": "flow",
+      "name": "Story B Amber 1080×1920 Üretme",
+      "summary": "compose_openai_story_b.py story formatı için amber (Stil B) prompt'unu OpenAI gpt-image-2'ye gönderir; KURAL #12 image preserve bloklarını taşıyan layout ile story_b.png üretilir.",
+      "tags": ["openai", "story", "amber", "1080x1920"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "python scripts/compose_openai_story_b.py --crane <slug>",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:photo-prep",
+      "type": "flow",
+      "name": "Fotoğraf Ön-İşleme (EAST + Adobe Firefly)",
+      "summary": "gorsel-hazirla.py vinç klasöründeki tüm fotoğrafları okur, EAST text detection ile watermark/yazı maskı üretir, Adobe Firefly generative_remove API'siyle temizler, web ve sosyal export'larını üretir.",
+      "tags": ["photo-prep", "adobe-firefly", "east-ocr"],
+      "complexity": "complex",
+      "domainMeta": {
+        "entryPoint": "python scripts/gorsel-hazirla.py --crane <slug>",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:hercules-upload",
+      "type": "flow",
+      "name": "Hercules AI Upload",
+      "summary": "hercules-upload.py Playwright ile Hercules formuna login + AI prompt ile zengin açıklama + fotoğraf upload + publish; generation tamamlanmasını bekleyen polling loop ile yayın sonucunu döndürür.",
+      "tags": ["playwright", "hercules", "marketplace", "upload"],
+      "complexity": "complex",
+      "domainMeta": {
+        "entryPoint": "python scripts/hercules-upload.py --crane <slug>",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:machineryline-upload",
+      "type": "flow",
+      "name": "Machinery Line Upload",
+      "summary": "machineryline-upload.py Playwright ile machineryline.info formunu doldurur; body_model + protivoves_kg + kilometrag + udlinitel_strely_m + main_boom_length spec field'larını otomatik eşler, fotoğrafları yükler ve publish eder.",
+      "tags": ["playwright", "machineryline", "marketplace", "upload"],
+      "complexity": "complex",
+      "domainMeta": {
+        "entryPoint": "python scripts/machineryline-upload.py --crane <slug>",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:social-multi-platform",
+      "type": "flow",
+      "name": "Sosyal Medya Yayını (Multi-Platform)",
+      "summary": "sosyal-medya-post.py caption + görseller ile Facebook (multi-photo), Instagram (carousel), LinkedIn (UGC) platformlarına paralel yayın yapar; Graph API başarısız olursa browser fallback devreye girer.",
+      "tags": ["sosyal-medya", "facebook", "instagram", "linkedin", "carousel"],
+      "complexity": "complex",
+      "domainMeta": {
+        "entryPoint": "python scripts/sosyal-medya-post.py --crane <slug>",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:daily-marketing-post",
+      "type": "flow",
+      "name": "Günlük Marketing Post (Daily Marketing)",
+      "summary": "yayin-motoru.py envanterden vinç seçer veya CLI'den alır; publish_to_platforms ile FB post + IG post + IG story + LinkedIn post'u tek seferde yayınlar (low-level publish helper'ları).",
+      "tags": ["daily-marketing", "publisher", "post", "story"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "python scripts/yayin-motoru.py [--crane <slug>] [--platforms ...]",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:caption-and-cta",
+      "type": "flow",
+      "name": "Caption ve WhatsApp CTA Üretimi",
+      "summary": "icerik-uretici.py veya sosyal-medya-post.py içindeki generator'lar vinç specs + dil bilgisinden Facebook/Instagram için kısa caption, LinkedIn için uzun B2B caption, hashtag listesi ve WhatsApp CTA bloğu üretir; OpenAI başarısız olursa fallback template devreye girer.",
+      "tags": ["caption", "whatsapp-cta", "openai", "hashtag"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "python scripts/icerik-uretici.py [--crane <slug>] [--lang en|tr]",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:html-post-render",
+      "type": "flow",
+      "name": "HTML Template Post Görseli (Legacy)",
+      "summary": "post-gorsel.py HTML template + Playwright screenshot ile post + story varyantlarını render eden eski yaklaşım — OpenAI gpt-image-2 pipeline öncesi kullanılırdı, hâlâ template-tabanlı varyantlar için canlı.",
+      "tags": ["html-template", "playwright", "screenshot", "legacy"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "python scripts/post-gorsel.py --crane <slug>",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:linkedin-advertising-oauth",
+      "type": "flow",
+      "name": "LinkedIn Advertising Token OAuth",
+      "summary": "get_linkedin_advertising_token.py r_ads/rw_ads scope'lu OAuth flow yürütür; yerel HTTP redirect server ile authorization code'u yakalayıp access + refresh token'a çevirir.",
+      "tags": ["linkedin", "oauth", "advertising-token"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "python scripts/get_linkedin_advertising_token.py",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:linkedin-share-oauth",
+      "type": "flow",
+      "name": "LinkedIn Share Token OAuth",
+      "summary": "get_linkedin_share_token.py w_member_social + r_liteprofile scope'lu OAuth flow ile sosyal-medya-post.py için gereken kişisel paylaşım token'ını üretir.",
+      "tags": ["linkedin", "oauth", "share-token", "ugc"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "python scripts/get_linkedin_share_token.py",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:linkedin-token-refresh",
+      "type": "flow",
+      "name": "LinkedIn Token Refresh (60-Day TTL)",
+      "summary": "refresh_linkedin_advertising_token.py refresh_token ile yeni access token alır ve .env dosyasındaki LINKEDIN_ACCESS_TOKEN değerini günceller; fingerprint bilgisini log dosyasına yazar.",
+      "tags": ["linkedin", "oauth", "refresh", "env-update"],
+      "complexity": "simple",
+      "domainMeta": {
+        "entryPoint": "python scripts/refresh_linkedin_advertising_token.py",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:inventory-scrape",
+      "type": "flow",
+      "name": "Envanter Tarama ve Diff",
+      "summary": "site-taraci.py gstcranes.com inventory sayfasını Playwright ile tarar, crane card'ları extract eder, eski envanter.json ile diff alır (added/removed) ve dosyayı günceller.",
+      "tags": ["scraper", "playwright", "envanter", "diff"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "python scripts/site-taraci.py",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:linkedin-campaign-create",
+      "type": "flow",
+      "name": "LinkedIn Sponsored Campaign Yaratma",
+      "summary": "linkedin-ads.py campaign group + sponsored content campaign yaratır; target audience + bütçe + creative parametrelerini LinkedIn Marketing API'sine gönderir.",
+      "tags": ["linkedin-ads", "campaign", "sponsored-content"],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "python linkedin-ads.py --audience <slug> --budget <USD>",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:email-blast",
+      "type": "flow",
+      "name": "Postmark Email Blast",
+      "summary": "mail-blast.py subject + html + text + recipient listesini Postmark /email/batch endpoint'ine POST ederek info@gstcranes.com outbound toplu email gönderir.",
+      "tags": ["postmark", "email", "blast"],
+      "complexity": "simple",
+      "domainMeta": {
+        "entryPoint": "python mail-blast.py --subject ... --recipients ...",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:log-cleanup",
+      "type": "flow",
+      "name": "Log Temizleme",
+      "summary": "log-temizle.py belirtilen dizinde mtime'ı max_age_days'i aşan dosyaları bulup --delete flag ile siler; varsayılan dry-run mod sadece listeler.",
+      "tags": ["log", "cleanup", "maintenance"],
+      "complexity": "simple",
+      "domainMeta": {
+        "entryPoint": "python scripts/log-temizle.py [--delete] [--days N]",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "flow:env-validation",
+      "type": "flow",
+      "name": "Env Değişken Doğrulama",
+      "summary": "test_env.py .env dosyasındaki gerekli secret'ları (OpenAI, LinkedIn, Meta, Postmark vb.) doğrular ve eksik olanları raporlar.",
+      "tags": ["env-check", "validation", "secret"],
+      "complexity": "simple",
+      "domainMeta": {
+        "entryPoint": "python scripts/test_env.py",
+        "entryType": "cli"
+      }
+    },
+
+    {
+      "id": "step:new-crane-end-to-end:select-folder",
+      "type": "step",
+      "name": "Vinç Klasörü Seç",
+      "summary": "yeni-vinc/ altındaki klasörleri listele; --auto modda son klasörü, aksi halde kullanıcıdan interaktif seçim al.",
+      "tags": ["selector", "cli", "filesystem"],
+      "complexity": "simple",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [109, 157]
+    },
+    {
+      "id": "step:new-crane-end-to-end:photo-prep",
+      "type": "step",
+      "name": "Fotoğraf Ön-İşleme",
+      "summary": "gorsel-hazirla.py'yi subprocess olarak çağır; EAST + Adobe Firefly ile watermark/yazı temizle ve web + sosyal export üret.",
+      "tags": ["photo-prep", "subprocess"],
+      "complexity": "moderate",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [176, 232]
+    },
+    {
+      "id": "step:new-crane-end-to-end:brochure-3styles",
+      "type": "step",
+      "name": "3 Stil Broşür Üret",
+      "summary": "compose_openai_variants.py'i A/B/C stilleri için paralel çalıştır; gpt-image-2 ile 3 PNG varyantı diske yaz.",
+      "tags": ["openai", "broşür", "subprocess"],
+      "complexity": "complex",
+      "filePath": "scripts/vinc-yayinla.py"
+    },
+    {
+      "id": "step:new-crane-end-to-end:story-render",
+      "type": "step",
+      "name": "Story B Amber Üret",
+      "summary": "compose_openai_story_b.py ile 1080×1920 amber story görselini üret.",
+      "tags": ["openai", "story", "subprocess"],
+      "complexity": "moderate",
+      "filePath": "scripts/vinc-yayinla.py"
+    },
+    {
+      "id": "step:new-crane-end-to-end:owner-pick",
+      "type": "step",
+      "name": "Owner Stil Seçimi",
+      "summary": "Owner 3 stil varyantından (default Stil B amber) yayın için final görseli seçer; orchestrator beklemede durur.",
+      "tags": ["manual", "owner-pick", "interactive"],
+      "complexity": "simple",
+      "filePath": "scripts/vinc-yayinla.py"
+    },
+    {
+      "id": "step:new-crane-end-to-end:hercules",
+      "type": "step",
+      "name": "Hercules Upload",
+      "summary": "hercules-upload.py'yi subprocess olarak çalıştır; Playwright ile Hercules formuna login + AI açıklama + foto upload + publish.",
+      "tags": ["playwright", "hercules", "subprocess"],
+      "complexity": "complex",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [176, 232]
+    },
+    {
+      "id": "step:new-crane-end-to-end:machineryline",
+      "type": "step",
+      "name": "Machinery Line Upload",
+      "summary": "machineryline-upload.py'yi subprocess olarak çalıştır; spec field'larını eşle, foto upload ve publish et.",
+      "tags": ["playwright", "machineryline", "subprocess"],
+      "complexity": "complex",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [176, 232]
+    },
+    {
+      "id": "step:new-crane-end-to-end:social-post",
+      "type": "step",
+      "name": "Sosyal Medya Yayını",
+      "summary": "sosyal-medya-post.py'i subprocess olarak çağır; FB + IG + LinkedIn paralel yayın yapılır.",
+      "tags": ["sosyal-medya", "subprocess"],
+      "complexity": "complex",
+      "filePath": "scripts/vinc-yayinla.py"
+    },
+    {
+      "id": "step:new-crane-end-to-end:archive",
+      "type": "step",
+      "name": "Vinç Klasörünü Arşivle",
+      "summary": "Yayın tamamlanan vinç klasörünü 'arsiv/' altına taşı, publish_record sakla.",
+      "tags": ["archive", "filesystem", "cleanup"],
+      "complexity": "simple",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [236, 250]
+    },
+    {
+      "id": "step:new-crane-end-to-end:generate-report",
+      "type": "step",
+      "name": "Markdown Rapor Üret",
+      "summary": "Tüm adım sonuçlarını ve publish_record'ları toplu markdown raporu olarak üret, log dizinine yaz.",
+      "tags": ["report", "markdown", "summary"],
+      "complexity": "simple",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [272, 311]
+    },
+
+    {
+      "id": "step:orchestrator-step-runner:parse-flags",
+      "type": "step",
+      "name": "CLI Flag'leri Parse Et",
+      "summary": "--auto, --dry-run, --skip-images, --only-steps gibi flag'leri argparse ile parse et.",
+      "tags": ["cli", "argparse"],
+      "complexity": "simple",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [321, 396]
+    },
+    {
+      "id": "step:orchestrator-step-runner:build-cmd",
+      "type": "step",
+      "name": "Subprocess Komutunu İnşa Et",
+      "summary": "Adıma göre subprocess komut listesini (script path + flag'ler) inşa et.",
+      "tags": ["subprocess", "command-builder"],
+      "complexity": "simple",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [176, 232]
+    },
+    {
+      "id": "step:orchestrator-step-runner:run-subprocess",
+      "type": "step",
+      "name": "Subprocess Çalıştır",
+      "summary": "Adımı subprocess.run ile çalıştır; dry-run modda sadece komutu yazdır.",
+      "tags": ["subprocess", "execute"],
+      "complexity": "simple",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [176, 232]
+    },
+    {
+      "id": "step:orchestrator-step-runner:collect-record",
+      "type": "step",
+      "name": "Publish Record Topla",
+      "summary": "Adımın stdout/stderr çıktısından publish_record (URL, post_id, vb.) bilgisini topla.",
+      "tags": ["record", "parse"],
+      "complexity": "moderate",
+      "filePath": "scripts/vinc-yayinla.py",
+      "lineRange": [253, 268]
+    },
+
+    {
+      "id": "step:brochure-3styles:read-bilgiler",
+      "type": "step",
+      "name": "bilgiler.txt Oku",
+      "summary": "Vinç klasöründeki bilgiler.txt'den brand + model + capacity + yıl + saat bilgilerini parse et.",
+      "tags": ["parse", "filesystem"],
+      "complexity": "simple",
+      "filePath": "scripts/compose_openai_variants.py"
+    },
+    {
+      "id": "step:brochure-3styles:specs-summary",
+      "type": "step",
+      "name": "Specs Özetini Üret",
+      "summary": "specs_summary fonksiyonu ile vinç bilgilerini OpenAI prompt'una geçecek kısa özete dönüştür.",
+      "tags": ["prompt", "specs"],
+      "complexity": "simple",
+      "filePath": "scripts/compose_openai_variants.py"
+    },
+    {
+      "id": "step:brochure-3styles:build-prompt-b",
+      "type": "step",
+      "name": "Stil B (Amber) Prompt Üret",
+      "summary": "prompt_b fonksiyonu ile KURAL #10 amber #E8A430 palet + KURAL #12 image preserve bloklarını içeren OpenAI prompt'unu inşa et.",
+      "tags": ["prompt-engineering", "kural-10", "kural-12"],
+      "complexity": "moderate",
+      "filePath": "scripts/compose_openai_variants.py",
+      "lineRange": [139, 164]
+    },
+    {
+      "id": "step:brochure-3styles:call-openai",
+      "type": "step",
+      "name": "OpenAI /v1/images/edits Çağrısı",
+      "summary": "call_openai fonksiyonu ile foto + prompt'u OpenAI gpt-image-2 endpoint'ine gönder, base64 çıktıyı PNG bytes'a çevir.",
+      "tags": ["openai", "api-call", "gpt-image-2"],
+      "complexity": "moderate",
+      "filePath": "scripts/compose_openai_variants.py",
+      "lineRange": [192, 211]
+    },
+    {
+      "id": "step:brochure-3styles:write-variants",
+      "type": "step",
+      "name": "3 PNG Varyantını Diske Yaz",
+      "summary": "Üretilen A/B/C PNG bytes'larını vinç klasörü altına post_a.png, post_b.png, post_c.png olarak kaydet.",
+      "tags": ["filesystem", "png", "output"],
+      "complexity": "simple",
+      "filePath": "scripts/compose_openai_variants.py",
+      "lineRange": [220, 252]
+    },
+
+    {
+      "id": "step:story-amber-1080-1920:build-story-prompt",
+      "type": "step",
+      "name": "Story Prompt İnşa Et",
+      "summary": "build_prompt fonksiyonu ile 1080×1920 story layout + amber palet + KURAL #12 image preserve bloğunu birleştir.",
+      "tags": ["prompt-engineering", "story", "amber"],
+      "complexity": "moderate",
+      "filePath": "scripts/compose_openai_story_b.py",
+      "lineRange": [42, 101]
+    },
+    {
+      "id": "step:story-amber-1080-1920:openai-call",
+      "type": "step",
+      "name": "OpenAI Story Üretimi",
+      "summary": "Vinç fotoğrafı + story prompt'u ile OpenAI gpt-image-2'ye çağrı yap, 1080×1920 amber story görselini al.",
+      "tags": ["openai", "story", "gpt-image-2"],
+      "complexity": "moderate",
+      "filePath": "scripts/compose_openai_story_b.py"
+    },
+    {
+      "id": "step:story-amber-1080-1920:save-story-b",
+      "type": "step",
+      "name": "story_b.png Kaydet",
+      "summary": "Üretilen story PNG'sini vinç klasörü altına story_b.png olarak yaz.",
+      "tags": ["filesystem", "png"],
+      "complexity": "simple",
+      "filePath": "scripts/compose_openai_story_b.py",
+      "lineRange": [106, 143]
+    },
+
+    {
+      "id": "step:photo-prep:load-photos",
+      "type": "step",
+      "name": "Fotoğrafları Yükle",
+      "summary": "process_crane_folder fonksiyonu ile vinç klasöründeki tüm raw fotoğrafları bellek/PIL Image'a yükle.",
+      "tags": ["filesystem", "pil"],
+      "complexity": "simple",
+      "filePath": "scripts/gorsel-hazirla.py",
+      "lineRange": [403, 489]
+    },
+    {
+      "id": "step:photo-prep:detect-text",
+      "type": "step",
+      "name": "EAST Text Detection",
+      "summary": "detect_text_regions + _decode_east fonksiyonları ile fotoğraf üzerinde watermark/yazı bölgelerini OCR mask olarak çıkar.",
+      "tags": ["east-ocr", "mask", "watermark"],
+      "complexity": "complex",
+      "filePath": "scripts/gorsel-hazirla.py"
+    },
+    {
+      "id": "step:photo-prep:firefly-remove",
+      "type": "step",
+      "name": "Adobe Firefly Generative Remove",
+      "summary": "AdobeFireflyClient ile OAuth authenticate + image upload + generative_remove operasyonunu mask üzerinden çağır.",
+      "tags": ["adobe-firefly", "api", "remove"],
+      "complexity": "complex",
+      "filePath": "scripts/gorsel-hazirla.py",
+      "lineRange": [105, 236]
+    },
+    {
+      "id": "step:photo-prep:export-web-social",
+      "type": "step",
+      "name": "Web ve Sosyal Export",
+      "summary": "Temizlenmiş fotoğrafları web/ ve sosyal/ alt klasörlerine boyut + kalite optimize edilmiş JPG olarak yaz.",
+      "tags": ["filesystem", "export", "jpg"],
+      "complexity": "moderate",
+      "filePath": "scripts/gorsel-hazirla.py"
+    },
+
+    {
+      "id": "step:hercules-upload:select-folder",
+      "type": "step",
+      "name": "Vinç Klasörü Seç",
+      "summary": "select_crane_folder fonksiyonu ile yeni-vinc/ altından upload edilecek klasörü interaktif veya --auto modda seç.",
+      "tags": ["cli", "selector"],
+      "complexity": "simple",
+      "filePath": "scripts/hercules-upload.py"
+    },
+    {
+      "id": "step:hercules-upload:generate-prompt",
+      "type": "step",
+      "name": "Hercules AI Prompt Üret",
+      "summary": "generate_hercules_prompt vinç bilgilerinden Hercules'in AI açıklama üreteci için zengin prompt inşa eder.",
+      "tags": ["prompt-engineering", "hercules"],
+      "complexity": "moderate",
+      "filePath": "scripts/hercules-upload.py",
+      "lineRange": [100, 128]
+    },
+    {
+      "id": "step:hercules-upload:playwright-login",
+      "type": "step",
+      "name": "Hercules Playwright Login + Form",
+      "summary": "run_hercules_upload Playwright ile login + başlık + AI prompt + foto upload + publish butonuna kadar formu yürütür.",
+      "tags": ["playwright", "browser-automation", "hercules"],
+      "complexity": "complex",
+      "filePath": "scripts/hercules-upload.py",
+      "lineRange": [161, 325]
+    },
+    {
+      "id": "step:hercules-upload:wait-generation",
+      "type": "step",
+      "name": "Generation Tamamlanmasını Bekle",
+      "summary": "_wait_for_generation polling loop ile Hercules AI'nın açıklama generation'ını tamamlamasını bekler.",
+      "tags": ["polling", "wait", "hercules"],
+      "complexity": "moderate",
+      "filePath": "scripts/hercules-upload.py"
+    },
+
+    {
+      "id": "step:machineryline-upload:select-folder",
+      "type": "step",
+      "name": "Vinç Klasörü Seç",
+      "summary": "select_crane_folder fonksiyonu ile upload edilecek vinç klasörünü seç.",
+      "tags": ["cli", "selector"],
+      "complexity": "simple",
+      "filePath": "scripts/machineryline-upload.py"
+    },
+    {
+      "id": "step:machineryline-upload:generate-description",
+      "type": "step",
+      "name": "Machinery Line Açıklama Üret",
+      "summary": "generate_description vinç bilgilerinden Machinery Line için yapılandırılmış ilan açıklaması üretir.",
+      "tags": ["content-generator", "machineryline"],
+      "complexity": "moderate",
+      "filePath": "scripts/machineryline-upload.py",
+      "lineRange": [102, 133]
+    },
+    {
+      "id": "step:machineryline-upload:fill-spec-fields",
+      "type": "step",
+      "name": "Spec Field'ları Doldur",
+      "summary": "Playwright ile body_model + protivoves_kg (counterweight) + kilometrag (mileage) + udlinitel_strely_m (jib) + main_boom_length alanlarını otomatik doldur.",
+      "tags": ["playwright", "spec-fields", "form-fill"],
+      "complexity": "complex",
+      "filePath": "scripts/machineryline-upload.py",
+      "lineRange": [165, 502]
+    },
+    {
+      "id": "step:machineryline-upload:upload-photos",
+      "type": "step",
+      "name": "Fotoğrafları Yükle",
+      "summary": "Vinç klasöründeki tüm fotoğrafları Machinery Line form'una upload et.",
+      "tags": ["playwright", "photo-upload"],
+      "complexity": "moderate",
+      "filePath": "scripts/machineryline-upload.py"
+    },
+    {
+      "id": "step:machineryline-upload:publish",
+      "type": "step",
+      "name": "İlanı Publish Et",
+      "summary": "Machinery Line form'unun publish butonuna bas, response'tan ilan URL'sini al.",
+      "tags": ["playwright", "publish"],
+      "complexity": "simple",
+      "filePath": "scripts/machineryline-upload.py"
+    },
+
+    {
+      "id": "step:social-multi-platform:check-creds",
+      "type": "step",
+      "name": "Credential Kontrolü",
+      "summary": "check_all_credentials FB/IG/LinkedIn token'larının .env'de mevcut ve geçerli olduğunu doğrular.",
+      "tags": ["credential", "validation"],
+      "complexity": "simple",
+      "filePath": "scripts/sosyal-medya-post.py"
+    },
+    {
+      "id": "step:social-multi-platform:generate-captions",
+      "type": "step",
+      "name": "Platform-Özel Caption Üret",
+      "summary": "generate_social_caption FB/IG için kısa caption, generate_linkedin_caption LinkedIn için B2B uzun caption üretir.",
+      "tags": ["caption", "facebook", "instagram", "linkedin"],
+      "complexity": "moderate",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [97, 117]
+    },
+    {
+      "id": "step:social-multi-platform:facebook-post",
+      "type": "step",
+      "name": "Facebook Multi-Photo Post",
+      "summary": "facebook_post_photos Meta Graph API ile published=false + attached_media batch pattern kullanarak multi-photo post yayınlar.",
+      "tags": ["facebook", "graph-api", "multi-photo"],
+      "complexity": "complex",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [250, 309]
+    },
+    {
+      "id": "step:social-multi-platform:instagram-carousel",
+      "type": "step",
+      "name": "Instagram Carousel Yayını",
+      "summary": "instagram_post_carousel ile 2-10 görseli IG Graph API üzerinden public URL upload + container + CAROUSEL container + media publish akışıyla yayınlar.",
+      "tags": ["instagram", "carousel", "graph-api"],
+      "complexity": "complex",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [312, 443]
+    },
+    {
+      "id": "step:social-multi-platform:linkedin-ugc",
+      "type": "step",
+      "name": "LinkedIn UGC Multi-Image Post",
+      "summary": "linkedin_upload_image + linkedin_post /ugcPosts endpoint'ine multi-image kişisel paylaşım yapar.",
+      "tags": ["linkedin", "ugc-post", "share"],
+      "complexity": "complex",
+      "filePath": "scripts/sosyal-medya-post.py",
+      "lineRange": [545, 607]
+    },
+    {
+      "id": "step:social-multi-platform:browser-fallback",
+      "type": "step",
+      "name": "Browser Fallback",
+      "summary": "Graph API başarısız olursa browser_post_facebook / browser_post_linkedin Playwright fallback devreye girer.",
+      "tags": ["browser-fallback", "playwright", "resilience"],
+      "complexity": "complex",
+      "filePath": "scripts/sosyal-medya-post.py"
+    },
+
+    {
+      "id": "step:daily-marketing-post:select-crane",
+      "type": "step",
+      "name": "Envanterden Vinç Seç",
+      "summary": "envanter.json'dan veya CLI argümanından yayınlanacak vinci seç.",
+      "tags": ["envanter", "selector"],
+      "complexity": "simple",
+      "filePath": "scripts/yayin-motoru.py"
+    },
+    {
+      "id": "step:daily-marketing-post:publish-fb-post",
+      "type": "step",
+      "name": "Facebook Post Yayını",
+      "summary": "publish_facebook_post low-level Graph API çağrısı ile FB Page'e post yayınlar.",
+      "tags": ["facebook", "post"],
+      "complexity": "moderate",
+      "filePath": "scripts/yayin-motoru.py"
+    },
+    {
+      "id": "step:daily-marketing-post:publish-ig-post",
+      "type": "step",
+      "name": "Instagram Post + Story",
+      "summary": "publish_instagram_post + publish_instagram_story IG Graph API üzerinden post ve story yayınlar.",
+      "tags": ["instagram", "post", "story"],
+      "complexity": "moderate",
+      "filePath": "scripts/yayin-motoru.py"
+    },
+    {
+      "id": "step:daily-marketing-post:publish-linkedin",
+      "type": "step",
+      "name": "LinkedIn Post Yayını",
+      "summary": "publish_linkedin_post UGC endpoint ile LinkedIn'e paylaşım yapar.",
+      "tags": ["linkedin", "post"],
+      "complexity": "moderate",
+      "filePath": "scripts/yayin-motoru.py"
+    },
+    {
+      "id": "step:daily-marketing-post:dispatch-all",
+      "type": "step",
+      "name": "Tüm Platformlara Dispatch",
+      "summary": "publish_to_platforms / post_to_all helper'ları seçili platform listesini dolaşarak her birine yayını dağıtır.",
+      "tags": ["dispatcher", "multi-platform"],
+      "complexity": "moderate",
+      "filePath": "scripts/yayin-motoru.py",
+      "lineRange": [381, 489]
+    },
+
+    {
+      "id": "step:caption-and-cta:select-crane",
+      "type": "step",
+      "name": "Vinç Seç ve Bilgi Yükle",
+      "summary": "select_crane envanter.json'dan isim eşleşmesiyle ya da interaktif liste ile vinci seçer ve bilgilerini yükler.",
+      "tags": ["selector", "envanter"],
+      "complexity": "simple",
+      "filePath": "scripts/icerik-uretici.py",
+      "lineRange": [61, 94]
+    },
+    {
+      "id": "step:caption-and-cta:render-template",
+      "type": "step",
+      "name": "Template Render",
+      "summary": "render_template vinç specs + dil + ülke parametrelerini template'e yerleştirir.",
+      "tags": ["template", "render"],
+      "complexity": "simple",
+      "filePath": "scripts/icerik-uretici.py"
+    },
+    {
+      "id": "step:caption-and-cta:openai-caption",
+      "type": "step",
+      "name": "OpenAI Caption Üret",
+      "summary": "generate_post_text OpenAI ile vinç + ülkeye özel sosyal medya caption üretir (TR/EN dil seçimli).",
+      "tags": ["openai", "caption", "content"],
+      "complexity": "moderate",
+      "filePath": "scripts/icerik-uretici.py",
+      "lineRange": [250, 343]
+    },
+    {
+      "id": "step:caption-and-cta:fallback-text",
+      "type": "step",
+      "name": "Fallback Text",
+      "summary": "OpenAI başarısız olursa generate_fallback_text template tabanlı caption üretir.",
+      "tags": ["fallback", "template"],
+      "complexity": "simple",
+      "filePath": "scripts/icerik-uretici.py"
+    },
+    {
+      "id": "step:caption-and-cta:append-cta",
+      "type": "step",
+      "name": "WhatsApp CTA + Hashtag Ekle",
+      "summary": "Caption sonuna WhatsApp CTA link bloğunu ve hashtag listesini ekle.",
+      "tags": ["whatsapp-cta", "hashtag"],
+      "complexity": "simple",
+      "filePath": "scripts/icerik-uretici.py"
+    },
+
+    {
+      "id": "step:html-post-render:find-best-photo",
+      "type": "step",
+      "name": "En İyi Fotoğrafı Bul",
+      "summary": "find_best_photo vinç klasöründeki fotoğraflardan template için en uygun olanı seçer.",
+      "tags": ["photo-select", "template"],
+      "complexity": "simple",
+      "filePath": "scripts/post-gorsel.py"
+    },
+    {
+      "id": "step:html-post-render:fill-template",
+      "type": "step",
+      "name": "HTML Template Doldur",
+      "summary": "fill_template + build_extra_specs_html ile vinç specs'i HTML template'e yerleştirir.",
+      "tags": ["html", "template"],
+      "complexity": "moderate",
+      "filePath": "scripts/post-gorsel.py"
+    },
+    {
+      "id": "step:html-post-render:playwright-screenshot",
+      "type": "step",
+      "name": "Playwright Screenshot",
+      "summary": "render_screenshots Playwright ile HTML'yi açıp post + story varyantlarını PNG olarak render eder.",
+      "tags": ["playwright", "screenshot"],
+      "complexity": "moderate",
+      "filePath": "scripts/post-gorsel.py"
+    },
+
+    {
+      "id": "step:linkedin-advertising-oauth:open-authorize",
+      "type": "step",
+      "name": "Authorize URL Aç",
+      "summary": "r_ads/rw_ads scope'lu authorize URL'sini browser'da aç ve kullanıcının izin vermesini bekle.",
+      "tags": ["oauth", "browser", "authorize"],
+      "complexity": "simple",
+      "filePath": "scripts/get_linkedin_advertising_token.py"
+    },
+    {
+      "id": "step:linkedin-advertising-oauth:local-redirect",
+      "type": "step",
+      "name": "Local HTTP Redirect Server",
+      "summary": "OAuthHandler yerel HTTP server ile authorization code'u yakalayan redirect endpoint'i sunar.",
+      "tags": ["http-server", "oauth", "redirect"],
+      "complexity": "moderate",
+      "filePath": "scripts/get_linkedin_advertising_token.py"
+    },
+    {
+      "id": "step:linkedin-advertising-oauth:exchange-token",
+      "type": "step",
+      "name": "Authorization Code → Access Token",
+      "summary": "Yakalanan authorization code'u LinkedIn token endpoint'ine post ederek access + refresh token al.",
+      "tags": ["oauth", "token-exchange"],
+      "complexity": "simple",
+      "filePath": "scripts/get_linkedin_advertising_token.py"
+    },
+    {
+      "id": "step:linkedin-advertising-oauth:write-env",
+      "type": "step",
+      "name": ".env Dosyasına Yaz",
+      "summary": "Yeni LINKEDIN_ACCESS_TOKEN + LINKEDIN_REFRESH_TOKEN değerlerini .env'e kaydet.",
+      "tags": ["env-update", "filesystem"],
+      "complexity": "simple",
+      "filePath": "scripts/get_linkedin_advertising_token.py"
+    },
+
+    {
+      "id": "step:linkedin-share-oauth:open-authorize",
+      "type": "step",
+      "name": "Share Authorize URL Aç",
+      "summary": "w_member_social + r_liteprofile scope'lu authorize URL'sini browser'da aç.",
+      "tags": ["oauth", "browser", "share-scope"],
+      "complexity": "simple",
+      "filePath": "scripts/get_linkedin_share_token.py"
+    },
+    {
+      "id": "step:linkedin-share-oauth:capture-code",
+      "type": "step",
+      "name": "Code Yakala + Token Al",
+      "summary": "OAuthHandler authorization code'u yakalar ve share token'ına çevirir.",
+      "tags": ["oauth", "token-exchange"],
+      "complexity": "moderate",
+      "filePath": "scripts/get_linkedin_share_token.py"
+    },
+    {
+      "id": "step:linkedin-share-oauth:write-share-env",
+      "type": "step",
+      "name": "Share Token'ı .env'e Yaz",
+      "summary": "LINKEDIN_SHARE_TOKEN değerini .env dosyasına kaydet, sosyal-medya-post.py için kullanılabilir hale getir.",
+      "tags": ["env-update", "filesystem"],
+      "complexity": "simple",
+      "filePath": "scripts/get_linkedin_share_token.py"
+    },
+
+    {
+      "id": "step:linkedin-token-refresh:read-refresh-token",
+      "type": "step",
+      "name": "Refresh Token Oku",
+      "summary": ".env dosyasından LINKEDIN_REFRESH_TOKEN değerini oku.",
+      "tags": ["env-read"],
+      "complexity": "simple",
+      "filePath": "scripts/refresh_linkedin_advertising_token.py"
+    },
+    {
+      "id": "step:linkedin-token-refresh:call-refresh-endpoint",
+      "type": "step",
+      "name": "LinkedIn Refresh Endpoint Çağrısı",
+      "summary": "Refresh token ile LinkedIn token endpoint'ine grant_type=refresh_token POST et, yeni access token al.",
+      "tags": ["oauth", "refresh", "api-call"],
+      "complexity": "moderate",
+      "filePath": "scripts/refresh_linkedin_advertising_token.py",
+      "lineRange": [51, 153]
+    },
+    {
+      "id": "step:linkedin-token-refresh:update-env",
+      "type": "step",
+      "name": ".env'i Güncelle ve Loglar",
+      "summary": "Yeni access token ile .env değerini güncelle, fingerprint bilgisini log dosyasına yaz.",
+      "tags": ["env-update", "log"],
+      "complexity": "simple",
+      "filePath": "scripts/refresh_linkedin_advertising_token.py"
+    },
+
+    {
+      "id": "step:inventory-scrape:playwright-scrape",
+      "type": "step",
+      "name": "Inventory Sayfasını Tara",
+      "summary": "scrape_inventory gstcranes.com inventory sayfasını Playwright ile açar ve crane card'larını DOM'dan extract eder.",
+      "tags": ["playwright", "scrape"],
+      "complexity": "moderate",
+      "filePath": "scripts/site-taraci.py",
+      "lineRange": [59, 110]
+    },
+    {
+      "id": "step:inventory-scrape:parse-title",
+      "type": "step",
+      "name": "Title Parse Et",
+      "summary": "parse_title her crane card title'ından brand + model + capacity'yi regex ile çıkarır.",
+      "tags": ["parse", "regex"],
+      "complexity": "simple",
+      "filePath": "scripts/site-taraci.py"
+    },
+    {
+      "id": "step:inventory-scrape:merge-diff",
+      "type": "step",
+      "name": "Diff ve Merge",
+      "summary": "merge_envanter eski envanter ↔ yeni scrape arasındaki added/removed kayıtları bulur ve mevcut update edilmiş alanları korur.",
+      "tags": ["diff", "merge"],
+      "complexity": "moderate",
+      "filePath": "scripts/site-taraci.py",
+      "lineRange": [317, 351]
+    },
+    {
+      "id": "step:inventory-scrape:write-json",
+      "type": "step",
+      "name": "envanter.json Yaz",
+      "summary": "Güncellenmiş envanter kayıtlarını data/envanter.json dosyasına persist et.",
+      "tags": ["filesystem", "json"],
+      "complexity": "simple",
+      "filePath": "scripts/site-taraci.py"
+    },
+
+    {
+      "id": "step:linkedin-campaign-create:build-campaign-group",
+      "type": "step",
+      "name": "Campaign Group Yarat",
+      "summary": "create_targeted_campaign LinkedIn Marketing API'sine campaign group POST eder.",
+      "tags": ["linkedin", "campaign-group"],
+      "complexity": "moderate",
+      "filePath": "linkedin-ads.py",
+      "lineRange": [13, 68]
+    },
+    {
+      "id": "step:linkedin-campaign-create:create-sponsored",
+      "type": "step",
+      "name": "Sponsored Content Campaign Yarat",
+      "summary": "Target audience + bütçe + creative parametreleriyle sponsored content campaign yaratır.",
+      "tags": ["linkedin", "sponsored-content", "campaign"],
+      "complexity": "moderate",
+      "filePath": "linkedin-ads.py"
+    },
+    {
+      "id": "step:linkedin-campaign-create:log-id",
+      "type": "step",
+      "name": "Campaign ID Log",
+      "summary": "Yaratılan campaign group + campaign ID'lerini stdout'a yaz ve takip için sakla.",
+      "tags": ["log", "id"],
+      "complexity": "simple",
+      "filePath": "linkedin-ads.py"
+    },
+
+    {
+      "id": "step:email-blast:build-payload",
+      "type": "step",
+      "name": "Email Payload İnşa Et",
+      "summary": "Subject + html + text + recipient listesini Postmark batch payload formatına dönüştür.",
+      "tags": ["email", "payload"],
+      "complexity": "simple",
+      "filePath": "mail-blast.py"
+    },
+    {
+      "id": "step:email-blast:postmark-call",
+      "type": "step",
+      "name": "Postmark /email/batch Çağrısı",
+      "summary": "blast fonksiyonu Postmark batch endpoint'ine POST eder, info@gstcranes.com sender ile toplu email gönderir.",
+      "tags": ["postmark", "email-send", "batch"],
+      "complexity": "simple",
+      "filePath": "mail-blast.py",
+      "lineRange": [8, 34]
+    },
+
+    {
+      "id": "step:log-cleanup:scan-dir",
+      "type": "step",
+      "name": "Dizini Tara",
+      "summary": "find_old_files belirtilen dizinde mtime'ı max_age_days'i aşan dosyaları listeler.",
+      "tags": ["filesystem", "scan"],
+      "complexity": "simple",
+      "filePath": "scripts/log-temizle.py",
+      "lineRange": [23, 32]
+    },
+    {
+      "id": "step:log-cleanup:delete-old",
+      "type": "step",
+      "name": "Eski Dosyaları Sil",
+      "summary": "--delete flag varsa eski dosyaları sil; aksi halde sadece dry-run liste.",
+      "tags": ["filesystem", "delete"],
+      "complexity": "simple",
+      "filePath": "scripts/log-temizle.py",
+      "lineRange": [38, 63]
+    },
+
+    {
+      "id": "step:env-validation:load-env",
+      "type": "step",
+      "name": ".env Yükle",
+      "summary": "python-dotenv ile .env dosyasını yükle.",
+      "tags": ["env", "load"],
+      "complexity": "simple",
+      "filePath": "scripts/test_env.py"
+    },
+    {
+      "id": "step:env-validation:check-required",
+      "type": "step",
+      "name": "Gerekli Secret'ları Doğrula",
+      "summary": "OpenAI + LinkedIn + Meta + Postmark + Adobe Firefly secret'larının tümünün set olduğunu kontrol et.",
+      "tags": ["validation", "secret-check"],
+      "complexity": "simple",
+      "filePath": "scripts/test_env.py"
+    },
+    {
+      "id": "step:env-validation:report-missing",
+      "type": "step",
+      "name": "Eksikleri Raporla",
+      "summary": "Set edilmemiş veya geçersiz secret'ları stdout'a raporla.",
+      "tags": ["report", "stdout"],
+      "complexity": "simple",
+      "filePath": "scripts/test_env.py"
+    }
+  ],
+  "edges": [
+    { "source": "domain:listing-orchestrator", "target": "flow:new-crane-end-to-end", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+    { "source": "domain:listing-orchestrator", "target": "flow:orchestrator-step-runner", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+
+    { "source": "domain:image-generation", "target": "flow:brochure-3-styles", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+    { "source": "domain:image-generation", "target": "flow:story-amber-1080-1920", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+    { "source": "domain:image-generation", "target": "flow:photo-prep", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+    { "source": "domain:image-generation", "target": "flow:html-post-render", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+
+    { "source": "domain:marketplace-upload", "target": "flow:hercules-upload", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+    { "source": "domain:marketplace-upload", "target": "flow:machineryline-upload", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+
+    { "source": "domain:social-media-publishing", "target": "flow:social-multi-platform", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+    { "source": "domain:social-media-publishing", "target": "flow:daily-marketing-post", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+
+    { "source": "domain:content-generation", "target": "flow:caption-and-cta", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+
+    { "source": "domain:linkedin-oauth", "target": "flow:linkedin-advertising-oauth", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+    { "source": "domain:linkedin-oauth", "target": "flow:linkedin-share-oauth", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+    { "source": "domain:linkedin-oauth", "target": "flow:linkedin-token-refresh", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+
+    { "source": "domain:inventory-scraping", "target": "flow:inventory-scrape", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+
+    { "source": "domain:linkedin-ads", "target": "flow:linkedin-campaign-create", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+    { "source": "domain:linkedin-ads", "target": "flow:email-blast", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+
+    { "source": "domain:maintenance", "target": "flow:log-cleanup", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+    { "source": "domain:maintenance", "target": "flow:env-validation", "type": "contains_flow", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:new-crane-end-to-end", "target": "step:new-crane-end-to-end:select-folder", "type": "flow_step", "direction": "forward", "weight": 0.1 },
+    { "source": "flow:new-crane-end-to-end", "target": "step:new-crane-end-to-end:photo-prep", "type": "flow_step", "direction": "forward", "weight": 0.2 },
+    { "source": "flow:new-crane-end-to-end", "target": "step:new-crane-end-to-end:brochure-3styles", "type": "flow_step", "direction": "forward", "weight": 0.3 },
+    { "source": "flow:new-crane-end-to-end", "target": "step:new-crane-end-to-end:story-render", "type": "flow_step", "direction": "forward", "weight": 0.4 },
+    { "source": "flow:new-crane-end-to-end", "target": "step:new-crane-end-to-end:owner-pick", "type": "flow_step", "direction": "forward", "weight": 0.5 },
+    { "source": "flow:new-crane-end-to-end", "target": "step:new-crane-end-to-end:hercules", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:new-crane-end-to-end", "target": "step:new-crane-end-to-end:machineryline", "type": "flow_step", "direction": "forward", "weight": 0.7 },
+    { "source": "flow:new-crane-end-to-end", "target": "step:new-crane-end-to-end:social-post", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:new-crane-end-to-end", "target": "step:new-crane-end-to-end:archive", "type": "flow_step", "direction": "forward", "weight": 0.9 },
+    { "source": "flow:new-crane-end-to-end", "target": "step:new-crane-end-to-end:generate-report", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:orchestrator-step-runner", "target": "step:orchestrator-step-runner:parse-flags", "type": "flow_step", "direction": "forward", "weight": 0.2 },
+    { "source": "flow:orchestrator-step-runner", "target": "step:orchestrator-step-runner:build-cmd", "type": "flow_step", "direction": "forward", "weight": 0.5 },
+    { "source": "flow:orchestrator-step-runner", "target": "step:orchestrator-step-runner:run-subprocess", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:orchestrator-step-runner", "target": "step:orchestrator-step-runner:collect-record", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:brochure-3-styles", "target": "step:brochure-3styles:read-bilgiler", "type": "flow_step", "direction": "forward", "weight": 0.2 },
+    { "source": "flow:brochure-3-styles", "target": "step:brochure-3styles:specs-summary", "type": "flow_step", "direction": "forward", "weight": 0.4 },
+    { "source": "flow:brochure-3-styles", "target": "step:brochure-3styles:build-prompt-b", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:brochure-3-styles", "target": "step:brochure-3styles:call-openai", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:brochure-3-styles", "target": "step:brochure-3styles:write-variants", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:story-amber-1080-1920", "target": "step:story-amber-1080-1920:build-story-prompt", "type": "flow_step", "direction": "forward", "weight": 0.3 },
+    { "source": "flow:story-amber-1080-1920", "target": "step:story-amber-1080-1920:openai-call", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:story-amber-1080-1920", "target": "step:story-amber-1080-1920:save-story-b", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:photo-prep", "target": "step:photo-prep:load-photos", "type": "flow_step", "direction": "forward", "weight": 0.2 },
+    { "source": "flow:photo-prep", "target": "step:photo-prep:detect-text", "type": "flow_step", "direction": "forward", "weight": 0.5 },
+    { "source": "flow:photo-prep", "target": "step:photo-prep:firefly-remove", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:photo-prep", "target": "step:photo-prep:export-web-social", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:hercules-upload", "target": "step:hercules-upload:select-folder", "type": "flow_step", "direction": "forward", "weight": 0.2 },
+    { "source": "flow:hercules-upload", "target": "step:hercules-upload:generate-prompt", "type": "flow_step", "direction": "forward", "weight": 0.5 },
+    { "source": "flow:hercules-upload", "target": "step:hercules-upload:playwright-login", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:hercules-upload", "target": "step:hercules-upload:wait-generation", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:machineryline-upload", "target": "step:machineryline-upload:select-folder", "type": "flow_step", "direction": "forward", "weight": 0.2 },
+    { "source": "flow:machineryline-upload", "target": "step:machineryline-upload:generate-description", "type": "flow_step", "direction": "forward", "weight": 0.4 },
+    { "source": "flow:machineryline-upload", "target": "step:machineryline-upload:fill-spec-fields", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:machineryline-upload", "target": "step:machineryline-upload:upload-photos", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:machineryline-upload", "target": "step:machineryline-upload:publish", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:social-multi-platform", "target": "step:social-multi-platform:check-creds", "type": "flow_step", "direction": "forward", "weight": 0.2 },
+    { "source": "flow:social-multi-platform", "target": "step:social-multi-platform:generate-captions", "type": "flow_step", "direction": "forward", "weight": 0.3 },
+    { "source": "flow:social-multi-platform", "target": "step:social-multi-platform:facebook-post", "type": "flow_step", "direction": "forward", "weight": 0.5 },
+    { "source": "flow:social-multi-platform", "target": "step:social-multi-platform:instagram-carousel", "type": "flow_step", "direction": "forward", "weight": 0.7 },
+    { "source": "flow:social-multi-platform", "target": "step:social-multi-platform:linkedin-ugc", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:social-multi-platform", "target": "step:social-multi-platform:browser-fallback", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:daily-marketing-post", "target": "step:daily-marketing-post:select-crane", "type": "flow_step", "direction": "forward", "weight": 0.2 },
+    { "source": "flow:daily-marketing-post", "target": "step:daily-marketing-post:publish-fb-post", "type": "flow_step", "direction": "forward", "weight": 0.4 },
+    { "source": "flow:daily-marketing-post", "target": "step:daily-marketing-post:publish-ig-post", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:daily-marketing-post", "target": "step:daily-marketing-post:publish-linkedin", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:daily-marketing-post", "target": "step:daily-marketing-post:dispatch-all", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:caption-and-cta", "target": "step:caption-and-cta:select-crane", "type": "flow_step", "direction": "forward", "weight": 0.2 },
+    { "source": "flow:caption-and-cta", "target": "step:caption-and-cta:render-template", "type": "flow_step", "direction": "forward", "weight": 0.4 },
+    { "source": "flow:caption-and-cta", "target": "step:caption-and-cta:openai-caption", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:caption-and-cta", "target": "step:caption-and-cta:fallback-text", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:caption-and-cta", "target": "step:caption-and-cta:append-cta", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:html-post-render", "target": "step:html-post-render:find-best-photo", "type": "flow_step", "direction": "forward", "weight": 0.3 },
+    { "source": "flow:html-post-render", "target": "step:html-post-render:fill-template", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:html-post-render", "target": "step:html-post-render:playwright-screenshot", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:linkedin-advertising-oauth", "target": "step:linkedin-advertising-oauth:open-authorize", "type": "flow_step", "direction": "forward", "weight": 0.2 },
+    { "source": "flow:linkedin-advertising-oauth", "target": "step:linkedin-advertising-oauth:local-redirect", "type": "flow_step", "direction": "forward", "weight": 0.5 },
+    { "source": "flow:linkedin-advertising-oauth", "target": "step:linkedin-advertising-oauth:exchange-token", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:linkedin-advertising-oauth", "target": "step:linkedin-advertising-oauth:write-env", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:linkedin-share-oauth", "target": "step:linkedin-share-oauth:open-authorize", "type": "flow_step", "direction": "forward", "weight": 0.3 },
+    { "source": "flow:linkedin-share-oauth", "target": "step:linkedin-share-oauth:capture-code", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:linkedin-share-oauth", "target": "step:linkedin-share-oauth:write-share-env", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:linkedin-token-refresh", "target": "step:linkedin-token-refresh:read-refresh-token", "type": "flow_step", "direction": "forward", "weight": 0.3 },
+    { "source": "flow:linkedin-token-refresh", "target": "step:linkedin-token-refresh:call-refresh-endpoint", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:linkedin-token-refresh", "target": "step:linkedin-token-refresh:update-env", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:inventory-scrape", "target": "step:inventory-scrape:playwright-scrape", "type": "flow_step", "direction": "forward", "weight": 0.3 },
+    { "source": "flow:inventory-scrape", "target": "step:inventory-scrape:parse-title", "type": "flow_step", "direction": "forward", "weight": 0.5 },
+    { "source": "flow:inventory-scrape", "target": "step:inventory-scrape:merge-diff", "type": "flow_step", "direction": "forward", "weight": 0.8 },
+    { "source": "flow:inventory-scrape", "target": "step:inventory-scrape:write-json", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:linkedin-campaign-create", "target": "step:linkedin-campaign-create:build-campaign-group", "type": "flow_step", "direction": "forward", "weight": 0.3 },
+    { "source": "flow:linkedin-campaign-create", "target": "step:linkedin-campaign-create:create-sponsored", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:linkedin-campaign-create", "target": "step:linkedin-campaign-create:log-id", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:email-blast", "target": "step:email-blast:build-payload", "type": "flow_step", "direction": "forward", "weight": 0.5 },
+    { "source": "flow:email-blast", "target": "step:email-blast:postmark-call", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:log-cleanup", "target": "step:log-cleanup:scan-dir", "type": "flow_step", "direction": "forward", "weight": 0.5 },
+    { "source": "flow:log-cleanup", "target": "step:log-cleanup:delete-old", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "flow:env-validation", "target": "step:env-validation:load-env", "type": "flow_step", "direction": "forward", "weight": 0.3 },
+    { "source": "flow:env-validation", "target": "step:env-validation:check-required", "type": "flow_step", "direction": "forward", "weight": 0.6 },
+    { "source": "flow:env-validation", "target": "step:env-validation:report-missing", "type": "flow_step", "direction": "forward", "weight": 1.0 },
+
+    { "source": "domain:listing-orchestrator", "target": "domain:image-generation", "type": "cross_domain", "direction": "forward", "description": "Orchestrator photo prep + 3 stil broşür + story üretimini bu domain'e subprocess olarak delege eder", "weight": 0.9 },
+    { "source": "domain:listing-orchestrator", "target": "domain:marketplace-upload", "type": "cross_domain", "direction": "forward", "description": "Orchestrator Hercules + Machineryline upload adapter'larını subprocess olarak çağırır", "weight": 0.9 },
+    { "source": "domain:listing-orchestrator", "target": "domain:social-media-publishing", "type": "cross_domain", "direction": "forward", "description": "Orchestrator yeni vinç yayın akışının son adımında sosyal medya domain'ini tetikler", "weight": 0.9 },
+    { "source": "domain:image-generation", "target": "domain:social-media-publishing", "type": "cross_domain", "direction": "forward", "description": "Üretilen post + story PNG'leri Facebook/Instagram/LinkedIn yayınında kullanılır", "weight": 0.8 },
+    { "source": "domain:content-generation", "target": "domain:social-media-publishing", "type": "cross_domain", "direction": "forward", "description": "Caption + hashtag + WhatsApp CTA blokları sosyal medya yayınına teslim edilir", "weight": 0.8 },
+    { "source": "domain:inventory-scraping", "target": "domain:content-generation", "type": "cross_domain", "direction": "forward", "description": "envanter.json içerik üretimi için vinç kaynağı olarak kullanılır", "weight": 0.7 },
+    { "source": "domain:inventory-scraping", "target": "domain:social-media-publishing", "type": "cross_domain", "direction": "forward", "description": "Günlük marketing post envanterden seçilen vinçlerle çalışır", "weight": 0.7 },
+    { "source": "domain:linkedin-oauth", "target": "domain:social-media-publishing", "type": "cross_domain", "direction": "forward", "description": "Share token LinkedIn UGC post için tüketilir", "weight": 0.7 },
+    { "source": "domain:linkedin-oauth", "target": "domain:linkedin-ads", "type": "cross_domain", "direction": "forward", "description": "Advertising token LinkedIn sponsored campaign yaratmak için tüketilir", "weight": 0.7 },
+    { "source": "domain:marketplace-upload", "target": "domain:image-generation", "type": "cross_domain", "direction": "forward", "description": "Marketplace upload adapter'ları temizlenmiş foto ve broşür çıktılarını photo prep + 3 stil flow'larından alır", "weight": 0.6 }
+  ],
+  "layers": [],
+  "tour": []
+}

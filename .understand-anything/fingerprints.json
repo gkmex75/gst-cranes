@@ -1,0 +1,3121 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "b472ccd18d3c810484dd37f61b05dcc1bc31145c",
+  "generatedAt": "2026-05-21T22:02:05.225Z",
+  "files": {
+    ".env.example": {
+      "filePath": ".env.example",
+      "contentHash": "f8730cf4662b5ae07941e10dab2c6a78854e18f9ea698a5d6717d6b40976c921",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "ADOBE_SETUP.md": {
+      "filePath": "ADOBE_SETUP.md",
+      "contentHash": "58cee760f040b14a06c4f39c0768dbe495ba180fb1570ca00510a862b5e26438",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 84,
+      "hasStructuralAnalysis": true
+    },
+    "CLAUDE.md": {
+      "filePath": "CLAUDE.md",
+      "contentHash": "bbb05b1acf6ba6b8fcf1a03473348267ff0ac3e600a763f10e70953c689e640e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 210,
+      "hasStructuralAnalysis": true
+    },
+    "COWORK_INTEGRATION.md": {
+      "filePath": "COWORK_INTEGRATION.md",
+      "contentHash": "cceb12790b2b8cc54597320fd6b0311cc5a24695d497a8368904b6337c8723f1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 113,
+      "hasStructuralAnalysis": true
+    },
+    "SOCIAL_SETUP.md": {
+      "filePath": "SOCIAL_SETUP.md",
+      "contentHash": "acaa030c082b87b9a6bc82e0fb8f4b41a46f970fd5f8c9799a5a0526e23822cd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 148,
+      "hasStructuralAnalysis": true
+    },
+    "docs/superpowers/plans/2026-04-14-social-media-post-redesign.md": {
+      "filePath": "docs/superpowers/plans/2026-04-14-social-media-post-redesign.md",
+      "contentHash": "aba32dc29b24b76d8663d26a71ec46d5197979a9ff2c0e05d00e525c1aa9f643",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 987,
+      "hasStructuralAnalysis": true
+    },
+    "docs/superpowers/specs/2026-04-14-social-media-post-redesign.md": {
+      "filePath": "docs/superpowers/specs/2026-04-14-social-media-post-redesign.md",
+      "contentHash": "4b541f160a38e7449add650957fcdc8086fb0327aa2f35202d041bf7113f6b01",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 114,
+      "hasStructuralAnalysis": true
+    },
+    "docs/superpowers/specs/2026-04-15-operations-dashboard-design.md": {
+      "filePath": "docs/superpowers/specs/2026-04-15-operations-dashboard-design.md",
+      "contentHash": "765624cbcc3620cf963e00204a918277428ccdf09cb702b2f4a5244ff14a5bd0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 256,
+      "hasStructuralAnalysis": true
+    },
+    "linkedin-ads.py": {
+      "filePath": "linkedin-ads.py",
+      "contentHash": "f8acaf8e8cd736a32842d9af010b48397f26541131323919af000f0af700bd67",
+      "functions": [
+        {
+          "name": "create_targeted_campaign",
+          "params": [
+            "args"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 56
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        }
+      ],
+      "exports": [
+        "create_targeted_campaign"
+      ],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    "mail-blast.py": {
+      "filePath": "mail-blast.py",
+      "contentHash": "bddeede0024827acf217d789c4a1f17ab5e169279c4bb2a7b7667e2712376caf",
+      "functions": [
+        {
+          "name": "blast",
+          "params": [
+            "subject",
+            "html_body",
+            "text_body",
+            "recipients"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 27
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "smtplib",
+          "specifiers": [
+            "smtplib"
+          ]
+        },
+        {
+          "source": "ssl",
+          "specifiers": [
+            "ssl"
+          ]
+        },
+        {
+          "source": "email.mime.multipart",
+          "specifiers": [
+            "MIMEMultipart"
+          ]
+        },
+        {
+          "source": "email.mime.text",
+          "specifiers": [
+            "MIMEText"
+          ]
+        }
+      ],
+      "exports": [
+        "blast"
+      ],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "requirements.txt": {
+      "filePath": "requirements.txt",
+      "contentHash": "968252371196aa9061246420bff297726c2e3dbd217bd4f5dc0edba6a27ceaea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/compose_openai_gptimage2.py": {
+      "filePath": "scripts/compose_openai_gptimage2.py",
+      "contentHash": "c1aa2ad8574e57612900cd4b3038a9f2a0d8ce19daefa1e7d4a7f2516abf45e5",
+      "functions": [
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "path"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "find_photo",
+          "params": [
+            "crane"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "build_prompt",
+          "params": [
+            "bilgiler"
+          ],
+          "exported": true,
+          "lineCount": 68
+        },
+        {
+          "name": "main",
+          "params": [
+            "crane",
+            "size",
+            "quality",
+            "model"
+          ],
+          "exported": true,
+          "lineCount": 46
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "base64",
+          "specifiers": [
+            "base64"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        }
+      ],
+      "exports": [
+        "parse_bilgiler",
+        "find_photo",
+        "build_prompt",
+        "main"
+      ],
+      "totalLines": 173,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/compose_openai_story_b.py": {
+      "filePath": "scripts/compose_openai_story_b.py",
+      "contentHash": "a74227f385f9c7fc638c9ab6f2e9bb569edf032a9e15c3bc8078d846b79540bc",
+      "functions": [
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "p"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "find_photo",
+          "params": [
+            "crane"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "fmt_price",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "build_prompt",
+          "params": [
+            "b"
+          ],
+          "exported": true,
+          "lineCount": 60
+        },
+        {
+          "name": "main",
+          "params": [
+            "crane"
+          ],
+          "exported": true,
+          "lineCount": 38
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "base64",
+          "specifiers": [
+            "base64"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "PIL",
+          "specifiers": [
+            "Image"
+          ]
+        }
+      ],
+      "exports": [
+        "parse_bilgiler",
+        "find_photo",
+        "fmt_price",
+        "build_prompt",
+        "main"
+      ],
+      "totalLines": 148,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/compose_openai_variants.py": {
+      "filePath": "scripts/compose_openai_variants.py",
+      "contentHash": "6ab7d467217d090923be71a8db32e2190f21e2c1d31c2a0457e2c92ef6c3d79f",
+      "functions": [
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "path"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "find_photo",
+          "params": [
+            "crane"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "fmt_price",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "specs_summary",
+          "params": [
+            "b"
+          ],
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "shared_header",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 28
+        },
+        {
+          "name": "prompt_a",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "prompt_b",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 26
+        },
+        {
+          "name": "prompt_c",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "call_openai",
+          "params": [
+            "photo",
+            "prompt",
+            "size",
+            "quality",
+            "model"
+          ],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "main",
+          "params": [
+            "crane",
+            "style",
+            "size",
+            "quality",
+            "model"
+          ],
+          "exported": true,
+          "lineCount": 33
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "base64",
+          "specifiers": [
+            "base64"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "concurrent.futures",
+          "specifiers": [
+            "ThreadPoolExecutor",
+            "as_completed"
+          ]
+        }
+      ],
+      "exports": [
+        "parse_bilgiler",
+        "find_photo",
+        "fmt_price",
+        "specs_summary",
+        "shared_header",
+        "prompt_a",
+        "prompt_b",
+        "prompt_c",
+        "call_openai",
+        "main"
+      ],
+      "totalLines": 257,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/compose_pil_premium.py": {
+      "filePath": "scripts/compose_pil_premium.py",
+      "contentHash": "69a88c0364a93d9b3bf103d64adc52306221f98bca6fca4e7b8e4ff19a454651",
+      "functions": [
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "path"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "fmt_price",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "fmt_int",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "font",
+          "params": [
+            "path",
+            "size",
+            "index"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "text_w",
+          "params": [
+            "draw",
+            "txt",
+            "fnt"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "fit_photo_into",
+          "params": [
+            "photo",
+            "target_w",
+            "target_h"
+          ],
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "find_photo",
+          "params": [
+            "crane"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "build_ctx",
+          "params": [
+            "bilgiler"
+          ],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "render_post",
+          "params": [
+            "crane",
+            "photo",
+            "ctx",
+            "out_path",
+            "size"
+          ],
+          "exported": true,
+          "lineCount": 102
+        },
+        {
+          "name": "render_story",
+          "params": [
+            "crane",
+            "photo",
+            "ctx",
+            "out_path",
+            "size"
+          ],
+          "exported": true,
+          "lineCount": 72
+        },
+        {
+          "name": "main",
+          "params": [
+            "crane",
+            "story"
+          ],
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "PIL",
+          "specifiers": [
+            "Image",
+            "ImageDraw",
+            "ImageFont",
+            "ImageFilter"
+          ]
+        }
+      ],
+      "exports": [
+        "parse_bilgiler",
+        "fmt_price",
+        "fmt_int",
+        "font",
+        "text_w",
+        "fit_photo_into",
+        "find_photo",
+        "build_ctx",
+        "render_post",
+        "render_story",
+        "main"
+      ],
+      "totalLines": 328,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/compose_style_a.py": {
+      "filePath": "scripts/compose_style_a.py",
+      "contentHash": "538bd41c231c3a535a9dc2c3358230bd85f3d4d97cc44f297a33e632f2e78ad3",
+      "functions": [
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "path"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "b64",
+          "params": [
+            "path"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "fmt_price",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "fmt_int",
+          "params": [
+            "s"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "fill",
+          "params": [
+            "template_path",
+            "ctx"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "main",
+          "params": [
+            "crane",
+            "style"
+          ],
+          "exported": true,
+          "lineCount": 83
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "base64",
+          "specifiers": [
+            "base64"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "playwright.sync_api",
+          "specifiers": [
+            "sync_playwright"
+          ]
+        }
+      ],
+      "exports": [
+        "parse_bilgiler",
+        "b64",
+        "fmt_price",
+        "fmt_int",
+        "fill",
+        "main"
+      ],
+      "totalLines": 144,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/get_linkedin_advertising_token.py": {
+      "filePath": "scripts/get_linkedin_advertising_token.py",
+      "contentHash": "b88e5ed932c51acef7d3f56289cbbe77336ea469cd3cb537d78052e0d4c49680",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CallbackHandler",
+          "methods": [
+            "do_GET",
+            "log_message"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "imports": [
+        {
+          "source": "http.server",
+          "specifiers": [
+            "http.server"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "secrets",
+          "specifiers": [
+            "secrets"
+          ]
+        },
+        {
+          "source": "socketserver",
+          "specifiers": [
+            "socketserver"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "urllib.parse",
+          "specifiers": [
+            "urllib.parse"
+          ]
+        },
+        {
+          "source": "webbrowser",
+          "specifiers": [
+            "webbrowser"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timedelta",
+            "timezone"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "dotenv_values",
+            "set_key"
+          ]
+        }
+      ],
+      "exports": [
+        "CallbackHandler"
+      ],
+      "totalLines": 188,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/get_linkedin_share_token.py": {
+      "filePath": "scripts/get_linkedin_share_token.py",
+      "contentHash": "6ba4a437dc4bb6c05354d6ae3c4d1bc0634f71f2aab7645b23002ffa1982d3c5",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CallbackHandler",
+          "methods": [
+            "do_GET",
+            "log_message"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "imports": [
+        {
+          "source": "http.server",
+          "specifiers": [
+            "http.server"
+          ]
+        },
+        {
+          "source": "secrets",
+          "specifiers": [
+            "secrets"
+          ]
+        },
+        {
+          "source": "socketserver",
+          "specifiers": [
+            "socketserver"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "urllib.parse",
+          "specifiers": [
+            "urllib.parse"
+          ]
+        },
+        {
+          "source": "webbrowser",
+          "specifiers": [
+            "webbrowser"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timedelta",
+            "timezone"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "dotenv_values",
+            "set_key"
+          ]
+        }
+      ],
+      "exports": [
+        "CallbackHandler"
+      ],
+      "totalLines": 132,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/gorsel-hazirla.py": {
+      "filePath": "scripts/gorsel-hazirla.py",
+      "contentHash": "a532c10921d32c2b901f203085048fe6326d2b0516105384406b525b3cbb509d",
+      "functions": [
+        {
+          "name": "setup_logging",
+          "params": [],
+          "returnType": "logging.Logger",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "bilgiler_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "find_crane_folders",
+          "params": [],
+          "returnType": "list[Path]",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "get_crane_images",
+          "params": [
+            "folder"
+          ],
+          "returnType": "list[Path]",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "build_output_prefix",
+          "params": [
+            "bilgiler"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "download_east_model",
+          "params": [],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "detect_text_regions",
+          "params": [
+            "image_path"
+          ],
+          "returnType": "tuple[np.ndarray | None, int]",
+          "exported": true,
+          "lineCount": 51
+        },
+        {
+          "name": "_decode_east",
+          "params": [
+            "scores",
+            "geometry",
+            "min_confidence"
+          ],
+          "exported": true,
+          "lineCount": 48
+        },
+        {
+          "name": "mask_to_base64",
+          "params": [
+            "mask"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "enhance_image",
+          "params": [
+            "img"
+          ],
+          "returnType": "Image.Image",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "export_web",
+          "params": [
+            "img",
+            "output_path"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "export_social",
+          "params": [
+            "img",
+            "output_path"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "process_crane_folder",
+          "params": [
+            "folder",
+            "bilgiler",
+            "firefly_client",
+            "skip_firefly"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 87
+        },
+        {
+          "name": "print_summary",
+          "params": [
+            "all_results"
+          ],
+          "exported": true,
+          "lineCount": 30
+        },
+        {
+          "name": "get_firefly_client",
+          "params": [],
+          "returnType": "AdobeFireflyClient | None",
+          "exported": true,
+          "lineCount": 26
+        },
+        {
+          "name": "main",
+          "params": [
+            "auto",
+            "check_auth",
+            "skip_firefly"
+          ],
+          "exported": true,
+          "lineCount": 70
+        }
+      ],
+      "classes": [
+        {
+          "name": "AdobeFireflyClient",
+          "methods": [
+            "__init__",
+            "authenticate",
+            "_load_cached_token",
+            "_save_cached_token",
+            "_headers",
+            "upload_image",
+            "generative_remove"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 132
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timezone"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "cv2",
+          "specifiers": [
+            "cv2"
+          ]
+        },
+        {
+          "source": "numpy",
+          "specifiers": [
+            "np"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "PIL",
+          "specifiers": [
+            "Image",
+            "ImageEnhance"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        },
+        {
+          "source": "rich.progress",
+          "specifiers": [
+            "Progress",
+            "SpinnerColumn",
+            "TextColumn",
+            "BarColumn",
+            "TaskProgressColumn"
+          ]
+        },
+        {
+          "source": "rich.table",
+          "specifiers": [
+            "Table"
+          ]
+        }
+      ],
+      "exports": [
+        "setup_logging",
+        "parse_bilgiler",
+        "find_crane_folders",
+        "get_crane_images",
+        "build_output_prefix",
+        "AdobeFireflyClient",
+        "download_east_model",
+        "detect_text_regions",
+        "_decode_east",
+        "mask_to_base64",
+        "enhance_image",
+        "export_web",
+        "export_social",
+        "process_crane_folder",
+        "print_summary",
+        "get_firefly_client",
+        "main"
+      ],
+      "totalLines": 631,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/hercules-upload.py": {
+      "filePath": "scripts/hercules-upload.py",
+      "contentHash": "35636e6182578657a4ad789abb9dcd18da227c0338e9047852c114043488a183",
+      "functions": [
+        {
+          "name": "setup_logging",
+          "params": [],
+          "returnType": "logging.Logger",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "bilgiler_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "generate_title",
+          "params": [
+            "info"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "generate_hercules_prompt",
+          "params": [
+            "info"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "find_images",
+          "params": [
+            "info",
+            "folder"
+          ],
+          "returnType": "list[Path]",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "take_screenshot",
+          "params": [
+            "page",
+            "name"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "run_hercules_upload",
+          "params": [
+            "bilgiler",
+            "images",
+            "auto_publish"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 165
+        },
+        {
+          "name": "_wait_for_generation",
+          "params": [
+            "page",
+            "timeout_seconds"
+          ],
+          "exported": true,
+          "lineCount": 46
+        },
+        {
+          "name": "save_publish_record",
+          "params": [
+            "info",
+            "result"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "select_crane_folder",
+          "params": [
+            "folder_name"
+          ],
+          "returnType": "tuple[Path, dict] | None",
+          "exported": true,
+          "lineCount": 35
+        },
+        {
+          "name": "main",
+          "params": [
+            "auto",
+            "explore",
+            "crane_folder",
+            "publish"
+          ],
+          "exported": true,
+          "lineCount": 72
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "playwright.sync_api",
+          "specifiers": [
+            "sync_playwright",
+            "Page",
+            "BrowserContext",
+            "PlaywrightTimeout"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        },
+        {
+          "source": "rich.panel",
+          "specifiers": [
+            "Panel"
+          ]
+        }
+      ],
+      "exports": [
+        "setup_logging",
+        "parse_bilgiler",
+        "generate_title",
+        "generate_hercules_prompt",
+        "find_images",
+        "take_screenshot",
+        "run_hercules_upload",
+        "_wait_for_generation",
+        "save_publish_record",
+        "select_crane_folder",
+        "main"
+      ],
+      "totalLines": 519,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/icerik-uretici.py": {
+      "filePath": "scripts/icerik-uretici.py",
+      "contentHash": "95de4d60b7562a1cf7d2785b7c7026c08a19c3c36c3403bc93ace010e2845763",
+      "functions": [
+        {
+          "name": "load_json",
+          "params": [
+            "path"
+          ],
+          "returnType": "List[dict]",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "save_json",
+          "params": [
+            "path",
+            "data"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "select_crane",
+          "params": [
+            "crane_name"
+          ],
+          "returnType": "Optional[dict]",
+          "exported": true,
+          "lineCount": 34
+        },
+        {
+          "name": "download_photo",
+          "params": [
+            "url"
+          ],
+          "returnType": "Optional[Path]",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "image_to_b64",
+          "params": [
+            "path"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "fmt_price",
+          "params": [
+            "s"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "render_template",
+          "params": [
+            "template_path",
+            "replacements",
+            "width",
+            "height",
+            "output_path"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "generate_images",
+          "params": [
+            "crane",
+            "post_type",
+            "photo_path",
+            "country"
+          ],
+          "returnType": "List[Path]",
+          "exported": true,
+          "lineCount": 99
+        },
+        {
+          "name": "generate_post_text",
+          "params": [
+            "crane",
+            "post_type",
+            "country"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 94
+        },
+        {
+          "name": "generate_fallback_text",
+          "params": [
+            "crane",
+            "post_type",
+            "country"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "main",
+          "params": [
+            "post_type",
+            "crane_name",
+            "country"
+          ],
+          "exported": true,
+          "lineCount": 57
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "typing",
+          "specifiers": [
+            "Optional",
+            "List",
+            "Tuple",
+            "Dict"
+          ]
+        },
+        {
+          "source": "base64",
+          "specifiers": [
+            "base64"
+          ]
+        },
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "tempfile",
+          "specifiers": [
+            "tempfile"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "anthropic",
+          "specifiers": [
+            "Anthropic"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "playwright.sync_api",
+          "specifiers": [
+            "sync_playwright"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        }
+      ],
+      "exports": [
+        "load_json",
+        "save_json",
+        "select_crane",
+        "download_photo",
+        "image_to_b64",
+        "fmt_price",
+        "render_template",
+        "generate_images",
+        "generate_post_text",
+        "generate_fallback_text",
+        "main"
+      ],
+      "totalLines": 440,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/log-temizle.py": {
+      "filePath": "scripts/log-temizle.py",
+      "contentHash": "88580124d0dc6eafcd160f5368aba376159b4e586778eeac5fe4510c565e5295",
+      "functions": [
+        {
+          "name": "find_old_files",
+          "params": [
+            "directory",
+            "max_age_days"
+          ],
+          "returnType": "list[Path]",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "main",
+          "params": [
+            "delete",
+            "days"
+          ],
+          "exported": true,
+          "lineCount": 26
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        }
+      ],
+      "exports": [
+        "find_old_files",
+        "main"
+      ],
+      "totalLines": 68,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/machineryline-upload.py": {
+      "filePath": "scripts/machineryline-upload.py",
+      "contentHash": "342f838b4a377510963a782fa4cf2356d7df8b72bab0cf3066223f5b4ea76269",
+      "functions": [
+        {
+          "name": "setup_logging",
+          "params": [],
+          "returnType": "logging.Logger",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "bilgiler_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "generate_title",
+          "params": [
+            "info"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "generate_description",
+          "params": [
+            "info"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 32
+        },
+        {
+          "name": "find_images",
+          "params": [
+            "info",
+            "folder"
+          ],
+          "returnType": "list[Path]",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "take_screenshot",
+          "params": [
+            "page",
+            "name"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "run_ml_upload",
+          "params": [
+            "bilgiler",
+            "images",
+            "auto_publish"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 338
+        },
+        {
+          "name": "save_publish_record",
+          "params": [
+            "info",
+            "result"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "select_crane_folder",
+          "params": [
+            "folder_name"
+          ],
+          "returnType": "tuple[Path, dict] | None",
+          "exported": true,
+          "lineCount": 24
+        },
+        {
+          "name": "main",
+          "params": [
+            "auto",
+            "explore",
+            "crane_folder",
+            "publish"
+          ],
+          "exported": true,
+          "lineCount": 60
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "playwright.sync_api",
+          "specifiers": [
+            "sync_playwright",
+            "Page",
+            "BrowserContext",
+            "PlaywrightTimeout"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        },
+        {
+          "source": "rich.panel",
+          "specifiers": [
+            "Panel"
+          ]
+        }
+      ],
+      "exports": [
+        "setup_logging",
+        "parse_bilgiler",
+        "generate_title",
+        "generate_description",
+        "find_images",
+        "take_screenshot",
+        "run_ml_upload",
+        "save_publish_record",
+        "select_crane_folder",
+        "main"
+      ],
+      "totalLines": 624,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/post-gorsel.py": {
+      "filePath": "scripts/post-gorsel.py",
+      "contentHash": "bfd5017a487463b9c949932705e677409ef2119ddb5f137faff8de6255682a17",
+      "functions": [
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "image_to_b64",
+          "params": [
+            "path"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "fmt_price",
+          "params": [
+            "s"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "find_best_photo",
+          "params": [
+            "info",
+            "folder"
+          ],
+          "returnType": "Path | None",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "extract_extra_specs",
+          "params": [
+            "info"
+          ],
+          "returnType": "list[tuple[str, str]]",
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "build_extra_specs_html",
+          "params": [
+            "specs",
+            "template_type"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "fill_template",
+          "params": [
+            "template_path",
+            "info",
+            "photo_b64",
+            "logo_b64",
+            "theme",
+            "template_type"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 34
+        },
+        {
+          "name": "render_screenshots",
+          "params": [
+            "info",
+            "photo_path"
+          ],
+          "returnType": "list[Path]",
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "select_crane_folder",
+          "params": [
+            "folder_name"
+          ],
+          "returnType": "tuple[Path, dict] | None",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "main",
+          "params": [
+            "auto",
+            "crane_folder"
+          ],
+          "exported": true,
+          "lineCount": 22
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "base64",
+          "specifiers": [
+            "base64"
+          ]
+        },
+        {
+          "source": "re",
+          "specifiers": [
+            "re"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "playwright.sync_api",
+          "specifiers": [
+            "sync_playwright"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        }
+      ],
+      "exports": [
+        "parse_bilgiler",
+        "image_to_b64",
+        "fmt_price",
+        "find_best_photo",
+        "extract_extra_specs",
+        "build_extra_specs_html",
+        "fill_template",
+        "render_screenshots",
+        "select_crane_folder",
+        "main"
+      ],
+      "totalLines": 260,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/refresh_linkedin_advertising_token.py": {
+      "filePath": "scripts/refresh_linkedin_advertising_token.py",
+      "contentHash": "e5ae1f954ea32004640c65237593f19df11967c20348aff5653dbee73502f0bd",
+      "functions": [
+        {
+          "name": "parse_args",
+          "params": [],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "main",
+          "params": [],
+          "exported": true,
+          "lineCount": 103
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "argparse",
+          "specifiers": [
+            "argparse"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timedelta",
+            "timezone"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "dotenv_values",
+            "set_key"
+          ]
+        }
+      ],
+      "exports": [
+        "parse_args",
+        "main"
+      ],
+      "totalLines": 158,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/site-taraci.py": {
+      "filePath": "scripts/site-taraci.py",
+      "contentHash": "930b476492530224905ae2da0bdec491d3f87b0eed6b69d95d8f46e8c8417f37",
+      "functions": [
+        {
+          "name": "setup_logging",
+          "params": [],
+          "returnType": "logging.Logger",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "scrape_inventory",
+          "params": [],
+          "returnType": "List[dict]",
+          "exported": true,
+          "lineCount": 52
+        },
+        {
+          "name": "extract_crane_cards",
+          "params": [
+            "page"
+          ],
+          "returnType": "List[dict]",
+          "exported": true,
+          "lineCount": 149
+        },
+        {
+          "name": "parse_title",
+          "params": [
+            "title"
+          ],
+          "returnType": "Tuple[str, str]",
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "load_envanter",
+          "params": [],
+          "returnType": "List[dict]",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "save_envanter",
+          "params": [
+            "cranes"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "merge_envanter",
+          "params": [
+            "old",
+            "new"
+          ],
+          "returnType": "tuple[List[dict], List[dict], List[dict]]",
+          "exported": true,
+          "lineCount": 35
+        },
+        {
+          "name": "print_inventory",
+          "params": [
+            "cranes"
+          ],
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "print_diff",
+          "params": [
+            "added",
+            "removed"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "main",
+          "params": [
+            "diff"
+          ],
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "typing",
+          "specifiers": [
+            "Optional",
+            "List",
+            "Tuple",
+            "Dict"
+          ]
+        },
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "playwright.sync_api",
+          "specifiers": [
+            "sync_playwright"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        },
+        {
+          "source": "rich.table",
+          "specifiers": [
+            "Table"
+          ]
+        }
+      ],
+      "exports": [
+        "setup_logging",
+        "scrape_inventory",
+        "extract_crane_cards",
+        "parse_title",
+        "load_envanter",
+        "save_envanter",
+        "merge_envanter",
+        "print_inventory",
+        "print_diff",
+        "main"
+      ],
+      "totalLines": 425,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/sosyal-medya-post.py": {
+      "filePath": "scripts/sosyal-medya-post.py",
+      "contentHash": "323a7fd1d64ee6026c2c580f8f7cb4eb47043b07106da2ba682202908487df22",
+      "functions": [
+        {
+          "name": "prompt",
+          "params": [
+            "message",
+            "default"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "setup_logging",
+          "params": [],
+          "returnType": "logging.Logger",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "bilgiler_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "generate_social_caption",
+          "params": [
+            "info"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "generate_linkedin_caption",
+          "params": [
+            "info"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 28
+        },
+        {
+          "name": "find_social_images",
+          "params": [
+            "info"
+          ],
+          "returnType": "list[Path]",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "find_web_images",
+          "params": [
+            "info"
+          ],
+          "returnType": "list[Path]",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "get_meta_credentials",
+          "params": [],
+          "returnType": "dict | None",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "get_linkedin_credentials",
+          "params": [],
+          "returnType": "dict | None",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "check_all_credentials",
+          "params": [],
+          "returnType": "dict[str, bool]",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "meta_verify_token",
+          "params": [
+            "creds"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "facebook_post_photos",
+          "params": [
+            "creds",
+            "caption",
+            "images"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 60
+        },
+        {
+          "name": "instagram_post_carousel",
+          "params": [
+            "creds",
+            "caption",
+            "images"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 132
+        },
+        {
+          "name": "_get_ig_permalink",
+          "params": [
+            "media_id",
+            "token"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "linkedin_verify_token",
+          "params": [
+            "creds"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "linkedin_upload_image",
+          "params": [
+            "creds",
+            "image_path"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 60
+        },
+        {
+          "name": "linkedin_post",
+          "params": [
+            "creds",
+            "caption",
+            "images"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 63
+        },
+        {
+          "name": "browser_post_facebook",
+          "params": [
+            "caption",
+            "images"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "browser_post_instagram",
+          "params": [
+            "caption",
+            "images"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "browser_post_linkedin",
+          "params": [
+            "caption",
+            "images"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "save_post_record",
+          "params": [
+            "info",
+            "platform",
+            "post_url",
+            "status"
+          ],
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "select_crane_folder",
+          "params": [
+            "folder_name"
+          ],
+          "returnType": "tuple[Path, dict] | None",
+          "exported": true,
+          "lineCount": 44
+        },
+        {
+          "name": "post_to_platform",
+          "params": [
+            "platform",
+            "info",
+            "social_images",
+            "web_images",
+            "force_browser"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 87
+        },
+        {
+          "name": "main",
+          "params": [
+            "auto",
+            "platform",
+            "force_browser",
+            "crane_folder",
+            "check_auth"
+          ],
+          "exported": true,
+          "lineCount": 101
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "PIL",
+          "specifiers": [
+            "Image"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        },
+        {
+          "source": "rich.panel",
+          "specifiers": [
+            "Panel"
+          ]
+        },
+        {
+          "source": "rich.table",
+          "specifiers": [
+            "Table"
+          ]
+        }
+      ],
+      "exports": [
+        "prompt",
+        "setup_logging",
+        "parse_bilgiler",
+        "generate_social_caption",
+        "generate_linkedin_caption",
+        "find_social_images",
+        "find_web_images",
+        "get_meta_credentials",
+        "get_linkedin_credentials",
+        "check_all_credentials",
+        "meta_verify_token",
+        "facebook_post_photos",
+        "instagram_post_carousel",
+        "_get_ig_permalink",
+        "linkedin_verify_token",
+        "linkedin_upload_image",
+        "linkedin_post",
+        "browser_post_facebook",
+        "browser_post_instagram",
+        "browser_post_linkedin",
+        "save_post_record",
+        "select_crane_folder",
+        "post_to_platform",
+        "main"
+      ],
+      "totalLines": 980,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/test_env.py": {
+      "filePath": "scripts/test_env.py",
+      "contentHash": "4f631c4cd3f86eba0e97749d1732ea87078f30ca6dfb5e67a5b2b8f4f6618733",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "exported": true,
+          "lineCount": 25
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        }
+      ],
+      "exports": [
+        "main"
+      ],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/vinc-yayinla.py": {
+      "filePath": "scripts/vinc-yayinla.py",
+      "contentHash": "1c0cb23ad27763bf972d1772178c05847936a3fd2ef5410d5d8bf874060effc8",
+      "functions": [
+        {
+          "name": "setup_logging",
+          "params": [],
+          "returnType": "logging.Logger",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "parse_bilgiler",
+          "params": [
+            "bilgiler_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "select_crane_folder",
+          "params": [
+            "folder_name",
+            "auto"
+          ],
+          "returnType": "tuple[Path, dict] | None",
+          "exported": true,
+          "lineCount": 49
+        },
+        {
+          "name": "generate_title",
+          "params": [
+            "info"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "show_summary",
+          "params": [
+            "folder",
+            "bilgiler",
+            "steps_to_run"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "run_step",
+          "params": [
+            "step_key",
+            "crane_folder",
+            "dry_run"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 57
+        },
+        {
+          "name": "archive_crane",
+          "params": [
+            "folder",
+            "bilgiler"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "collect_publish_records",
+          "params": [
+            "bilgiler"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "generate_report",
+          "params": [
+            "bilgiler",
+            "step_results"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "main",
+          "params": [
+            "auto",
+            "dry_run",
+            "skip_images",
+            "only_steps",
+            "crane_folder"
+          ],
+          "exported": true,
+          "lineCount": 76
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "shutil",
+          "specifiers": [
+            "shutil"
+          ]
+        },
+        {
+          "source": "subprocess",
+          "specifiers": [
+            "subprocess"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        },
+        {
+          "source": "rich.panel",
+          "specifiers": [
+            "Panel"
+          ]
+        },
+        {
+          "source": "rich.table",
+          "specifiers": [
+            "Table"
+          ]
+        },
+        {
+          "source": "rich.rule",
+          "specifiers": [
+            "Rule"
+          ]
+        }
+      ],
+      "exports": [
+        "setup_logging",
+        "parse_bilgiler",
+        "select_crane_folder",
+        "generate_title",
+        "show_summary",
+        "run_step",
+        "archive_crane",
+        "collect_publish_records",
+        "generate_report",
+        "main"
+      ],
+      "totalLines": 401,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/yayin-motoru.py": {
+      "filePath": "scripts/yayin-motoru.py",
+      "contentHash": "7215531921f6beef7b712407ffc421f5f1d4edbec7c1ee0d5db1c780f2f0a971",
+      "functions": [
+        {
+          "name": "setup_logging",
+          "params": [],
+          "returnType": "logging.Logger",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "load_json",
+          "params": [
+            "path"
+          ],
+          "returnType": "list",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "save_published",
+          "params": [
+            "record"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "publish_facebook_post",
+          "params": [
+            "image_path",
+            "text"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "publish_facebook_story",
+          "params": [
+            "image_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 39
+        },
+        {
+          "name": "publish_instagram_post",
+          "params": [
+            "image_path",
+            "text"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 75
+        },
+        {
+          "name": "publish_instagram_story",
+          "params": [
+            "image_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 56
+        },
+        {
+          "name": "publish_linkedin_post",
+          "params": [
+            "image_path",
+            "text"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 79
+        },
+        {
+          "name": "publish_to_platforms",
+          "params": [
+            "platforms",
+            "image_path",
+            "text",
+            "is_story",
+            "dry_run"
+          ],
+          "returnType": "List[dict]",
+          "exported": true,
+          "lineCount": 31
+        },
+        {
+          "name": "main",
+          "params": [
+            "platform",
+            "image_path",
+            "text",
+            "story",
+            "dry_run",
+            "crane_id"
+          ],
+          "exported": true,
+          "lineCount": 42
+        },
+        {
+          "name": "post_to_all",
+          "params": [
+            "captions",
+            "image_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "typing",
+          "specifiers": [
+            "Optional",
+            "List",
+            "Tuple",
+            "Dict"
+          ]
+        },
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "click",
+          "specifiers": [
+            "click"
+          ]
+        },
+        {
+          "source": "requests",
+          "specifiers": [
+            "requests"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        }
+      ],
+      "exports": [
+        "setup_logging",
+        "load_json",
+        "save_published",
+        "publish_facebook_post",
+        "publish_facebook_story",
+        "publish_instagram_post",
+        "publish_instagram_story",
+        "publish_linkedin_post",
+        "publish_to_platforms",
+        "main",
+        "post_to_all"
+      ],
+      "totalLines": 490,
+      "hasStructuralAnalysis": true
+    }
+  }
+}
