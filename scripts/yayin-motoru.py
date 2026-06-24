@@ -484,7 +484,7 @@ def _safe_publish(fn, *args) -> dict:
         return {"success": False, "error": str(e)}
 
 
-def post_to_all(captions: dict, image_path: str, story_image_path: str | None = None) -> dict:
+def post_to_all(captions: dict, image_path: str, story_image_path: Optional[str] = None) -> dict:
     """Publish the feed creative to Facebook, Instagram and LinkedIn organic using
     the platform-specific captions, and — when story_image_path is given — ALSO
     publish the story creative to Facebook + Instagram (never LinkedIn).
