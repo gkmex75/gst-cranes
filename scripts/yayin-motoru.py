@@ -469,21 +469,82 @@ if __name__ == "__main__":
 
 
 # --- SP4 wrapper (added by promote-api integration) ---
-# Expected signature for runners/social.py.
-def post_to_all(captions: dict, image_path: str) -> dict:
-    """Posts the same listing image with platform-specific captions to FB, IG,
-    and LinkedIn organic. Returns:
-        { "fb_post_id": "...", "ig_post_id": "...", "linkedin_post_urn": "..." }
-    Raises on any platform failure — caller must handle partial states.
+# Loaded by promote-api/runners/social.py. The story_image_path parameter is what
+# lets promote-api forward the Premium Dealer Ad STORY creative end-to-end; it is
+# detected via inspect.signature on the promote-api side, so keep the name stable.
+def _safe_publish(fn, *args) -> dict:
+    """Call a publish_* helper, turning a RAISED exception (network/timeout/file
+    error) into the same {"success": False, "error": ...} contract the helpers
+    already use for API failures. This keeps one platform crashing from aborting
+    the others or faking a post id — and is what guarantees a story failure can
+    never erase feed success even under an unexpected exception."""
+    try:
+        return fn(*args)
+    except Exception as e:  # one platform must not sink the rest
+        return {"success": False, "error": str(e)}
 
-    captions = {
-        "fb": "<facebook narrative>",
-        "ig": "<instagram caption + hashtags>",
-        "linkedin": "<linkedin B2B copy>",
-    }
-    image_path = "/tmp/...jpg" (already downloaded)
+
+def post_to_all(captions: dict, image_path: str, story_image_path: str | None = None) -> dict:
+    """Publish the feed creative to Facebook, Instagram and LinkedIn organic using
+    the platform-specific captions, and — when story_image_path is given — ALSO
+    publish the story creative to Facebook + Instagram (never LinkedIn).
+
+    captions = {"fb": "<fb copy>", "ig": "<ig caption+tags>", "linkedin": "<li copy>"}
+    image_path        = feed image (already downloaded), e.g. "/tmp/post.jpg"
+    story_image_path  = optional 1080x1920 story image, e.g. "/tmp/story.jpg"
+
+    Returns (feed keys are ALWAYS present; a missing post id is None, never faked):
+        {
+          "fb_post_id": str | None,
+          "ig_post_id": str | None,
+          "linkedin_post_urn": str | None,
+          "errors": {"<platform>": "<message>", ...},      # only if a feed post failed
+          "stories": {                                      # only if story_image_path given
+            "facebook_story_post_id": str | None,
+            "instagram_story_post_id": str | None,
+            "errors": {"<platform>": "<message>", ...},     # only if a story post failed
+          },
+        }
+
+    A story failure never erases feed success (and vice-versa). Backward compatible:
+    called as post_to_all(captions, image_path) it behaves exactly feed-only — no
+    "stories" key. Wraps the existing publish_* helpers; performs real API calls
+    when invoked (mock the helpers in tests).
     """
-    raise NotImplementedError(
-        "post_to_all not yet implemented — SP4 Task 14 wrapper. "
-        "Wire up to existing FB/IG/LinkedIn helpers in this module."
-    )
+    img = Path(image_path)
+    fb = _safe_publish(publish_facebook_post, img, captions["fb"])
+    ig = _safe_publish(publish_instagram_post, img, captions["ig"])
+    li = _safe_publish(publish_linkedin_post, img, captions["linkedin"])
+
+    result: dict = {
+        "fb_post_id": fb.get("post_id") if fb.get("success") else None,
+        "ig_post_id": ig.get("post_id") if ig.get("success") else None,
+        "linkedin_post_urn": li.get("post_id") if li.get("success") else None,
+    }
+    feed_errors = {
+        name: res.get("error", "unknown error")
+        for name, res in (("facebook", fb), ("instagram", ig), ("linkedin", li))
+        if not res.get("success")
+    }
+    if feed_errors:
+        result["errors"] = feed_errors
+
+    # Story: Facebook + Instagram only — there is no LinkedIn story publisher.
+    if story_image_path:
+        story_img = Path(story_image_path)
+        fb_story = _safe_publish(publish_facebook_story, story_img)
+        ig_story = _safe_publish(publish_instagram_story, story_img)
+        stories: dict = {
+            "facebook_story_post_id": fb_story.get("post_id") if fb_story.get("success") else None,
+            "instagram_story_post_id": ig_story.get("post_id") if ig_story.get("success") else None,
+        }
+        story_errors = {
+            name: res.get("error", "unknown error")
+            for name, res in (("facebook_story", fb_story), ("instagram_story", ig_story))
+            if not res.get("success")
+        }
+        if story_errors:
+            stories["errors"] = story_errors
+        result["stories"] = stories
+
+    return result
