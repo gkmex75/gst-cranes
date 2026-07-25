@@ -1,0 +1,37 @@
+{
+  "listing": {
+    "id": "4eea1e9b-4395-4703-932d-ae0df719f650",
+    "slug": "terex-demag-cc-2400-1-400t-2007",
+    "url": "https://gstcranes.com/listing/terex-demag-cc-2400-1-400t-2007",
+    "seller_user_id": "40cf02d8-29e0-49f9-8a00-5752d4860ac0",
+    "photo_id": "a1441a4a-95bf-4ef8-b662-5833120df730",
+    "source_sha256": "0adcc6e659026147066364f3704336a54803e3cca96bb87c1512f250a67c5199"
+  },
+  "reel": {
+    "motion_asset": "remotion-shorts/public/gkmex-cc2400-11200h-motion.mp4",
+    "motion_sha256": "55239e8635b5139a9cdc4e09986d8dae3c69df8e3e77727070fbe335986c2cb5",
+    "final_asset": "remotion-shorts/output/gkmex-cc2400-11200h-sale.mp4",
+    "final_sha256": "5285b07b430584d4deaefcccd4da60c9a03d573155699ee9a83b983d5906b368",
+    "gst_green": "#16A34A",
+    "paid_campaign_created": false,
+    "paid_campaign_changed": false,
+    "paid_campaign_count_before": 191,
+    "paid_campaign_count_after": 191,
+    "paid_state_sha256": "8941462c3c7e759ac78fb8c50ed0be87530b149da57938683189f06d076d9111"
+  },
+  "organic_publications": {
+    "facebook_reel_id": "890789733624377",
+    "facebook_reel_url": "https://www.facebook.com/reel/890789733624377/",
+    "facebook_reel_status": "ready",
+    "facebook_story_id": "2944153959275697",
+    "instagram_reel_id": "18111814720964843",
+    "instagram_reel_url": "https://www.instagram.com/reel/DbOROy7jo7m/",
+    "instagram_story_id": "18058721177766725",
+    "linkedin_ugc_urn": "urn:li:ugcPost:7486823442642538496",
+    "linkedin_public_url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7486823442642538496",
+    "linkedin_create_http": 201,
+    "linkedin_public_http": 200,
+    "linkedin_api_readback_http": 403
+  },
+  "verified_at": "2026-07-25T16:44:39Z"
+}
